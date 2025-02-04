@@ -69,8 +69,8 @@ npm / Node.js
 Docker
 ======
 
-Solidity构建的Docker镜像可以使用从 ``ethereum`` 组织获得的 ``solc`` 镜像。
-使用 ``stable`` 标签获取最新发布的版本，使用 ``nightly`` 标签获取开发分支中潜在的不稳定变更的版本。
+可以使用来自 ``ethereum`` 组织的 ``solc`` 镜像来获取Solidity构建的Docker镜像。
+使用 ``stable`` 标签获取最新发布的版本，使用 ``nightly`` 标签获取 ``develop`` 分支中潜在的不稳定变更的版本。
 
 Docker镜像会运行编译器可执行文件，以便您可以将所有编译器参数传递给它。
 例如，下面的命令提取了稳定版的 ``solc`` 镜像（如果您还没有），

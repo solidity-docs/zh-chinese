@@ -174,6 +174,11 @@ EVM版本选项
    - 引入了 ``prevrandao()`` 和 ``block.prevrandao``，并改变了现在已经废弃的 ``block.difficulty`` 的语义，不允许在内联汇编中使用 ``difficulty()`` （见 `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_ ）。
 - ``shanghai`` （ **默认项** ）
    - 由于引入了 ``push0``，代码量更小，并且节省了燃料（参见 `EIP-3855 <https://eips.ethereum.org/EIPS/eip-3855>`_）。
+- ``cancun``
+   - 区块的blob基础费用（ `EIP-7516 <https://eips.ethereum.org/EIPS/eip-7516>`_ 和 `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_ ）可以通过全局变量 ``block.basefee`` 或内联汇编中的 ``basefee()`` 来访问。
+   - 引入了内联汇编中的 ``blobhash()`` 和一个相应的全局函数，用于检索与交易相关的blob的版本化哈希（参见 `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_）。
+   - 汇编中提供了操作码 ``mcopy`` （参见 `EIP-5656 <https://eips.ethereum.org/EIPS/eip-5656>`_）。
+   - 汇编中提供了操作码 ``tstore`` 和 ``tload`` （参见 `EIP-1153 <https://eips.ethereum.org/EIPS/eip-1153>`_）。
 
 .. index:: ! standard JSON, ! --standard-json
 .. _compiler-api:
@@ -198,7 +203,7 @@ EVM版本选项
 .. code-block:: javascript
 
     {
-      // 必选：源代码语言。目前支持 “Solidity”， “Yul” 和 “SolidityAST”（试验性）。
+      // 必选：源代码语言。目前支持 “Solidity”， “Yul”， “SolidityAST”（试验性）， “EVMAssembly”（试验性）。
       "language": "Solidity",
       // 必选
       "sources":
@@ -222,14 +227,6 @@ EVM版本选项
             "/tmp/path/to/file.sol"
             // 如果使用文件，其目录应通过 `--allow-paths <path>` 添加到命令行中。
           ]
-          // 如果语言设置为 “SolididityAST”，则需要在“ast”键下提供AST。
-          // 请注意，AST的导入是试验性的，尤其是：
-          // - 导入无效的AST可能会产生未定义的结果，
-          // - 而且无效的AST无法提供适当的错误报告。
-          // 此外，请注意AST导入只消耗编译器在 “stopAfter”（停止后）模式下生成的AST字段：
-          // “解析” 模式下生成的AST字段，然后重新执行分析，
-          // 因此AST中任何基于分析的注释在导入时都会被忽略。
-          "ast": { ... } // 格式化为json ast请求的“ast”输出选择。
         },
         "destructible":
         {
@@ -237,6 +234,31 @@ EVM版本选项
           "keccak256": "0x234...",
           // 必选：（除非使用 “urls“）：源文件的字面内容
           "content": "contract destructible is owned { function shutdown() { if (msg.sender == owner) selfdestruct(owner); } }"
+        },
+        "myFile.sol_json.ast":
+        {
+          // 如果语言设置为 “SolididityAST”，则需要在“ast”字段下提供AST，
+          // 并且只能存在一个源文件。
+          // 格式与 `ast` 输出相同。
+          // 请注意，AST的导入是试验性的，尤其是：
+          // - 导入无效的AST可能会产生未定义的结果，
+          // - 而且无效的AST无法提供适当的错误报告。
+          // 此外，需要注意的是，AST导入仅使用编译器在 "stopAfter": "parsing" 模式下生成的AST字段，
+          // 然后重新执行分析，因此在导入时，任何基于分析的AST注解都会被忽略。
+          "ast": { ... }
+        },
+        "myFile_evm.json":
+        {
+          // 如果语言设置为“EVMAssembl“，则需要提供一个EVM汇编JSON对象
+          // 该对象需放在“assemblyJso“键下，并且只能存在一个源文件。
+          // 其格式与 `evm.legacyAssembly` 输出或命令行中的 `--asm-json` 输出相同。
+          // 请注意，导入EVM汇编功能目前处于实验性阶段。
+          "assemblyJson":
+          {
+            ".code": [ ... ],
+            ".data": { ... }, // optional
+            "sourceList": [ ... ] // optional (if no `source` node was defined in any `.code` object)
+          }
         }
       },
       // 可选

@@ -44,17 +44,27 @@ ABI 编码和解码函数
 - ``<address>.balance`` (``uint256``)： :ref:`address` 的余额，以 Wei 为单位
 - ``<address>.code`` (``bytes memory``)： 在 :ref:`address` 的代码（可以是空的）。
 - ``<address>.codehash`` (``bytes32``)： :ref:`address` 的代码哈希值。
+- ``<address>.call(bytes memory) returns (bool, bytes memory)``： 用给定的数据执行低阶 ``CALL``，
+  返回执行结果和执行后返回的数据
+- ``<address>.delegatecall(bytes memory) returns (bool, bytes memory)``: 用给定的数据执行低阶 ``DELEGATECALL``,
+  返回执行结果和执行后返回的数据
+- ``<address>.staticcall(bytes memory) returns (bool, bytes memory)``: 用给定的数据执行低阶 ``STATICCALL``,
+  返回执行结果和执行后返回的数据
 - ``<address payable>.send(uint256 amount) returns (bool)``： 向 :ref:`address` 发送给定数量的 Wei，失败时返回 ``false``
-- ``<address payable>.transfer(uint256 amount)``： 向 :ref:`address` 发送给定数量的 Wei，失败时会把错误抛出（throw）
+- ``<address payable>.transfer(uint256 amount)``： 向 :ref:`address` 发送给定数量的 Wei，失败时会抛出错误
 
-.. index:: blockhash, block, block;basefree, block;chainid, block;coinbase, block;difficulty, block;gaslimit, block;number, block;prevrandao, block;timestamp
+.. index:: blockhash, blobhash, block, block;basefee, block;blobbasefee, block;chainid, block;coinbase, block;difficulty, block;gaslimit, block;number, block;prevrandao, block;timestamp
 .. index:: gasleft, msg;data, msg;sender, msg;sig, msg;value, tx;gasprice, tx;origin
 
 区块和交易属性
 ================================
 
 - ``blockhash(uint blockNumber) returns (bytes32)``： 给定区块的哈希值 - 只对最近的256个区块有效
+- ``blobhash(uint index) returns (bytes32)``： 与当前交易相关联的第 ``index`` 个blob。
+  此带版本的哈希值是由一个表示版本的单字节（当前为 ``0x01`` ）和紧随其后的KZG证明的SHA256哈希的最后31个字节组成。
+  （ `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_ ）。
 - ``block.basefee`` (``uint``)： 当前区块的基本费用 （ `EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ 和 `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_ ）
+- ``block.blobbasefee`` (``uint``): 当前区块的blob基础费用（ `EIP-7516 <https://eips.ethereum.org/EIPS/eip-7516>`_ 和 `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_）
 - ``block.chainid`` (``uint``)： 当前链的ID
 - ``block.coinbase`` (``address payable``)： 当前区块矿工的地址
 - ``block.difficulty`` (``uint``)： 当前区块的难度值（ ``EVM < Paris`` ）。对于其他EVM版本，它是 ``block.prevrandao`` 的一个废弃的别名，将在下一个重大改变版本中被删除。
@@ -65,7 +75,7 @@ ABI 编码和解码函数
 - ``gasleft() returns (uint256)``： 剩余燃料
 - ``msg.data`` (``bytes``)： 完整的调用数据
 - ``msg.sender`` (``address``)： 消息发送方（当前调用）
-- ``msg.sig`` (``bytes4``)： Calldata的前四个字节（即函数标识符）。
+- ``msg.sig`` (``bytes4``)： 调用数据的前四个字节（即函数标识符）。
 - ``msg.value`` (``uint``)： 随消息发送的 wei 的数量
 - ``tx.gasprice`` (``uint``)： 交易的燃料价格
 - ``tx.origin`` (``address``)： 交易发送方（完整调用链上的原始发送方）

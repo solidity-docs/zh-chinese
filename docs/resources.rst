@@ -25,9 +25,6 @@
     * `Dapp <https://dapp.tools/>`_
         用于从命令行构建，测试和部署智能合约的工具。
 
-    * `Embark <https://framework.embarklabs.io/>`_
-        构建和部署去中心化应用程序的开发者平台。
-
     * `Foundry <https://github.com/foundry-rs/foundry>`_
         用Rust编写的用于Ethereum应用开发的快速，可移植和模块化的工具包。
 
