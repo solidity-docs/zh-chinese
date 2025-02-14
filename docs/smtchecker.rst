@@ -845,6 +845,7 @@ CHC引擎创建了非线性的Horn选项，使用被调用函数的摘要来支�
 
 复杂的纯函数是由参数上的未转译函数（UF）抽象出来的。
 
+<<<<<<< HEAD
 +------------------------------------+------------------------------------------+
 |                方法                |             BMC/CHC 运行方式             |
 +====================================+==========================================+
@@ -883,6 +884,53 @@ CHC引擎创建了非线性的Horn选项，使用被调用函数的摘要来支�
 +------------------------------------+------------------------------------------+
 | 其他调用                           | 目前不支持                               |
 +------------------------------------+------------------------------------------+
+=======
++-----------------------------------+--------------------------------------+
+|Functions                          |BMC/CHC behavior                      |
++===================================+======================================+
+|``assert``                         |Verification target.                  |
++-----------------------------------+--------------------------------------+
+|``require``                        |Assumption.                           |
++-----------------------------------+--------------------------------------+
+|internal call                      |BMC: Inline function call.            |
+|                                   |CHC: Function summaries.              |
++-----------------------------------+--------------------------------------+
+|external call to known code        |BMC: Inline function call or          |
+|                                   |erase knowledge about state variables |
+|                                   |and local storage references.         |
+|                                   |CHC: Assume called code is unknown.   |
+|                                   |Try to infer invariants that hold     |
+|                                   |after the call returns.               |
++-----------------------------------+--------------------------------------+
+|Storage array push/pop             |Supported precisely.                  |
+|                                   |Checks whether it is popping an       |
+|                                   |empty array.                          |
++-----------------------------------+--------------------------------------+
+|ABI functions                      |Abstracted with UF.                   |
++-----------------------------------+--------------------------------------+
+|``addmod``, ``mulmod``             |Supported precisely.                  |
++-----------------------------------+--------------------------------------+
+|``gasleft``, ``blockhash``,        |Abstracted with UF.                   |
+|``keccak256``, ``ecrecover``       |                                      |
+|``ripemd160``                      |                                      |
++-----------------------------------+--------------------------------------+
+|pure functions without             |Abstracted with UF                    |
+|implementation (external or        |                                      |
+|complex)                           |                                      |
++-----------------------------------+--------------------------------------+
+|external functions without         |BMC: Erase state knowledge and assume |
+|implementation                     |result is nondeterministic.           |
+|                                   |CHC: Nondeterministic summary.        |
+|                                   |Try to infer invariants that hold     |
+|                                   |after the call returns.               |
++-----------------------------------+--------------------------------------+
+|transfer                           |BMC: Checks whether the contract's    |
+|                                   |balance is sufficient.                |
+|                                   |CHC: does not yet perform the check.  |
++-----------------------------------+--------------------------------------+
+|others                             |Currently unsupported                 |
++-----------------------------------+--------------------------------------+
+>>>>>>> v0.8.25
 
 使用抽象意味着失去精确的知识，但在许多情况下，这并不意味着失去证明力。
 

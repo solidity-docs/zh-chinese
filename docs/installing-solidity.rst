@@ -80,14 +80,29 @@ Docker镜像会运行编译器可执行文件，以便您可以将所有编译�
 
     docker run ethereum/solc:stable --help
 
+<<<<<<< HEAD
 例如，您可以在0.5.4版本的标签中指定发布的构建版本。
+=======
+You can specify release build versions in the tag. For example:
+>>>>>>> v0.8.25
 
 .. code-block:: bash
 
-    docker run ethereum/solc:0.5.4 --help
+    docker run ethereum/solc:stable --help
 
+Note
+
+Specific compiler versions are supported as the Docker image tag such as `ethereum/solc:0.8.23`. We will be passing the
+`stable` tag here instead of specific version tag to ensure that users get the latest version by default and avoid the issue of
+an out-of-date version.
+
+<<<<<<< HEAD
 要使用 Docker 镜像来编译主机上的 Solidity 文件，请安装一个本地文件夹
 用于输入和输出，并指定要编译的合约。例如：
+=======
+To use the Docker image to compile Solidity files on the host machine, mount a
+local folder for input and output, and specify the contract to compile. For example:
+>>>>>>> v0.8.25
 
 .. code-block:: bash
 
@@ -172,8 +187,13 @@ macOS 软件包
 
 如果您需要特定版本的 Solidity，您可以直接从 Github 上安装一个 Homebrew 列表。
 
+<<<<<<< HEAD
 参见
 `solidity.rb 在 Github 上的提交情况 <https://github.com/ethereum/homebrew-ethereum/commits/master/solidity.rb>`_.
+=======
+View
+`solidity.rb commits on GitHub <https://github.com/ethereum/homebrew-ethereum/commits/master/solidity.rb>`_.
+>>>>>>> v0.8.25
 
 复制您想要的版本的提交哈希值，然后在您的机器上检出该分支。
 
@@ -212,9 +232,16 @@ macOS 软件包
   （通过 git、HTTPS、IPFS 或者只是在本地的缓存），并在下载后验证二进制文件的哈希值，
   您就不必通过HTTPS获得二进制文件。
 
+<<<<<<< HEAD
 在大多数情况下，同样的二进制文件可以在 `Github 上的 Solidity 发布页 <https://github.com/ethereum/solidity/releases>`_ 中找到。
 不同的是，我们一般不更新Github已发布的旧版本。这意味着如果命名规则改变，我们不会重新命名，
 也不会为发布时不支持的平台添加构建。这只发生在 ``solc-bin`` 资源库里。
+=======
+The same binaries are in most cases available on the `Solidity release page on GitHub`_. The
+difference is that we do not generally update old releases on the GitHub release page. This means
+that we do not rename them if the naming convention changes and we do not add builds for platforms
+that were not supported at the time of release. This only happens in ``solc-bin``.
+>>>>>>> v0.8.25
 
 ``solc-bin`` 资源库包含几个顶级目录，每个目录代表一个平台。
 每个目录都包含一个 ``list.json`` 文件，列出可用的二进制文件。
@@ -281,7 +308,7 @@ macOS 软件包
 .. _IPFS: https://ipfs.io
 .. _Swarm: https://swarm-gateways.net/bzz:/swarm.eth
 .. _solc-bin: https://github.com/ethereum/solc-bin/
-.. _Solidity release page on github: https://github.com/ethereum/solidity/releases
+.. _Solidity release page on GitHub: https://github.com/ethereum/solidity/releases
 .. _sha3sum: https://github.com/maandree/sha3sum
 .. _ethereumjs-util 的 keccak256() 函数: https://github.com/ethereumjs/ethereumjs-util/blob/master/docs/modules/_hash_.md#const-keccak256
 .. _WebAssembly 构建: https://emscripten.org/docs/compiling/WebAssembly.html
@@ -429,6 +456,7 @@ Visual Studio 2019 同时提供IDE和必要的编译器和库。
 
     git remote add personal git@github.com:[username]/solidity.git
 
+<<<<<<< HEAD
 .. note:: 
     这种方法将导致一个预发布版本的构建，例如，在这种编译器产生的每个字节码中设置一个标志。
     如果您想重新构建一个已发布的 Solidity 编译器，那么请使用 github 发布页上的源压缩包：
@@ -436,6 +464,17 @@ Visual Studio 2019 同时提供IDE和必要的编译器和库。
     https://github.com/ethereum/solidity/releases/download/v0.X.Y/solidity_0.X.Y.tar.gz
 
     （而不是由Github提供的 “源代码”）。
+=======
+.. note::
+    This method will result in a pre-release build leading to e.g. a flag
+    being set in each bytecode produced by such a compiler.
+    If you want to re-build a released Solidity compiler, then
+    please use the source tarball on the GitHub release page:
+
+    https://github.com/ethereum/solidity/releases/download/v0.X.Y/solidity_0.X.Y.tar.gz
+
+    (not the "Source code" provided by GitHub).
+>>>>>>> v0.8.25
 
 命令行构建
 ------------------

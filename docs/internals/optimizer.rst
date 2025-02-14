@@ -265,11 +265,19 @@ Solidity编译器涉及三个不同级别的优化（按执行顺序）：
 下面将解释基于Yul的优化器模块的所有组件。
 以下的转换步骤是主要的组成部分：
 
+<<<<<<< HEAD
 - SSA转换
 - 通用子表达式消除器
 - 表达式简化器
 - 冗余赋值消除器
 - 完全内联
+=======
+- SSA Transform
+- Common Subexpression Eliminator
+- Expression Simplifier
+- Unused Assign Eliminator
+- Full Inliner
+>>>>>>> v0.8.25
 
 .. _optimizer-steps:
 
@@ -305,11 +313,11 @@ Solidity编译器涉及三个不同级别的优化（按执行顺序）：
 ``T``        :ref:`literal-rematerialiser`
 ``L``        :ref:`load-resolver`
 ``M``        :ref:`loop-invariant-code-motion`
-``r``        :ref:`redundant-assign-eliminator`
 ``m``        :ref:`rematerialiser`
 ``V``        :ref:`SSA-reverser`
 ``a``        :ref:`SSA-transform`
 ``t``        :ref:`structural-simplifier`
+``r``        :ref:`unused-assign-eliminator`
 ``p``        :ref:`unused-function-parameter-pruner`
 ``S``        :ref:`unused-store-eliminator`
 ``u``        :ref:`unused-pruner`
@@ -447,8 +455,13 @@ Solidity编译器涉及三个不同级别的优化（按执行顺序）：
         Body...
     }
 
+<<<<<<< HEAD
 这简化了其余的优化过程，
 因为我们可以忽略for循环初始化块的复杂范围规则。
+=======
+This eases the rest of the optimization process because we can ignore
+the complicated scoping rules of the for loop initialization block.
+>>>>>>> v0.8.25
 
 .. _var-decl-initializer:
 
@@ -604,16 +617,26 @@ SSA转换
 如果一个变量的值根据上面的规则被清除，并且该变量被声明在块之外，
 一个新的SSA变量将在控制流加入的位置被创建，这包括循环后/体块的开始和If/Switch/ForLoop/Block语句之后的位置。
 
+<<<<<<< HEAD
 在此阶段之后，建议使用冗余赋值消除器删除不必要的中间分配。
+=======
+After this stage, the Unused Assign Eliminator is recommended to remove the unnecessary
+intermediate assignments.
+>>>>>>> v0.8.25
 
 如果在这个阶段之前运行表达式拆分器和通用子表达式消除器，
 那么这个阶段会提供最好的结果，因为这样就不会产生过多的变量。
 另一方面，如果在SSA转换之后运行通用子表达式消除器，则效率更高。
 
-.. _redundant-assign-eliminator:
+.. _unused-assign-eliminator:
 
+<<<<<<< HEAD
 冗余赋值消除器
 ^^^^^^^^^^^^^^^^^^^^^^^^^
+=======
+UnusedAssignEliminator
+^^^^^^^^^^^^^^^^^^^^^^
+>>>>>>> v0.8.25
 
 SSA转换总是生成 ``a := a_i`` 形式的赋值，
 尽管这些赋值在许多情况下可能是不必要的，比如下面的例子：
@@ -641,8 +664,14 @@ SSA转换将这个片段转换为以下内容:
         sstore(a_3, 1)
     }
 
+<<<<<<< HEAD
 冗余赋值消除器将删除对 ``a`` 的所有三个赋值，因为未使用 ``a`` 的值，
 因此将此代码段转换为严格的SSA形式为：
+=======
+The Unused Assign Eliminator removes all the three assignments to ``a``, because
+the value of ``a`` is not used and thus turn this
+snippet into strict SSA form:
+>>>>>>> v0.8.25
 
 .. code-block:: yul
 
@@ -653,7 +682,12 @@ SSA转换将这个片段转换为以下内容:
         sstore(a_3, 1)
     }
 
+<<<<<<< HEAD
 当然，确定分配是否多余的错综复杂的部分与加入控制流有关。
+=======
+Of course the intricate parts of determining whether an assignment is unused or not
+are connected to joining control flow.
+>>>>>>> v0.8.25
 
 该组件的详细工作情况如下：
 
@@ -754,9 +788,17 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 
 如果值是一个标识符，所有本身是标识符的子表达式都被其当前值替换。
 
+<<<<<<< HEAD
 上述两条规则的结合允许计算出一个局部值的编号，
 这意味着如果两个变量有相同的值，其中一个将永远是未使用的。
 然后，未使用过的处理器或冗余赋值消除器将能够完全消除此类变量。
+=======
+The combination of the two rules above allow to compute a local value
+numbering, which means that if two variables have the same
+value, one of them will always be unused. The Unused Pruner or the
+Unused Assign Eliminator will then be able to fully eliminate such
+variables.
+>>>>>>> v0.8.25
 
 如果之前运行过表达式拆分器，则此步骤尤其有效。
 如果代码是伪SSA形式，那么变量值的可用时间更长，因此我们有更高的机会替换表达式。
@@ -1119,11 +1161,21 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 完全内联
 ^^^^^^^^^^^
 
+<<<<<<< HEAD
 完全内联用函数的主体取代了某些函数的调用。
 这在大多数情况下是没有什么帮助的，因为它只是增加了代码的大小，但并没有什么好处。
 此外，代码通常是非常昂贵的，我们往往宁愿要更短的代码而不是更有效的代码。
 不过，在相同的情况下，内联一个函数可以对后续的优化步骤产生积极的影响。
 例如，如果一个函数参数是一个常数，就会出现这种情况。
+=======
+The FullInliner replaces certain calls of certain functions
+by the function's body. This is not very helpful in most cases, because
+it just increases the code size but does not have a benefit. Furthermore,
+code is usually very expensive and we would often rather have shorter
+code than more efficient code. In some cases, though, inlining a function
+can have positive effects on subsequent optimizer steps. This is the case
+if one of the function arguments is a constant, for example.
+>>>>>>> v0.8.25
 
 在内联过程中，一个启发式方法被用来判断函数调用是否应该被内联。
 目前的启发式方法是不内联到“大”函数，除非被调用的函数很小。
