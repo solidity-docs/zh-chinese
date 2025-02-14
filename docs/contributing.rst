@@ -115,8 +115,13 @@ Solidity包括不同类型的测试，其中大部分捆绑在
 ``evmone`` 主要用于运行语义和燃料测试。
 如果您没有安装它，您可以通过向 ``scripts/soltest.sh`` 传递 ``--no-semantic-tests`` 标志来跳过这些测试。
 
+<<<<<<< HEAD
 ``evmone`` 库的文件名后缀应该
 是Linux上的 ``.so``，Windows系统上的 ``.dll``，MacOS上的 ``.dylib``。
+=======
+The ``evmone`` library should end with the file name
+extension ``.so`` on Linux, ``.dll`` on Windows systems and ``.dylib`` on macOS.
+>>>>>>> v0.8.25
 
 为了运行SMT测试， ``libz3`` 库必须被安装，并在编译器配置阶段被 ``cmake`` 可以找到。
 
@@ -523,11 +528,17 @@ Solidity论坛作为提出和讨论新的语言功能及其在早期构思阶段
 
 我们也在论坛中分享反馈调查和其他与语言设计相关的内容。
 
+<<<<<<< HEAD
 如果您想知道团队在实施新功能方面的情况，
 您可以在 `Solidity Github项目 <https://github.com/ethereum/solidity/projects/43>`_ 中关注实施状况。
 设计积压中的问题需要进一步规范，将在语言设计电话会议或常规团队电话会议中讨论。
 您可以通过从默认分支（ `develop` ）到 `breaking 分支 <https://github.com/ethereum/solidity/tree/breaking>`_
 来查看下一个重大变化版本即将发生的变化。
+=======
+If you want to know where the team is standing in terms or implementing new features, you can follow the implementation status in the `Solidity GitHub project <https://github.com/ethereum/solidity/projects/43>`_.
+Issues in the design backlog need further specification and will either be discussed in a language design call or in a regular team call. You can
+see the upcoming changes for the next breaking release by changing from the default branch (`develop`) to the `breaking branch <https://github.com/ethereum/solidity/tree/breaking>`_.
+>>>>>>> v0.8.25
 
 对于特殊情况和问题，您可以通过 `Solidity-dev Gitter 频道 <https://gitter.im/ethereum/solidity-dev>`_ 与我们联系，
 - 这是一个专门用于围绕 Solidity 编译器和语言开发的聊天室。
