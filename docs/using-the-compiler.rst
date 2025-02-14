@@ -166,6 +166,7 @@ EVM版本选项
 - ``istanbul``
    - 在汇编中可使用操作码 ``chainid`` 和 ``selfbalance``。
 - ``berlin``
+<<<<<<< HEAD
    - ``SLOAD``， ``*CALL``， ``BALANCE``， ``EXT*`` 和 ``SELFDESTRUCT`` 的燃料成本增加。
      编译器假设这类操作的燃料成本是固定的。这与燃料估算和优化器有关。
 - ``london`` 
@@ -179,6 +180,22 @@ EVM版本选项
    - 引入了内联汇编中的 ``blobhash()`` 和一个相应的全局函数，用于检索与交易相关的blob的版本化哈希（参见 `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_）。
    - 汇编中提供了操作码 ``mcopy`` （参见 `EIP-5656 <https://eips.ethereum.org/EIPS/eip-5656>`_）。
    - 汇编中提供了操作码 ``tstore`` 和 ``tload`` （参见 `EIP-1153 <https://eips.ethereum.org/EIPS/eip-1153>`_）。
+=======
+   - Gas costs for ``SLOAD``, ``*CALL``, ``BALANCE``, ``EXT*`` and ``SELFDESTRUCT`` increased. The
+     compiler assumes cold gas costs for such operations. This is relevant for gas estimation and
+     the optimizer.
+- ``london``
+   - The block's base fee (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ and `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_) can be accessed via the global ``block.basefee`` or ``basefee()`` in inline assembly.
+- ``paris``
+   - Introduces ``prevrandao()`` and ``block.prevrandao``, and changes the semantics of the now deprecated ``block.difficulty``, disallowing ``difficulty()`` in inline assembly (see `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_).
+- ``shanghai``
+   - Smaller code size and gas savings due to the introduction of ``push0`` (see `EIP-3855 <https://eips.ethereum.org/EIPS/eip-3855>`_).
+- ``cancun`` (**default**)
+   - The block's blob base fee (`EIP-7516 <https://eips.ethereum.org/EIPS/eip-7516>`_ and `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_) can be accessed via the global ``block.blobbasefee`` or ``blobbasefee()`` in inline assembly.
+   - Introduces ``blobhash()`` in inline assembly and a corresponding global function to retrieve versioned hashes of blobs associated with the transaction (see `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_).
+   - Opcode ``mcopy`` is available in assembly (see `EIP-5656 <https://eips.ethereum.org/EIPS/eip-5656>`_).
+   - Opcodes ``tstore`` and ``tload`` are available in assembly (see `EIP-1153 <https://eips.ethereum.org/EIPS/eip-1153>`_).
+>>>>>>> v0.8.26
 
 .. index:: ! standard JSON, ! --standard-json
 .. _compiler-api:
@@ -228,12 +245,17 @@ EVM版本选项
             // 如果使用文件，其目录应通过 `--allow-paths <path>` 添加到命令行中。
           ]
         },
-        "destructible":
+        "settable":
         {
           // 可选：源文件的keccak256哈希值
           "keccak256": "0x234...",
+<<<<<<< HEAD
           // 必选：（除非使用 “urls“）：源文件的字面内容
           "content": "contract destructible is owned { function shutdown() { if (msg.sender == owner) selfdestruct(owner); } }"
+=======
+          // Required (unless "urls" is used): literal contents of the source file
+          "content": "contract settable is owned { uint256 private x = 0; function set(uint256 _x) public { if (msg.sender == owner) x = _x; } }"
+>>>>>>> v0.8.26
         },
         "myFile.sol_json.ast":
         {
@@ -328,10 +350,17 @@ EVM版本选项
         // 编译EVM的版本。
         // 影响到类型检查和代码生成。版本可以是 homestead,
         // tangerineWhistle, spuriousDragon, byzantium, constantinople,
+<<<<<<< HEAD
         // petersburg, istanbul, berlin, london， paris 或 shanghai（默认）。
         "evmVersion": "shanghai",
         // 可选：改变编译管道以通过Yul的中间表示法。
         // 这在默认情况下是假的。
+=======
+        // petersburg, istanbul, berlin, london, paris, shanghai or cancun (default)
+        "evmVersion": "cancun",
+        // Optional: Change compilation pipeline to go through the Yul intermediate representation.
+        // This is false by default.
+>>>>>>> v0.8.26
         "viaIR": true,
         // 可选： 调试设置
         "debug": {

@@ -353,7 +353,11 @@ Solidity没有字符串操作函数，但有第三方的字符串库。
         // 所有状态变量的数据位置都是存储。
         bool[2][] pairsOfFlags;
 
+<<<<<<< HEAD
         // newPairs被存储在memory中--这是公开合约函数参数的唯一可能性。
+=======
+        // newPairs is stored in memory
+>>>>>>> v0.8.26
         function setAllFlagPairs(bool[2][] memory newPairs) public {
             // 赋值到一个存储数组会执行 ``newPairs`` 的拷贝，
             // 并替换完整的数组 ``pairsOfFlags``。
