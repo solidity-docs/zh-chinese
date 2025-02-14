@@ -110,8 +110,13 @@ Solidity 工具
 * `leafleth <https://github.com/clemlak/leafleth>`_
     Solidity智能合约的文档生成器。
 
+<<<<<<< HEAD
 * `Scaffold-ETH <https://github.com/scaffold-eth/scaffold-eth>`_
     专注于产品快速迭代的可分叉的以太坊开发堆栈。
+=======
+* `Scaffold-ETH 2 <https://github.com/scaffold-eth/scaffold-eth-2>`_
+    Forkable Ethereum development stack focused on fast product iterations.
+>>>>>>> v0.8.26
 
 * `sol2uml <https://www.npmjs.com/package/sol2uml>`_
     Solidity合约的统一建模语言（UML）类图生成器。

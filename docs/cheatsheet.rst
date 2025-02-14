@@ -14,6 +14,7 @@
 ABI 编码和解码函数
 ===================================
 
+<<<<<<< HEAD
 - ``abi.decode(bytes memory encodedData, (...)) returns (...)``： :ref:`ABI <ABI>` - 对提供的数据进行解码。类型在括号中作为第二个参数给出。
   示例： ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``
 - ``abi.encode(...) returns (bytes memory)``： :ref:`ABI <ABI>` - 对给定的参数进行编码。
@@ -25,6 +26,20 @@ ABI 编码和解码函数
   参数在元组中找到。执行全面的类型检查，确保类型与函数签名相符。结果等于 ``abi.encodeWithSelector(functionPointer.selector(..))``。
 - ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``： 等价于
   ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)``
+=======
+- ``abi.decode(bytes memory encodedData, (...)) returns (...)``: :ref:`ABI <ABI>`-decodes
+  the provided data. The types are given in parentheses as second argument.
+  Example: ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``
+- ``abi.encode(...) returns (bytes memory)``: :ref:`ABI <ABI>`-encodes the given arguments
+- ``abi.encodePacked(...) returns (bytes memory)``: Performs :ref:`packed encoding <abi_packed_mode>` of
+  the given arguments. Note that this encoding can be ambiguous!
+- ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: :ref:`ABI <ABI>`-encodes
+  the given arguments starting from the second and prepends the given four-byte selector
+- ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``: ABI-encodes a call to ``functionPointer`` with the arguments found in the
+  tuple. Performs a full type-check, ensuring the types match the function signature. Result equals ``abi.encodeWithSelector(functionPointer.selector, ...)``
+- ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``: Equivalent
+  to ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)``
+>>>>>>> v0.8.26
 
 .. index:: bytes;concat, string;concat
 
@@ -110,10 +125,17 @@ ABI 编码和解码函数
 合约相关方法
 ================
 
+<<<<<<< HEAD
 - ``this`` （当前合约的类型）： 当前合约，可明确转换为 ``address`` 或 ``address payable``。
 - ``super``： 继承层次中高一级的合约
 - ``selfdestruct(address payable recipient)``： 销毁当前合约，将其资金发送到给定的地址。
   
+=======
+- ``this`` (current contract's type): the current contract, explicitly convertible to ``address`` or ``address payable``
+- ``super``: a contract one level higher in the inheritance hierarchy
+- ``selfdestruct(address payable recipient)``: send all funds to the given address and (only on EVMs before Cancun or when invoked within the transaction creating the contract) destroy the contract.
+
+>>>>>>> v0.8.26
 .. index:: type;name, type;creationCode, type;runtimeCode, type;interfaceId, type;min, type;max
 
 类型相关信息
@@ -150,6 +172,7 @@ ABI 编码和解码函数
 修饰器
 =========
 
+<<<<<<< HEAD
 - ``pure`` 修饰函数时：不允许修改或访问状态变量。
 - ``view`` 修饰函数时：不允许修改状态变量。
 - ``payable`` 修饰函数时：允许从调用中接收以太币。
@@ -159,4 +182,17 @@ ABI 编码和解码函数
 - ``indexed`` 修饰事件参数时：将参数作为 topic 存储。
 - ``virtual`` 修饰函数和修改时：允许在派生合约中改变函数或修改器的行为。
 - ``override`` 表示该函数、修改器或公共状态变量改变了基类合约中的函数或修改器的行为。
+=======
+- ``pure`` for functions: Disallows modification or access of state.
+- ``view`` for functions: Disallows modification of state.
+- ``payable`` for functions: Allows them to receive Ether together with a call.
+- ``constant`` for state variables: Disallows assignment (except initialization), does not occupy storage slot.
+- ``immutable`` for state variables: Allows assignment at construction time and is constant when deployed. Is stored in code.
+- ``anonymous`` for events: Does not store event signature as topic.
+- ``indexed`` for event parameters: Stores the parameter as topic.
+- ``virtual`` for functions and modifiers: Allows the function's or modifier's
+  behavior to be changed in derived contracts.
+- ``override``: States that this function, modifier or public state variable changes
+  the behavior of a function or modifier in a base contract.
+>>>>>>> v0.8.26
 

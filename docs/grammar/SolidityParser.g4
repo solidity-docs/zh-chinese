@@ -250,7 +250,7 @@ structMember: type=typeName name=identifier Semicolon;
 /**
  * 一个枚举的定义。可以出现在源代码单元的顶层，也可以出现在合约，库或接口中。
  */
-enumDefinition:	Enum name=identifier LBrace enumValues+=identifier (Comma enumValues+=identifier)* RBrace;
+enumDefinition: Enum name=identifier LBrace enumValues+=identifier (Comma enumValues+=identifier)* RBrace;
 /**
  * 用户自定义的值类型的定义。可以出现在源代码单元的顶层，也可以出现在合约，库或接口中。
  */
@@ -336,7 +336,14 @@ userDefinableOperator:
  * 使用指令将库函数和自由函数附加到类型上。
  * 可以在合约、库和文件级别中出现。
  */
-usingDirective: Using (identifierPath | (LBrace identifierPath (As userDefinableOperator)? (Comma identifierPath (As userDefinableOperator)?)* RBrace)) For (Mul | typeName) Global? Semicolon;
+usingDirective:
+  Using (
+    identifierPath
+    | (LBrace usingAliases (Comma usingAliases)* RBrace)
+  ) For (Mul | typeName) Global? Semicolon;
+
+usingAliases: identifierPath (As userDefinableOperator)?;
+
 /**
  * 使用指令将库函数和自由函数附加到类型上。
  * 可以在合约和库中以及文件层面中出现。
@@ -397,7 +404,7 @@ expression:
 	| New typeName # NewExpr
 	| tupleExpression # Tuple
 	| inlineArrayExpression # InlineArray
- 	| (
+	| (
 		identifier
 		| literal
 		| literalWithSubDenomination
