@@ -170,6 +170,7 @@
 
 通过将库合约的类型转换为 ``address`` 类型，即使用 ``address(LibraryName)``，可以获得一个库的地址。
 
+<<<<<<< HEAD
 由于编译器不知道库合约的部署地址，
 编译后的十六进制代码将包含 ``__$30bbc0abd4d6364515865950d3e0d10953$__`` 形式的占位符。
 占位符是完全等同于库合约名的keccak256哈希值的34个字符的前缀，例如 ``libraries/bigint.sol:BigInt``，
@@ -177,6 +178,17 @@
 这样的字节码是不完整的，不应该被部署。占位符需要被替换成实际地址。
 您可以在编译库的时候把它们传递给编译器，或者用链接器来更新已经编译好的二进制文件。
 参见 :ref:`library-linking`，了解如何使用命令行编译器进行链接。
+=======
+As the compiler does not know the address where the library will be deployed, the compiled hex code
+will contain placeholders of the form ``__$30bbc0abd4d6364515865950d3e0d10953$__`` `(format was different <v0.5.0) <https://docs.soliditylang.org/en/v0.4.26/contracts.html#libraries>`_. The placeholder
+is a 34 character prefix of the hex encoding of the keccak256 hash of the fully qualified library
+name, which would be for example ``libraries/bigint.sol:BigInt`` if the library was stored in a file
+called ``bigint.sol`` in a ``libraries/`` directory. Such bytecode is incomplete and should not be
+deployed. Placeholders need to be replaced with actual addresses. You can do that by either passing
+them to the compiler when the library is being compiled or by using the linker to update an already
+compiled binary. See :ref:`library-linking` for information on how to use the commandline compiler
+for linking.
+>>>>>>> english/develop
 
 与合约相比，库在以下方面受到限制：
 
