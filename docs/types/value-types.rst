@@ -7,6 +7,12 @@
 以下类型之所以被称为值类型，是因为它们的变量总是通过值传递，
 即在用作函数参数或赋值时总是被复制。
 
+Unlike :ref:`reference types <reference-types>`, value type declarations do not
+specify a data location since they are small enough to be stored on the stack.
+The only exception is :ref:`state variables <structure-state-variables>`.
+Those are by default located in storage, but can also be marked as
+:ref:`transient <transient-storage>`, :ref:`constant or immutable <constants>`.
+
 .. index:: ! bool, ! true, ! false
 
 布尔类型
@@ -193,18 +199,32 @@
 
 对于 ``uint160``、整数、 ``bytes20`` 和合约类型，允许对 ``address`` 进行明确的转换和输出。
 
+<<<<<<< HEAD
 只有 ``address`` 类型和合约类型的表达式可以通过 ``payable(...)`` 显式转换为 ``address payable`` 类型。
 对于合约类型，只有在合约可以接收以太的情况下才允许这种转换，也就是说，
 合约要么有一个 :ref:`receive <receive-ether-function>` 函数，要么有一个 payable 类型的 fallback 的函数。
 请注意， ``payable(0)`` 是有效的，是这个规则的例外。
+=======
+Only expressions of type ``address`` and contract type can be converted to the type ``address
+payable`` via the explicit conversion ``payable(...)``. For contract-type, this conversion is only
+allowed if the contract can receive Ether, i.e., the contract either has a :ref:`receive
+<receive-ether-function>` or a payable fallback function. Note that ``payable(0)`` is valid and is
+an exception to this rule.
+>>>>>>> english/develop
 
 .. note::
     如果您需要一个 ``address`` 类型的变量，并计划向其发送以太，那么就将其类型声明为 ``address payable``，
     以使这一要求可行。另外，尽量尽早地进行这种区分或转换。
 
+<<<<<<< HEAD
     ``address`` 和 ``address payable`` 之间的区别是从 0.5.0 版本开始的。
     同样从该版本开始，合约不能隐式地转换为 ``address`` 类型，但仍然可以显式地转换为
     ``address`` 或 ``address payable``，如果它们有一个 receive 或 payable 类型的 fallback 函数的话。
+=======
+    The distinction between ``address`` and ``address payable`` was introduced in version 0.5.0.
+    Also starting from that version, contracts are not implicitly convertible to the ``address`` type, but can still be explicitly converted to
+    ``address`` or to ``address payable``, if they have a receive or payable fallback function.
+>>>>>>> english/develop
 
 
 运算符：
@@ -333,6 +353,13 @@
 这可能是空的。使用 ``.codehash`` 获得该代码的Keccak-256哈希值（作为 ``bytes32``）。
 注意，使用 ``addr.codehash`` 比 ``keccak256(addr.code)`` 更便宜。
 
+.. warning::
+    The output of ``addr.codehash`` may be ``0`` if the account associated with ``addr`` is empty or non-existent
+    (i.e., it has no code, zero balance, and zero nonce as defined by `EIP-161 <https://eips.ethereum.org/EIPS/eip-161>`_).
+    If the account has no code but a non-zero balance or nonce, then ``addr.codehash`` will output the Keccak-256 hash of empty data
+    (i.e., ``keccak256("")`` which is equal to ``c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470``), as defined by
+    `EIP-1052 <https://eips.ethereum.org/EIPS/eip-1052>`_.
+
 .. note::
     所有的合约都可以转换为 ``address`` 类型，所以可以用 ``address(this).balance`` 查询当前合约的余额。
 
@@ -402,6 +429,7 @@
 .. note::
     在 0.8.0 版本之前， ``byte`` 曾经是 ``bytes1`` 的别名。
 
+<<<<<<< HEAD
 变长字节数组
 ------------
 
@@ -410,6 +438,8 @@
 ``string``:
     变长 UTF-8 编码字符串类型，参见 :ref:`arrays`。并不是值类型！
 
+=======
+>>>>>>> english/develop
 .. index:: address, ! literal;address
 
 .. _address_literals:
@@ -689,9 +719,16 @@ Unicode 字面量
 函数类型
 ----------
 
+<<<<<<< HEAD
 函数类型是一种表示函数的类型。可以将一个函数赋值给另一个函数类型的变量，
 也可以将一个函数作为参数进行传递，还能在函数调用中返回函数类型变量。
 函数类型有两类：- *内部（internal）* 函数和 *外部（external）* 函数：
+=======
+Function types are the types of functions. Variables of a function type
+can be assigned from functions and function parameters of function type
+can be used to pass functions to and return functions from function calls.
+Function types come in two flavours - *internal* and *external* functions:
+>>>>>>> english/develop
 
 内部函数只能在当前合约内被调用（更具体来说，
 在当前代码块内，包括内部库函数和继承的函数中），
@@ -701,7 +738,25 @@ Unicode 字面量
 
 外部函数由一个地址和一个函数签名组成，可以通过外部函数调用传递或者返回。
 
+<<<<<<< HEAD
 函数类型表示成如下的形式：
+=======
+Note that public functions of the current contract can be used both as an
+internal and as an external function. To use ``f`` as an internal function,
+just use ``f``, if you want to use its external form, use ``this.f``.
+
+If a function type variable is not initialised, calling it results
+in a :ref:`Panic error<assert-and-require>`. The same happens if you call a function after using ``delete``
+on it.
+
+.. note::
+    Lambda or inline functions are planned but not yet supported.
+
+Declaration syntax
+^^^^^^^^^^^^^^^^^^
+
+Function types are notated as follows:
+>>>>>>> english/develop
 
 .. code-block:: solidity
     :force:
@@ -715,7 +770,12 @@ Unicode 字面量
 注意，这只适用于函数类型。对于合约中定义的函数，
 必须明确指定其可见性，它们没有默认类型。
 
+<<<<<<< HEAD
 转换：
+=======
+Conversions
+^^^^^^^^^^^
+>>>>>>> english/develop
 
 当且仅当它们的参数类型相同，它们的返回类型相同，它们的内部/外部属性相同，
 并且 ``A`` 的状态可变性比 ``B`` 的状态可变性更具限制性时，
@@ -741,6 +801,7 @@ Unicode 字面量
 这使得我们有可能将一个 ``payable`` 的函数指针分配给一个 ``非 payable`` 的函数指针，
 以确保这两种类型的函数表现相同，即都不能用来发送以太。
 
+<<<<<<< HEAD
 如果一个函数类型的变量没有被初始化，调用它将导致
 会出现 :ref:`异常<assert-and-require>`。如果您在一个函数上使用了 ``delete`` 之后再调用它，
 也会发生同样的情况。
@@ -755,6 +816,18 @@ Unicode 字面量
 一个内部类型的函数可以被分配给一个内部函数类型的变量，无论它在哪里被定义。
 这包括合约和库的私有，内部和公共函数，以及自由函数。
 另一方面，外部函数类型只与公共和外部合约函数兼容。
+=======
+If external function types are used outside of the context of Solidity,
+they are treated as the ``function`` type, which encodes the address
+followed by the function identifier together in a single ``bytes24`` type.
+
+A function of an internal type can be assigned to a variable of an internal function type regardless
+of where it is defined.
+This includes private, internal and public functions of both contracts and libraries as well as free
+functions.
+External function types, on the other hand, are only compatible with public and external contract
+functions.
+>>>>>>> english/develop
 
 .. note::
     带有 ``calldata`` 参数的外部函数与带有 ``calldata`` 参数的外部函数类型不兼容。
@@ -776,8 +849,13 @@ Unicode 字面量
 并且 :ref:`对库合约的函数选择器使用不同的ABI约定 <library-selectors>`。
 接口中声明的函数没有定义，所以指向它们也没有意义。
 
+<<<<<<< HEAD
 成员：
 外部（或公共）函数有以下成员：
+=======
+Members
+^^^^^^^
+>>>>>>> english/develop
 
 * ``.address`` 返回该函数的合约地址。
 * ``.selector`` 返回 :ref:`ABI 函数选择器 <abi_function_selector>`
@@ -788,7 +866,64 @@ Unicode 字面量
   使用 ``{gas: ...}`` 和 ``{value: ...}`` 来分别指定发送到函数的燃料量或以太（wei为单位）量。
   参见 :ref:`外部函数调用 <external-function-calls>` 以获得更多信息。
 
+<<<<<<< HEAD
 以下例子展示如何使用这些成员：
+=======
+.. _function-type-value-stability-across-contract-updates:
+
+Value stability across contract updates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+An important aspect to consider when using values of function types is whether the value will
+remain valid if the underlying code changes.
+
+The state of the blockchain is not completely immutable and there are multiple ways to place
+different code under the same address:
+
+- Directly deploying different code using :ref:`salted contract creation<salted-contract-creations>`.
+- Delegating to a different contract via :ref:`DELEGATECALL<delegatecall>`
+  (upgradeable code behind a proxy contract is a common example of this).
+- Account abstraction as defined by `EIP-7702 <https://eips.ethereum.org/EIPS/eip-7702>`_.
+
+External function types can be considered as stable as contract's ABI, which makes them very portable.
+Their ABI representation always consists of a contract address and a function selector and it is
+perfectly safe to store them long-term or pass them between contracts.
+While it is possible for the referenced function to change or disappear, a direct external call
+would be affected the same way, so there is no additional risk in such use.
+
+In case of internal functions, however, the value is an identifier that is strongly tied to
+contract's bytecode.
+The actual representation of the identifier is an implementation detail and may change between
+compiler versions or even :ref:`between different backends<internal-function-pointers-in-ir>`.
+Values assigned under a given representation are deterministic (i.e. guaranteed to remain the same
+as long as the source code is the same) but are easily affected by changes such as adding, removing
+or reordering of functions.
+The compiler is also free to remove internal functions that are never used, which may affect other identifiers.
+Some representations, e.g. one where identifiers are simply jump targets, may be affected by
+virtually any change, even one completely unrelated to internal functions.
+
+To counter this, the language limits the use of internal function types outside of the context in
+which they are valid.
+This is why internal function types cannot be used as parameters of external functions (or in any
+other way that is exposed in contract's ABI).
+However, there are still situations where it is up to the user to decide whether their use is safe or not.
+For example long-term storage of such values in state variables is discouraged, but may be safe if
+the contract code is never going to be updated.
+It is also always possible to side-step any safeguards by using inline assembly.
+Such use always needs careful consideration.
+
+.. note::
+    The removal of unused internal functions only takes into account explicit references to
+    such functions by name.
+    Implicit references, such as assigning a new value to a function type variable in inline assembly
+    may still lead to the removal of the function if it is not also referenced explicitly elsewhere
+    in the source.
+
+Examples
+^^^^^^^^
+
+Example that shows how to use the members:
+>>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -910,6 +1045,9 @@ Unicode 字面量
             exchangeRate = response;
         }
     }
+<<<<<<< HEAD
 
 .. note::
     Lambda 或内联函数是计划中的，但还不支持。
+=======
+>>>>>>> english/develop
