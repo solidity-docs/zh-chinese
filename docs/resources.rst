@@ -5,6 +5,7 @@
 一般资源
 =================
 
+<<<<<<< HEAD
 * `Ethereum.org开发者门户网站 <https://ethereum.org/en/developers/>`_
 * `Ethereum StackExchange <https://ethereum.stackexchange.com/>`_
 * `Solidity门户网站  <https://soliditylang.org/>`_
@@ -15,10 +16,23 @@
 * `很棒的Solidity <https://github.com/bkrem/awesome-solidity>`_
 * `通过实例学Solidity <https://solidity-by-example.org/>`_
 * `Solidity文档社区翻译 <https://github.com/solidity-docs>`_
+=======
+* `Ethereum.org Developers page <https://ethereum.org/en/developers/>`_
+* `Ethereum StackExchange <https://ethereum.stackexchange.com/>`_
+* `Solidity website <https://soliditylang.org/>`_
+* `Solidity changelog <https://github.com/ethereum/solidity/blob/develop/Changelog.md>`_
+* `Solidity codebase on GitHub <https://github.com/ethereum/solidity/>`_
+* `Solidity language users chat <https://matrix.to/#/#ethereum_solidity:gitter.im>`_
+* `Solidity compiler developers chat <https://matrix.to/#/#ethereum_solidity-dev:gitter.im>`_
+* `awesome-solidity <https://github.com/bkrem/awesome-solidity>`_
+* `Solidity by Example <https://solidity-by-example.org/>`_
+* `Solidity documentation community translations <https://github.com/solidity-docs>`_
+>>>>>>> english/develop
 
 集成（以太坊）开发环境
 ==============================================
 
+<<<<<<< HEAD
     * `Brownie <https://eth-brownie.readthedocs.io/en/stable/>`_
         面向以太坊虚拟机的基于Python的智能合约开发和测试框架。
 
@@ -36,6 +50,34 @@
 
     * `Truffle <https://trufflesuite.com/truffle/>`_
         以太坊开发框架。
+=======
+* `Ape <https://docs.apeworx.io/ape>`_
+        A Python-based web3 development tool for compiling, testing, and interacting with smart contracts.
+
+* `Brownie <https://eth-brownie.readthedocs.io/en/stable/>`_
+        A Python-based development and testing framework for smart contracts targeting the Ethereum Virtual Machine.
+        💡 Note: As per the official docs, Brownie is no longer actively maintained.
+        Future releases may come sporadically - or never at all.
+        Check out Ape Framework (first in list) for all your python Ethereum development needs.
+
+* `Dapp <https://dapp.tools/>`_
+        Tool for building, testing and deploying smart contracts from the command-line.
+
+* `Foundry <https://github.com/foundry-rs/foundry>`_
+        Fast, portable and modular toolkit for Ethereum application development written in Rust.
+
+* `Hardhat <https://hardhat.org/>`_
+        Ethereum development environment with local Ethereum network, debugging features and plugin ecosystem.
+
+* `Remix <https://remix.ethereum.org/>`_
+        Browser-based IDE with integrated compiler and Solidity runtime environment without server-side components.
+
+* `Truffle <https://trufflesuite.com/truffle/>`_
+        Ethereum development framework.
+        💡 Note: Consensys announced the sunset of Truffle on September 21, 2023.
+        Current users may check out the migration path and available product support `here.
+        <https://consensys.io/blog/consensys-announces-the-sunset-of-truffle-and-ganache-and-new-hardhat>`_
+>>>>>>> english/develop
 
 编辑器集成
 ===================
@@ -68,8 +110,14 @@
 
 * Visual Studio Code (VS Code)
 
+<<<<<<< HEAD
     * `以太坊 Remix 的 Visual Studio 代码扩展包 <https://github.com/ethereum/remix-vscode>`_
         VS Code 的以太坊 Remix 扩展包
+=======
+    * `Ethereum Remix Visual Studio Code extension <https://github.com/ethereum/remix-vscode>`_
+        Ethereum Remix extension pack for VS Code
+        💡 Note: As per the official repository, this extension has been removed from the VSCODE marketplace and will be replaced by a dedicated stand-alone desktop application.
+>>>>>>> english/develop
 
     * `Juan Blanco 的 Solidity Visual Studio 代码扩展包 <https://juan.blanco.ws/solidity-contracts-in-visual-studio-code/>`_
         Microsoft Visual Studio Code 的 Solidity 插件，包括语法高亮和 Solidity 编译器。
@@ -80,8 +128,16 @@
     * `Solidity 可视化审计扩展 <https://marketplace.visualstudio.com/items?itemName=tintinweb.solidity-visual-auditor>`_
         在Visual Studio Code中增加了以安全为中心的语法和语义突出显示。
 
+<<<<<<< HEAD
     * `用于 VS Code 的 Truffle <https://marketplace.visualstudio.com/items?itemName=trufflesuite-csi.truffle-vscode>`_
         在Ethereum和EVM兼容的区块链上构建，调试和部署智能合约。
+=======
+    * `Truffle for VS Code <https://marketplace.visualstudio.com/items?itemName=trufflesuite-csi.truffle-vscode>`_
+        Build, debug and deploy smart contracts on Ethereum and EVM-compatible blockchains.
+        💡 Note: This extension has built-in support for the Truffle Suite which is being sunset.
+        For information on ongoing support, migration options and FAQs, visit the `Consensys blog.
+        <https://consensys.io/blog/consensys-announces-the-sunset-of-truffle-and-ganache-and-new-hardhat>`_
+>>>>>>> english/develop
 
 Solidity 工具
 ==============
@@ -92,8 +148,14 @@ Solidity 工具
 * `abi-to-sol <https://github.com/gnidan/abi-to-sol>`_
     从一个给定的ABI JSON生成Solidity接口源的工具。
 
+* `Aderyn <https://github.com/Cyfrin/aderyn>`_
+    Rust-based solidity smart contract static analyzer designed to help find vulnerabilities in Solidity code bases.
+
 * `Doxity <https://github.com/DigixGlobal/doxity>`_
     Solidity的文档生成器。
+
+* `ethdebug <https://github.com/ethdebug/format>`_
+    A standard debugging data format for smart contracts on Ethereum-compatible networks.
 
 * `Ethlint <https://github.com/duaraghav8/Ethlint>`_
     识别和修复Solidity中的风格和安全问题的语法检查器。
@@ -102,7 +164,11 @@ Solidity 工具
     EVM反汇编程序，对字节码进行静态分析，提供比原始EVM操作更高的抽象水平。
 
 * `EVM Lab <https://github.com/ethereum/evmlab/>`_
+<<<<<<< HEAD
     丰富的工具包，与EVM互动。包括一个虚拟机、以太链API，以及一个带有燃料成本显示的跟踪查看器。
+=======
+    A collection of tools to interact with the EVM. The package includes a VM, Etherchain API, and a trace-viewer with gas cost display.
+>>>>>>> english/develop
 
 * `hevm <https://github.com/dapphub/dapptools/tree/master/src/hevm#readme>`_
     EVM调试器和符号执行引擎。
@@ -110,8 +176,13 @@ Solidity 工具
 * `leafleth <https://github.com/clemlak/leafleth>`_
     Solidity智能合约的文档生成器。
 
+<<<<<<< HEAD
 * `Scaffold-ETH <https://github.com/scaffold-eth/scaffold-eth>`_
     专注于产品快速迭代的可分叉的以太坊开发堆栈。
+=======
+* `Scaffold-ETH 2 <https://github.com/scaffold-eth/scaffold-eth-2>`_
+    Forkable Ethereum development stack focused on fast product iterations.
+>>>>>>> english/develop
 
 * `sol2uml <https://www.npmjs.com/package/sol2uml>`_
     Solidity合约的统一建模语言（UML）类图生成器。
@@ -140,7 +211,14 @@ Solidity 工具
 * `Universal Mutator <https://github.com/agroce/universalmutator>`_
     一个用于突变生成的工具，具有可配置的规则并支持Solidity和Vyper。
 
+<<<<<<< HEAD
 第三方Solidity解析器和语法
+=======
+* `Wake <https://github.com/Ackee-Blockchain/wake>`_
+    A Python-based Solidity development and testing framework with built-in vulnerability detectors.
+
+Third-Party Solidity Parsers and Grammars
+>>>>>>> english/develop
 =========================================
 
 * `用于JavaScript的Solidity解析器 <https://github.com/solidity-parser/parser>`_
