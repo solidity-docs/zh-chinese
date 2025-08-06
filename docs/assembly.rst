@@ -7,8 +7,15 @@
 .. index:: ! assembly, ! asm, ! evmasm
 
 
+<<<<<<< HEAD
 您可以用接近Ethereum虚拟机的语言，将Solidity语句与内联汇编交错使用。
 这给了您更精细的控制，这在您通过编写库来增强语言时特别有用。
+=======
+You can interleave Solidity statements with inline assembly in a language close
+to the one of the Ethereum Virtual Machine. This gives you more fine-grained control,
+which is especially useful when you are enhancing the language by writing libraries or
+optimizing gas usage.
+>>>>>>> english/develop
 
 在 Solidity 中用于内联汇编的语言被称为 :ref:`Yul <yul>`，它在自己的章节中被记录。
 本节将只涉及内联汇编代码如何在 Solidity 代码内交互。
@@ -150,6 +157,15 @@
 对于动态的calldata数组，您可以使用 ``x.offset`` 和 ``x.length`` 访问它们的calldata偏移量（字节）和长度（元素数）。
 这两个表达式也可以被赋值，但是和静态情况一样，不会进行验证以确保产生的数据区域在 ``calldatasize()`` 的范围内。
 
+<<<<<<< HEAD
+=======
+For local storage variables or state variables (including transient storage) a single Yul identifier
+is not sufficient, since they do not necessarily occupy a single full storage slot.
+Therefore, their "address" is composed of a slot and a byte-offset
+inside that slot. To retrieve the slot pointed to by the variable ``x``, you
+use ``x.slot``, and to retrieve the byte-offset you use ``x.offset``.
+Using ``x`` itself will result in an error.
+>>>>>>> english/develop
 
 对于本地存储变量或状态变量，一个Yul标识符是不够的，因为它们不一定占据一个完整的存储槽。
 因此，它们的 "地址" 是由一个槽和槽内的字节偏移量组成。要检索变量 ``x`` 所指向的槽，
@@ -166,14 +182,17 @@
     :force:
 
     // SPDX-License-Identifier: GPL-3.0
-    pragma solidity >=0.7.0 <0.9.0;
+    pragma solidity >=0.8.28 <0.9.0;
 
+    // This will report a warning
     contract C {
+        bool transient a;
         uint b;
-        function f(uint x) public view returns (uint r) {
+        function f(uint x) public returns (uint r) {
             assembly {
                 // 我们忽略了存储槽的偏移量，我们知道在这种特殊情况下它是零。
                 r := mul(x, sload(b.slot))
+                tstore(a.slot, true)
             }
         }
     }
@@ -187,11 +206,22 @@
     ``assembly { signextend(<num_bytes_of_x_minus_one>, x) }``
 
 
+<<<<<<< HEAD
 自Solidity 0.6.0以来，内联汇编变量的名称不能影射内联汇编块范围内可见的任何声明
 （包括变量、合约和函数声明）。
 
 自Solidity 0.7.0以来，在内联程序块内声明的变量和函数不能包含 ``.``，
 但使用 ``.`` 可以有效地从内联程序块外访问Solidity变量。
+=======
+Since Solidity 0.6.0, the name of an inline assembly variable may not
+shadow any declaration visible in the scope of the inline assembly block
+(including variable, contract and function declarations).
+
+Since Solidity 0.7.0, variables and functions declared inside the
+inline assembly block may not contain ``.``, but using ``.`` is
+valid to access Solidity variables from outside the inline assembly block.
+However, it is still valid to use dots if you use Solidity in Yul-only mode.
+>>>>>>> english/develop
 
 需要避免的事情
 ---------------
@@ -221,11 +251,23 @@ Solidity的的惯例
 内存管理
 =================
 
+<<<<<<< HEAD
 Solidity以下列方式管理内存。在内存中 ``0x40`` 的位置有一个 "空闲内存指针"。
 如果您想分配内存，从这个指针指向的地方开始使用内存，并更新它。
 不能保证该内存以前没有被使用过，因此您不能假设其内容为零字节。
 没有内置的机制来释放或释放分配的内存。下面是一段汇编代码，
 您可以用它来分配内存，它遵循上述的过程：
+=======
+Solidity manages memory in the following way. There is a "free memory pointer"
+at position ``0x40`` in memory. If you want to allocate memory, use the memory
+starting from where this pointer points at and update it.
+There is no guarantee that the memory has not been used before and thus
+you cannot assume that its contents are zero bytes.
+There is no built-in mechanism to release or free allocated memory.
+Solidity does not guarantee and does not require that the values in memory
+are placed at positions aligned to a multiple of any value.
+Here is an assembly snippet you can use for allocating memory that follows the process outlined above:
+>>>>>>> english/develop
 
 .. code-block:: yul
 
@@ -341,5 +383,31 @@ Solidity中内存数组中的元素总是占据32字节的倍数
         ...
     }
 
+<<<<<<< HEAD
 请注意，我们将在未来的重大变化版本中禁止通过注释的方式进行注解；
 因此，如果您不关心与旧编译器版本的向后兼容问题，请优先使用这种代码字符串形式的写法。
+=======
+Note that we will disallow the annotation via comment in a future breaking release; so, if you are not concerned with
+backward-compatibility with older compiler versions, prefer using the dialect string.
+
+Advanced Safe Use of Memory
+---------------------------
+
+Beyond the strict definition of memory-safety given above, there are cases in which you may want to use more than 64 bytes
+of scratch space starting at memory offset ``0``. If you are careful, it can be admissible to use memory up to (and not
+including) offset ``0x80`` and still safely declare the assembly block as ``memory-safe``.
+This is admissible under either of the following conditions:
+
+- By the end of the assembly block, the free memory pointer at offset ``0x40`` is restored to a sane value (i.e. it is either
+  restored to its original value or an increment of it due to a manual memory allocation), and the memory word at offset ``0x60``
+  is restored to a value of zero.
+
+- The assembly block terminates, i.e. execution can never return to high-level Solidity code. This is the case, for example,
+  if your assembly block unconditionally ends in calling the ``revert`` opcode.
+
+Furthermore, you need to be aware that the default-value of dynamic arrays in Solidity point to memory offset ``0x60``, so
+for the duration of temporarily changing the value at memory offset ``0x60``, you can no longer rely on getting accurate
+length values when reading dynamic arrays, until you restore the zero value at ``0x60``. To be more precise, we only guarantee
+safety when overwriting the zero pointer, if the remainder of the assembly snippet does not interact with the memory of
+high-level Solidity objects (including by reading from offsets previously stored in variables).
+>>>>>>> english/develop

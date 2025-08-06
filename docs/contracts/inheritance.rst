@@ -33,14 +33,18 @@ Solidity支持多重继承，包括多态性。
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
+<<<<<<< HEAD
     // 这将报告一个由于废弃的 selfdestruct 而产生的警告
 
+=======
+>>>>>>> english/develop
 
     contract Owned {
-        constructor() { owner = payable(msg.sender); }
         address payable owner;
+        constructor() { owner = payable(msg.sender); }
     }
 
+<<<<<<< HEAD
 
     // 使用 `is` 从另一个合约派生。派生合约可以访问所有非私有成员，
     // 包括内部函数和状态变量，但无法通过 `this` 来外部访问。
@@ -55,25 +59,53 @@ Solidity支持多重继承，包括多态性。
     // 这些抽象合约仅用于给编译器提供接口。
     // 注意函数没有函数体。
     // 如果一个合约没有实现所有函数，则只能用作接口。
+=======
+    // Use `is` to derive from another contract. Derived
+    // contracts can access all non-private members including
+    // internal functions and state variables. These cannot be
+    // accessed externally via `this`, though.
+    contract Emittable is Owned {
+        event Emitted();
+
+        // The keyword `virtual` means that the function can change
+        // its behavior in derived classes ("overriding").
+        function emitEvent() virtual public {
+            if (msg.sender == owner)
+                emit Emitted();
+        }
+    }
+
+    // These abstract contracts are only provided to make the
+    // interface known to the compiler. Note the function
+    // without body. If a contract does not implement all
+    // functions it can only be used as an interface.
+>>>>>>> english/develop
     abstract contract Config {
         function lookup(uint id) public virtual returns (address adr);
     }
-
 
     abstract contract NameReg {
         function register(bytes32 name) public virtual;
         function unregister() public virtual;
     }
 
+<<<<<<< HEAD
 
     // 多重继承是可能的。请注意， `Owned` 也是 `Destructible` 的基类，
     // 但只有一个 `Owned` 实例（就像 C++ 中的虚拟继承）。
     contract Named is Owned, Destructible {
+=======
+    // Multiple inheritance is possible. Note that `Owned` is
+    // also a base class of `Emittable`, yet there is only a single
+    // instance of `Owned` (as for virtual inheritance in C++).
+    contract Named is Owned, Emittable {
+>>>>>>> english/develop
         constructor(bytes32 name) {
             Config config = Config(0xD5f9D8D94886E70b06E474c3fB14Fd43E2f23970);
             NameReg(config.lookup(1)).register(name);
         }
 
+<<<<<<< HEAD
         // 函数可以被另一个具有相同名称和相同数量/类型输入的函数重写。
         // 如果重写函数有不同类型的输出参数，会导致错误。
         // 本地和基于消息的函数调用都会考虑这些重写。
@@ -85,79 +117,164 @@ Solidity支持多重继承，包括多态性。
                 NameReg(config.lookup(1)).unregister();
                 // 仍然可以调用特定的重写函数。
                 Destructible.destroy();
+=======
+        // Functions can be overridden by another function with the same name and
+        // the same number/types of inputs. If the overriding function has different
+        // types of output parameters, that causes an error.
+        // Both local and message-based function calls take these overrides
+        // into account.
+        // If you want the function to override, you need to use the
+        // `override` keyword. You need to specify the `virtual` keyword again
+        // if you want this function to be overridden again.
+        function emitEvent() public virtual override {
+            if (msg.sender == owner) {
+                Config config = Config(0xD5f9D8D94886E70b06E474c3fB14Fd43E2f23970);
+                NameReg(config.lookup(1)).unregister();
+                // It is still possible to call a specific
+                // overridden function.
+                Emittable.emitEvent();
+>>>>>>> english/develop
             }
         }
     }
 
 
+<<<<<<< HEAD
     // 如果构造函数接受参数，
     // 则需要在声明（合约的构造函数）时提供，
     // 或在派生合约的构造函数位置以修饰器调用风格提供（见下文）。
     contract PriceFeed is Owned, Destructible, Named("GoldFeed") {
+=======
+    // If a constructor takes an argument, it needs to be
+    // provided in the header or modifier-invocation-style at
+    // the constructor of the derived contract (see below).
+    contract PriceFeed is Owned, Emittable, Named("GoldFeed") {
+        uint info;
+
+>>>>>>> english/develop
         function updateInfo(uint newInfo) public {
             if (msg.sender == owner) info = newInfo;
         }
 
+<<<<<<< HEAD
         // 在这里，我们只指定了 `override` 而没有 `virtual`。
         // 这意味着从 `PriceFeed` 派生出来的合约不能再改变 `destroy` 的行为。
         function destroy() public override(Destructible, Named) { Named.destroy(); }
+=======
+        // Here, we only specify `override` and not `virtual`.
+        // This means that contracts deriving from `PriceFeed`
+        // cannot change the behavior of `emitEvent` anymore.
+        function emitEvent() public override(Emittable, Named) { Named.emitEvent(); }
+>>>>>>> english/develop
         function get() public view returns(uint r) { return info; }
-
-        uint info;
     }
 
+<<<<<<< HEAD
 注意，在上面，我们调用 ``Destructible.destroy()`` 来 "转发" 销毁请求。
 这样做的方式是有问题的，从下面的例子中可以看出：
+=======
+Note that above, we call ``Emittable.emitEvent()`` to "forward" the
+emit event request. The way this is done is problematic, as
+seen in the following example:
+>>>>>>> english/develop
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
+<<<<<<< HEAD
     // 这将报告一个由于废弃的 selfdestruct 而产生的警告
+=======
+>>>>>>> english/develop
 
-    contract owned {
-        constructor() { owner = payable(msg.sender); }
+    contract Owned {
         address payable owner;
+        constructor() { owner = payable(msg.sender); }
     }
 
-    contract Destructible is owned {
-        function destroy() public virtual {
-            if (msg.sender == owner) selfdestruct(owner);
+    contract Emittable is Owned {
+        event Emitted();
+
+        function emitEvent() virtual public {
+            if (msg.sender == owner) {
+                emit Emitted();
+            }
         }
     }
 
+<<<<<<< HEAD
     contract Base1 is Destructible {
         function destroy() public virtual override { /* 清除操作 1 */ Destructible.destroy(); }
     }
 
     contract Base2 is Destructible {
         function destroy() public virtual override { /* 清除操作 2 */ Destructible.destroy(); }
+=======
+    contract Base1 is Emittable {
+        event Base1Emitted();
+        function emitEvent() public virtual override {
+            /* Here, we emit an event to simulate some Base1 logic */
+            emit Base1Emitted();
+            Emittable.emitEvent();
+        }
+    }
+
+    contract Base2 is Emittable {
+        event Base2Emitted();
+        function emitEvent() public virtual override {
+            /* Here, we emit an event to simulate some Base2 logic */
+            emit Base2Emitted();
+            Emittable.emitEvent();
+        }
+>>>>>>> english/develop
     }
 
     contract Final is Base1, Base2 {
-        function destroy() public override(Base1, Base2) { Base2.destroy(); }
+        event FinalEmitted();
+        function emitEvent() public override(Base1, Base2) {
+            /* Here, we emit an event to simulate some Final logic */
+            emit FinalEmitted();
+            Base2.emitEvent();
+        }
     }
 
+<<<<<<< HEAD
 调用 ``Final.destroy()`` 时会调用最后的派生重写函数 ``Base2.destroy``，
 但是会绕过 ``Base1.destroy``， 解决这个问题的方法是使用 ``super``：
+=======
+A call to ``Final.emitEvent()`` will call ``Base2.emitEvent`` because we specify it
+explicitly in the final override, but this function will bypass
+``Base1.emitEvent``, resulting in the following sequence of events:
+``FinalEmitted -> Base2Emitted -> Emitted``, instead of the expected sequence:
+``FinalEmitted -> Base2Emitted -> Base1Emitted -> Emitted``.
+The way around this is to use ``super``:
+>>>>>>> english/develop
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
+<<<<<<< HEAD
     // 这将报告一个由于废弃的 selfdestruct 而产生的警告
+=======
+>>>>>>> english/develop
 
-    contract owned {
-        constructor() { owner = payable(msg.sender); }
+    contract Owned {
         address payable owner;
+        constructor() { owner = payable(msg.sender); }
     }
 
-    contract Destructible is owned {
-        function destroy() virtual public {
-            if (msg.sender == owner) selfdestruct(owner);
+    contract Emittable is Owned {
+        event Emitted();
+
+        function emitEvent() virtual public {
+            if (msg.sender == owner) {
+                emit Emitted();
+            }
         }
     }
 
+<<<<<<< HEAD
     contract Base1 is Destructible {
         function destroy() public virtual override { /* 清除操作 1 */ super.destroy(); }
     }
@@ -165,18 +282,55 @@ Solidity支持多重继承，包括多态性。
 
     contract Base2 is Destructible {
         function destroy() public virtual override { /* 清除操作 2 */ super.destroy(); }
+=======
+    contract Base1 is Emittable {
+        event Base1Emitted();
+        function emitEvent() public virtual override {
+            /* Here, we emit an event to simulate some Base1 logic */
+            emit Base1Emitted();
+            super.emitEvent();
+        }
+    }
+
+
+    contract Base2 is Emittable {
+        event Base2Emitted();
+        function emitEvent() public virtual override {
+            /* Here, we emit an event to simulate some Base2 logic */
+            emit Base2Emitted();
+            super.emitEvent();
+        }
+>>>>>>> english/develop
     }
 
     contract Final is Base1, Base2 {
-        function destroy() public override(Base1, Base2) { super.destroy(); }
+        event FinalEmitted();
+        function emitEvent() public override(Base1, Base2) {
+            /* Here, we emit an event to simulate some Final logic */
+            emit FinalEmitted();
+            super.emitEvent();
+        }
     }
 
+<<<<<<< HEAD
 如果 ``Base2`` 调用 ``super`` 的函数，它不会简单在其基类合约上调用该函数。
 相反，它在最终的继承关系图谱的上一个基类合约中调用这个函数，
 所以它会调用 ``Base1.destroy()``
 （注意最终的继承序列是——从最远派生合约开始：Final, Base2, Base1, Destructible, ownerd）。
 在类中使用 super 调用的实际函数在当前类的上下文中是未知的，尽管它的类型是已知的。
 这与普通的虚拟方法查找类似。
+=======
+If ``Final`` calls a function of ``super``, it does not simply
+call this function on one of its base contracts.  Rather, it
+calls this function on the next base contract in the final
+inheritance graph, so it will call ``Base1.emitEvent()`` (note that
+the final inheritance sequence is -- starting with the most
+derived contract: Final, Base2, Base1, Emittable, Owned).
+The actual function that is called when using super is
+not known in the context of the class where it is used,
+although its type is known. This is similar for ordinary
+virtual method lookup.
+>>>>>>> english/develop
 
 .. index:: ! overriding;function
 
@@ -358,8 +512,14 @@ Solidity支持多重继承，包括多态性。
 构造函数
 ============
 
+<<<<<<< HEAD
 构造函数是一个用 ``constructor`` 关键字声明的可选函数，
 它在合约创建时被执行，您可以在这里运行合约初始化代码。
+=======
+A constructor is an optional function declared with the ``constructor`` keyword
+which is executed upon contract creation, and where you can run contract
+initialization code.
+>>>>>>> english/develop
 
 在构造函数代码执行之前，如果您用内联编程的方式初始化状态变量，则将其初始化为指定的值；
 如果您不用内联编程的方式来初始化，则将其初始化为 :ref:`默认值 <default-value>`。
@@ -459,6 +619,7 @@ Solidity支持多重继承，包括多态性。
 多重继承与线性化
 ======================================
 
+<<<<<<< HEAD
 编程语言实现多重继承需要解决几个问题。
 一个问题是 `钻石问题 <https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem>`_ 。
 Solidity 借鉴了 Python 的方式并且使用 "`C3 线性化 <https://en.wikipedia.org/wiki/C3_linearization>`_"
@@ -467,6 +628,18 @@ Solidity 借鉴了 Python 的方式并且使用 "`C3 线性化 <https://en.wikip
 尤其是，基类在 ``is`` 后面的顺序很重要。 在下面的代码中，
 您必须按照从 “最接近的基类”（most base-like）到 “最远的继承”（most derived）的顺序来指定所有的基类。
 注意，这个顺序与Python中使用的顺序相反。
+=======
+Languages that allow multiple inheritance have to deal with
+several problems.  One is the `Diamond Problem <https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem>`_.
+Solidity is similar to Python in that it uses C3 Linearization
+to force a specific order in the directed acyclic graph (DAG) of base classes. This
+results in the desirable property of monotonicity but
+disallows some inheritance graphs. Especially, the order in
+which the base classes are given in the ``is`` directive is
+important: You have to list the direct base contracts
+in the order from "most base-like" to "most derived".
+Note that this order is the reverse of the one used in Python.
+>>>>>>> english/develop
 
 另一种简化的解释方式是，当一个函数被调用时，
 它在不同的合约中被多次定义，给定的基类以深度优先的方式从右到左（Python中从左到右）进行搜索，
