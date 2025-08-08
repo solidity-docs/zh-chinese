@@ -17,7 +17,10 @@
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.1 <0.9.0;
+<<<<<<< HEAD
     // 这将报告一个由于废弃的 selfdestruct 而产生的警告
+=======
+>>>>>>> english/develop
 
     contract owned {
         constructor() { owner = payable(msg.sender); }
@@ -37,6 +40,7 @@
         }
     }
 
+<<<<<<< HEAD
     contract destructible is owned {
         // 这个合约从 `owned` 合约继承了 `onlyOwner` 修饰器，
         // 并将其应用于 `destroy` 函数，
@@ -46,6 +50,8 @@
         }
     }
 
+=======
+>>>>>>> english/develop
     contract priced {
         // 修饰器可以接受参数：
         modifier costs(uint price) {
@@ -55,7 +61,7 @@
         }
     }
 
-    contract Register is priced, destructible {
+    contract Register is priced, owned {
         mapping(address => bool) registeredAddresses;
         uint price;
 
@@ -67,6 +73,9 @@
             registeredAddresses[msg.sender] = true;
         }
 
+        // This contract inherits the `onlyOwner` modifier from
+        // the `owned` contract. As a result, calls to `changePrice` will
+        // only take effect if they are made by the stored owner.
         function changePrice(uint price_) public onlyOwner {
             price = price_;
         }
