@@ -245,7 +245,13 @@ Solidity 可以通过两种不同的方式生成 EVM 字节码：
 内部结构
 =========
 
+<<<<<<< HEAD
 内部函数指针
+=======
+.. _internal-function-pointers-in-ir:
+
+Internal function pointers
+>>>>>>> english/develop
 --------------------------
 
 .. index:: function pointers
@@ -263,7 +269,17 @@ ID ``0`` 是为未初始化的函数指针保留的，这些指针在被调用�
 在旧的代码生成器中，内部函数指针是用一个特殊的函数初始化的，它总是引起panic错误。
 这导致在构造时对存储中的内部函数指针进行存储写入。
 
+<<<<<<< HEAD
 清理
+=======
+.. note::
+    The compiler is free to omit internal functions that are never explicitly referenced by name.
+    As a consequence, assigning to a function type variable in inline assembly does not guarantee
+    that the assigned value will be included in the internal dispatch.
+    The function must also be explicitly referenced elsewhere in the code.
+
+Cleanup
+>>>>>>> english/develop
 -------
 
 .. index:: cleanup, dirty bits
