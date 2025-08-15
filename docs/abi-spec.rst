@@ -16,7 +16,11 @@
 我们假设合约的接口函数是强类型的，在编译时就知道，并且是静态的。
 我们假设所有合约在编译时都有它们所调用的任何合约的接口定义。
 
+<<<<<<< HEAD
 本规范不涉及其接口是动态的或其他只有在运行时才知道的合约。
+=======
+This specification does not address contracts whose interface is dynamic or otherwise known only at run-time. Also, the ABI specification for libraries is :ref:`slightly different <library-selectors>`.
+>>>>>>> english/develop
 
 .. _abi_function_selector:
 .. index:: ! selector; of a function
@@ -44,7 +48,13 @@
 类型
 =====
 
+<<<<<<< HEAD
 以下是基础类型：
+=======
+Note that the library ABIs can take types different than below e.g. for non-storage structs. See :ref:`library selectors <library-selectors>` for details.
+
+The following elementary types exist:
+>>>>>>> english/develop
 
 - ``uint<M>``： ``M`` 位的无符号整数， ``0 < M <= 256``， ``M % 8 == 0``。例如： ``uint32``， ``uint8``， ``uint256``。
 
