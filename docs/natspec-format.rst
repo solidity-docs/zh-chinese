@@ -32,8 +32,15 @@ NatSpec 也可以包括第三方工具使用的注释。
 文档示例
 =====================
 
+<<<<<<< HEAD
 文档可以通过使用 Doxygen 符号格式来嵌入到每个 ``contract``， ``interface``， ``library``，
 ``function`` 和 ``event`` 之上。在 NatSpec 中， ``public`` 状态变量等同于 ``function``。
+=======
+Documentation is inserted above each ``contract``, ``interface``, ``library``,
+``function``, ``enum``, ``enum`` value and ``event`` using the Doxygen notation format.
+A ``public`` state variable is equivalent to a ``function``
+for the purposes of NatSpec.
+>>>>>>> english/develop
 
 -  对于Solidity，您可以选择 ``///`` 用于单行注释
    或以 ``/**`` 开始，并以 ``*/`` 结束的符号用于多行注释
@@ -61,12 +68,22 @@ NatSpec 也可以包括第三方工具使用的注释。
     /// @dev 目前所有的函数调用都是在没有副作用的情况下实现的
     /// @custom:experimental 这是一个实验性的合约。
     contract Tree {
+<<<<<<< HEAD
         /// @notice 计算活体树木的树龄，按四舍五入计算
         /// @dev Alexandr N. Tetearing 算法可以提高精确度
         /// @param rings 树龄学样本的环数
         /// @return 树龄（岁），部分年份四舍五入
         function age(uint256 rings) external virtual pure returns (uint256) {
             return rings + 1;
+=======
+        /// @notice Calculate tree age in years, rounded up, for live trees
+        /// @dev The Alexandr N. Tetearing algorithm could increase precision
+        /// @param rings The number of rings from dendrochronological sample
+        /// @return Age in years, rounded up for partial years
+        /// @return Name of the tree
+        function age(uint256 rings) external virtual pure returns (uint256, string memory) {
+            return (rings + 1, "tree");
+>>>>>>> english/develop
         }
 
         /// @notice 返回该树的叶子数量。
@@ -83,8 +100,8 @@ NatSpec 也可以包括第三方工具使用的注释。
     }
 
     contract KumquatTree is Tree, Plant {
-        function age(uint256 rings) external override pure returns (uint256) {
-            return rings + 2;
+        function age(uint256 rings) external override pure returns (uint256, string memory) {
+            return (rings + 2, "Kumquat");
         }
 
         /// 返回这种特定类型的树的叶子数量。
@@ -106,6 +123,7 @@ NatSpec 也可以包括第三方工具使用的注释。
 =============== ====================================================================================== =============================
 标签                                                                                                    应用于
 =============== ====================================================================================== =============================
+<<<<<<< HEAD
 ``@title``      一个应该描述合约/接口的标题                                                                contract, library, interface
 ``@author``     作者的名字                                                                              contract, library, interface
 ``@notice``     向终端用户解释这个东西的作用                                                               contract, library, interface, function, public state variable, event
@@ -114,6 +132,16 @@ NatSpec 也可以包括第三方工具使用的注释。
 ``@return``     记录一个合约的函数的返回变量                                                                function, public state variable
 ``@inheritdoc`` 从基本函数中复制所有缺失的标签（必须在合约名称之后）                                            function, public state variable
 ``@custom:...`` 自定义标签，语义由应用程序定义                                                              everywhere
+=======
+``@title``      A title that should describe the contract/interface                                    contract, library, interface, struct, enum, enum values
+``@author``     The name of the author                                                                 contract, library, interface, struct, enum, enum values
+``@notice``     Explain to an end user what this does                                                  contract, library, interface, function, public state variable, event, struct, enum, enum values error
+``@dev``        Explain to a developer any extra details                                               contract, library, interface, function, state variable, event, struct, enum, enum values, error
+``@param``      Documents a parameter just like in Doxygen (must be followed by parameter name)        function, event, enum values, error
+``@return``     Documents the return variables of a contract's function                                function, enum, enum values, public state variable
+``@inheritdoc`` Copies all missing tags from the base function (must be followed by the contract name) function, enum, enum values, public state variable
+``@custom:...`` Custom tag, semantics is application-defined                                           everywhere
+>>>>>>> english/develop
 =============== ====================================================================================== =============================
 
 如果您的函数返回多个值，如 ``(int quotient, int remainder)``
@@ -181,7 +209,12 @@ Solidity 编译器将通过 NatSpec 文档从您的 Solidity 源代码传递到�
 用户文档
 ------------------
 
+<<<<<<< HEAD
 上述文档将产生以下用户文档 JSON 文件作为输出：
+=======
+The above documentation will produce the following user documentation
+JSON file as output for the ``Tree`` contract:
+>>>>>>> english/develop
 
 .. code-block:: json
 
@@ -192,7 +225,15 @@ Solidity 编译器将通过 NatSpec 文档从您的 Solidity 源代码传递到�
       {
         "age(uint256)" :
         {
+<<<<<<< HEAD
           "notice" : "计算活体树木的树龄，按四舍五入计算"
+=======
+          "notice" : "Calculate tree age in years, rounded up, for live trees"
+        },
+        "leaves()" :
+        {
+            "notice" : "Returns the amount of leaves the tree has."
+>>>>>>> english/develop
         }
       },
       "notice" : "您只能将此合约用于最基本的模拟。"
@@ -225,7 +266,18 @@ Solidity 编译器将通过 NatSpec 文档从您的 Solidity 源代码传递到�
           {
             "rings" : "树龄学样本的环数"
           },
+<<<<<<< HEAD
           "return" : "树龄（岁），部分年份四舍五入"
+=======
+          "returns" : {
+            "_0" : "Age in years, rounded up for partial years",
+            "_1" : "Name of the tree"
+          }
+        },
+        "leaves()" :
+        {
+            "details" : "Returns only a fixed number."
+>>>>>>> english/develop
         }
       },
       "title" : "树的模拟器"
