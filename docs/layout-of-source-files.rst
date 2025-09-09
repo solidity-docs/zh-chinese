@@ -142,6 +142,7 @@ ABI 编码器 V2
 SMT检查器
 ~~~~~~~~~~
 
+<<<<<<< HEAD
 这个组件必须在构建 Solidity 编译器时被启用，
 因此它不是在所有 Solidity 二进制文件中都可用。
 :ref:`构建说明<smt_solvers_build>` 解释了如何激活这个选项。
@@ -150,6 +151,16 @@ SMT检查器
 如果您在本地安装了SMT检查器并通过节点（而不是通过浏览器）运行 solc-js，
 可以通过 `smtCallback <https://github.com/ethereum/solc-js#example-usage with-smtsolver-callback>`_
 为 solc-js 激活它。
+=======
+This component has to be enabled when the Solidity compiler is built
+and therefore it is not available in all Solidity binaries.
+The :ref:`build instructions<smt_solvers_build>` explain how to activate this option.
+It is activated for the Ubuntu PPA releases in most versions,
+but not for the Docker images, Windows binaries or the
+statically-built Linux binaries. It can be activated for solc-js via the
+`smtCallback <https://github.com/argotorg/solc-js#example-usage-with-smtsolver-callback>`_ if you have an SMT solver
+installed locally and run solc-js via node (not via the browser).
+>>>>>>> english/develop
 
 如果您使用 ``pragma experimental SMTChecker;``，
 那么您会得到额外的 :ref:`安全警告<formal_verification>`。

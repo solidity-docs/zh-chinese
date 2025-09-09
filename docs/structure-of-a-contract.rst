@@ -21,7 +21,14 @@
 状态变量
 ==========
 
+<<<<<<< HEAD
 状态变量是指其值被永久地存储在合约存储中的变量。
+=======
+State variables are variables whose values are either permanently stored in contract
+storage or, alternatively, temporarily stored in transient storage which is cleaned at
+the end of each transaction.
+See :ref:`data locations <locations>` for more details.
+>>>>>>> english/develop
 
 .. code-block:: solidity
 

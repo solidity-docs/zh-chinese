@@ -6,6 +6,7 @@
 
 特别是，我们感谢在以下领域的支持:
 
+<<<<<<< HEAD
 * 报告问题。
 * 修复和响应 `Solidity 的 GitHub 问题
   <https://github.com/ethereum/solidity/issues>`_，特别是那些被标记为
@@ -16,6 +17,19 @@
 * 在 `StackExchange <https://ethereum.stackexchange.com>`_ 和
   `Solidity Gitter Chat <https://gitter.im/ethereum/solidity>`_ 上回答其他用户的问题。
 * 通过在 `Solidity论坛 <https://forum.soliditylang.org/>`_ 上提出语言改进或新功能，并提供反馈来参与语言设计的过程。
+=======
+* Reporting issues.
+* Fixing and responding to `Solidity's GitHub issues
+  <https://github.com/argotorg/solidity/issues>`_, especially those tagged as
+  `"good first issue" <https://github.com/argotorg/solidity/labels/good%20first%20issue>`_ which are
+  meant as introductory issues for external contributors.
+* Improving the documentation.
+* `Translating <https://github.com/solidity-docs>`_ the documentation into more languages.
+* Responding to questions from other users on `StackExchange
+  <https://ethereum.stackexchange.com>`_ and the `Solidity Gitter Chat
+  <https://gitter.im/ethereum/solidity>`_.
+* Getting involved in the language design process by proposing language changes or new features in the `Solidity forum <https://forum.soliditylang.org/>`_ and providing feedback.
+>>>>>>> english/develop
 
 为了开始参与，您可以尝试 :ref:`building-from-source`，以熟悉 Solidity 的组件和构建过程。
 此外，精通在 Solidity 中编写智能合约可能是有用的。
@@ -29,14 +43,24 @@
 
 - 每周三下午3点，中欧标准时间/中欧夏令时间。
 
+<<<<<<< HEAD
 会议在 `Jitsi <https://meet.ethereum.org/solidity>`_ 上举行。
+=======
+The call takes place on `Jitsi <https://meet.solidity.org>`_.
+>>>>>>> english/develop
 
 如何报告问题
 ====================
 
+<<<<<<< HEAD
 要报告一个问题，请使用
 `GitHub问题跟踪器 <https://github.com/ethereum/solidity/issues>`_。
 当报告问题时，请提及以下细节：
+=======
+To report an issue, please use the
+`GitHub issues tracker <https://github.com/argotorg/solidity/issues>`_. When
+reporting issues, please mention the following details:
+>>>>>>> english/develop
 
 * Solidity版本。
 * 源代码（如果可以的话）。
@@ -68,11 +92,21 @@
 
 新的特性和 bug 修复会被添加到 ``Changelog.md`` 文件中：使用的时候请遵循上述方式。
 
+<<<<<<< HEAD
 最后，请确保您遵守了这个项目的 `编码风格 <https://github.com/ethereum/solidity/blob/develop/CODING_STYLE.md>`_ 。
 还有，虽然我们采用了持续集成测试，但是在提交 pull request 之前，请测试您的代码并确保它能在本地进行编译。
 
 我们强烈建议在提交拉动请求之前，先看一下我们的 `审查清单 <https://github.com/ethereum/solidity/blob/develop/ReviewChecklist.md>`_。
 我们会彻底审查每一个PR，并会帮助您把它弄好，但有许多常见问题可以很容易地避免，使审查更加顺利。
+=======
+Finally, please make sure you respect the `coding style
+<https://github.com/argotorg/solidity/blob/develop/CODING_STYLE.md>`_
+for this project. Also, even though we do CI testing, please test your code and
+ensure that it builds locally before submitting a pull request.
+
+We highly recommend going through our `review checklist <https://github.com/argotorg/solidity/blob/develop/ReviewChecklist.md>`_ before submitting the pull request.
+We thoroughly review every PR and will help you get it right, but there are many common problems that can be easily avoided, making the review much smoother.
+>>>>>>> english/develop
 
 感谢您的帮助！
 
@@ -82,9 +116,16 @@
 先决条件
 -------------
 
+<<<<<<< HEAD
 为了运行所有的编译器测试，您可能想选择性地安装一些依赖项
 ( `evmone <https://github.com/ethereum/evmone/releases>`_，
 `libz3 <https://github.com/Z3Prover/z3>`_)。
+=======
+For running all compiler tests you may want to optionally install a few
+dependencies (`evmone <https://github.com/ipsilon/evmone/releases>`_,
+`z3 <https://github.com/Z3Prover/z3>`_, `Eldarica <https://github.com/uuverifiers/eldarica/>`_,
+`cvc5 <https://github.com/cvc5/cvc5>`).
+>>>>>>> english/develop
 
 在 macOS 系统上，一些测试脚本需要安装 GNU 核心工具。
 可以使用 Homebrew 很简单地完成安装： ``brew install coreutils``。
@@ -106,7 +147,12 @@ Solidity包括不同类型的测试，其中大部分捆绑在
 包括那些捆绑在 `Boost C++测试框架 <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_ 应用程序 ``soltest``
 （或其包装器 ``scripts/soltest.sh``）中的测试，以及命令行测试和编译测试。
 
+<<<<<<< HEAD
 测试系统会自动尝试发现 `evmone <https://github.com/ethereum/evmone/releases>`_ 的位置，以运行语义测试。
+=======
+The test system automatically tries to discover the location of
+the `evmone <https://github.com/ipsilon/evmone/releases>`_ for running the semantic tests.
+>>>>>>> english/develop
 
 ``evmone`` 库必须位于当前工作目录相对的 ``deps`` 或 ``deps/lib`` 目录，
 其父级目录或其父级目录的父级目录中。另外，
@@ -115,6 +161,7 @@ Solidity包括不同类型的测试，其中大部分捆绑在
 ``evmone`` 主要用于运行语义和燃料测试。
 如果您没有安装它，您可以通过向 ``scripts/soltest.sh`` 传递 ``--no-semantic-tests`` 标志来跳过这些测试。
 
+<<<<<<< HEAD
 ``evmone`` 库的文件名后缀应该
 是Linux上的 ``.so``，Windows系统上的 ``.dll``，MacOS上的 ``.dylib``。
 
@@ -123,6 +170,20 @@ Solidity包括不同类型的测试，其中大部分捆绑在
 如果您的系统没有安装 ``libz3`` 库，您应该在运行 ``./scripts/tests.sh`` 或 ``./scripts/soltest.sh --no-smt`` 之前，
 通过导出 ``SMT_FLAGS=--no-smt`` 来禁用SMT测试。
 这些测试是 ``libsolidity/smtCheckerTests`` 和 ``libsolidity/smtCheckerTestsJSON``。
+=======
+The ``evmone`` library should end with the file name
+extension ``.so`` on Linux, ``.dll`` on Windows systems and ``.dylib`` on macOS.
+
+For running SMT tests, the ``z3`` executable must be present in ``PATH``.
+A few SMT tests use ``Eldarica`` instead of ``z3``.
+These require its executable (``eld``) to be present in ``PATH`` for the tests to pass.
+However, if ``Eldarica`` is not found, these tests will be automatically skipped.
+
+If ``z3`` is not present on your system, you should disable the
+SMT tests by exporting ``SMT_FLAGS=--no-smt`` before running ``./scripts/tests.sh`` or
+running ``./scripts/soltest.sh --no-smt``.
+These tests are ``libsolidity/smtCheckerTests``.
+>>>>>>> english/develop
 
 .. note::
 
@@ -147,9 +208,15 @@ Solidity包括不同类型的测试，其中大部分捆绑在
 
 .. note::
 
+<<<<<<< HEAD
     那些在Windows环境下使用的人，想在没有libz3的情况下运行上述基本集，可以使用Git Bash，
     使用命令为： ``./build/test/Release/soltest.exe -- --no-smt``。
     如果您在普通的命令提示符下运行，使用 ``.\build\test\Release\soltest.exe -- --no-smt``。
+=======
+    Those working in a Windows environment wanting to run the above basic sets
+    without z3. Using Git Bash, you use: ``./build/test/Release/soltest.exe -- --no-smt``.
+    If you are running this in plain Command Prompt, use ``.\build\test\Release\soltest.exe -- --no-smt``.
+>>>>>>> english/develop
 
 如果您想使用GDB进行调试，确保您的构建方式与 “通常” 不同。
 例如，您可以在您的 ``build`` 文件夹中运行以下命令：
@@ -259,9 +326,16 @@ CI运行额外的测试（包括 ``solc-js`` 和测试第三方Solidity框架）
 命令行测试
 ------------------
 
+<<<<<<< HEAD
 我们的端到端命令行测试套件可检查编译器二进制文件在各种情况下的整体行为。
 这些测试位于 `test/cmdlineTests/ <https://github.com/ethereum/solidity/tree/develop/test/cmdlineTests>`_
 的每个子目录一个，可使用 ``cmdlineTests.sh`` 脚本执行。
+=======
+Our suite of end-to-end command-line tests checks the behaviour of the compiler binary as a whole
+in various scenarios.
+These tests are located in `test/cmdlineTests/ <https://github.com/argotorg/solidity/tree/develop/test/cmdlineTests>`_,
+one per subdirectory, and can be executed using the ``cmdlineTests.sh`` script.
+>>>>>>> english/develop
 
 默认情况下，脚本会运行所有可用的测试。
 您也可以提供一个或多个 `文件名模式 <https://www.gnu.org/software/bash/manual/bash.html#Filename-Expansion>`_，
@@ -515,19 +589,31 @@ Solidity语言设计
 
 Solidity论坛作为提出和讨论新的语言功能及其在早期构思阶段的实现或现有功能的修改的一个地方。
 
+<<<<<<< HEAD
 一旦提案变得更加具体，
 它们的实施也将在 `Solidity GitHub仓库 <https://github.com/ethereum/solidity>`_ 中以问题的形式讨论。
+=======
+As soon as proposals get more tangible, their
+implementation will also be discussed in the `Solidity GitHub repository <https://github.com/argotorg/solidity>`_
+in the form of issues.
+>>>>>>> english/develop
 
 除了论坛和问题讨论之外，我们还定期举办语言设计讨论会议，对选定的主题，问题或功能实现进行详细的辩论。
 这些会议的邀请函通过论坛共享。
 
 我们也在论坛中分享反馈调查和其他与语言设计相关的内容。
 
+<<<<<<< HEAD
 如果您想知道团队在实施新功能方面的情况，
 您可以在 `Solidity Github项目 <https://github.com/ethereum/solidity/projects/43>`_ 中关注实施状况。
 设计积压中的问题需要进一步规范，将在语言设计电话会议或常规团队电话会议中讨论。
 您可以通过从默认分支（ `develop` ）到 `breaking 分支 <https://github.com/ethereum/solidity/tree/breaking>`_
 来查看下一个重大变化版本即将发生的变化。
+=======
+If you want to know where the team is standing in terms of implementing new features, you can follow the implementation status in the `Solidity GitHub project <https://github.com/orgs/argotorg/projects/38>`_.
+Issues in the design backlog need further specification and will either be discussed in a language design call or in a regular team call. You can
+see the upcoming changes for the next breaking release by changing from the default branch (`develop`) to the `breaking branch <https://github.com/argotorg/solidity/tree/breaking>`_.
+>>>>>>> english/develop
 
 对于特殊情况和问题，您可以通过 `Solidity-dev Gitter 频道 <https://gitter.im/ethereum/solidity-dev>`_ 与我们联系，
 - 这是一个专门用于围绕 Solidity 编译器和语言开发的聊天室。
