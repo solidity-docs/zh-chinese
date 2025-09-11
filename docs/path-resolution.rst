@@ -34,6 +34,7 @@ VFS最初只填充了编译器收到的输入文件。
 一个导入回调可以自由地以任意方式解释源单元名称，而不仅仅是作为路径。
 如果在需要回调时没有可用的回调，或者无法找到源代码，编译就会失败。
 
+<<<<<<< HEAD
 默认情况下，命令行编译器提供了 *主机文件系统加载器* - 一个基本的回调，
 它将源单元名称解释为本地文件系统中的一个路径。
 可以使用 ``--no-import-callback`` 命令行选项禁用此回调。
@@ -43,6 +44,18 @@ VFS最初只填充了编译器收到的输入文件。
 （本地文件系统甚至可能无法访问，例如当编译器在浏览器中运行时）。
 例如， `Remix IDE <https://remix.ethereum.org/>`_ 提供了一个多功能的回调，
 让您 `从HTTP、IPFS和Swarm URLs导入文件，或直接引用NPM注册表中的包 <https://remix-ide.readthedocs.io/en/latest/import.html>`_。
+=======
+By default, the command-line compiler provides the *Host Filesystem Loader* - a rudimentary callback
+that interprets a source unit name as a path in the local filesystem.
+This callback can be disabled using the ``--no-import-callback`` command-line option.
+The `JavaScript interface <https://github.com/argotorg/solc-js>`_ does not provide any by default,
+but one can be provided by the user.
+This mechanism can be used to obtain source code from locations other than the local filesystem
+(which may not even be accessible, e.g. when the compiler is running in a browser).
+For example the `Remix IDE <https://remix.ethereum.org/>`_ provides a versatile callback that
+lets you `import files from HTTP, IPFS and Swarm URLs or refer directly to packages in NPM registry
+<https://remix-ide.readthedocs.io/en/latest/import.html>`_.
+>>>>>>> english/develop
 
 .. note::
 
@@ -75,9 +88,16 @@ VFS的初始内容取决于您如何调用编译器：
 
 #. **标准JSON**
 
+<<<<<<< HEAD
    当使用 :ref:`标准JSON <compiler-api>` API时
    通过 `JavaScript接口 <https://github.com/ethereum/solc-js>`_ 或
    `--standard-json` 命令行选项），您需提供JSON格式的输入，其中包含您所有源文件的内容。
+=======
+   When using the :ref:`Standard JSON <compiler-api>` API (via either the `JavaScript interface
+   <https://github.com/argotorg/solc-js>`_ or the ``--standard-json`` command-line option)
+   you provide input in JSON format, containing, among other things, the content of all your source
+   files:
+>>>>>>> english/develop
 
    .. code-block:: json
 
