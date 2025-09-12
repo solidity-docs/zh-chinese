@@ -78,8 +78,9 @@ Solidity意义上的合约是代码（其 *函数*）和数据（其 *状态*）
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
-    pragma solidity ^0.8.4;
+    pragma solidity ^0.8.26;
 
+    // This will only compile via IR
     contract Coin {
         // 关键字 "public" 使变量可以从其他合约中访问。
         address public minter;
@@ -106,12 +107,7 @@ Solidity意义上的合约是代码（其 *函数*）和数据（其 *状态*）
 
         // 从任何调用者那里发送一定数量的代币到一个地址
         function send(address receiver, uint amount) public {
-            if (amount > balances[msg.sender])
-                revert InsufficientBalance({
-                    requested: amount,
-                    available: balances[msg.sender]
-                });
-
+            require(amount <= balances[msg.sender], InsufficientBalance(amount, balances[msg.sender]));
             balances[msg.sender] -= amount;
             balances[receiver] += amount;
             emit Sent(msg.sender, receiver, amount);
@@ -120,9 +116,16 @@ Solidity意义上的合约是代码（其 *函数*）和数据（其 *状态*）
 
 这个合约引入了一些新的概念，让我们逐一解读。
 
+<<<<<<< HEAD
 ``address public minter;`` 这一行声明了一个可以被公开访问的 :ref:`address<address>` 类型的状态变量。
 ``address`` 类型是一个160位的值，且不允许任何算数操作。
 这种类型适合存储合约地址或 :ref:`外部账户 <accounts>` 的密钥对。
+=======
+The line ``address public minter;`` declares a state variable of type :ref:`address<address>`.
+The ``address`` type is a 160-bit value that does not allow any arithmetic operations.
+It is suitable for storing addresses of contracts, or a hash of the public half
+of a keypair belonging to :ref:`externally-owned accounts<accounts>`.
+>>>>>>> english/develop
 
 关键字 ``public`` 自动生成一个函数，允许您在这个合约之外访问这个状态变量的当前值。
 如果没有这个关键字，其他的合约没有办法访问这个变量。
@@ -141,11 +144,20 @@ Solidity意义上的合约是代码（其 *函数*）和数据（其 *状态*）
 但它是一个更复杂的数据类型。
 :ref:`映射 <mapping-types>` 类型将地址映射到 :ref:`无符号整数 <integers>`。
 
+<<<<<<< HEAD
 映射可以被看作是 `哈希表 <https://en.wikipedia.org/wiki/Hash_table>`_，
 它实际上是被初始化的，因此每一个可能的键从一开始就存在，并被映射到一个值，其字节表示为全零的值。
 然而，它既不可能获得一个映射的所有键的列表，也不可能获得所有值的列表。
 因此，要么记住您添加到映射中的内容，要么在不需要的情况下使用它。
 甚至更好的是，保留一个列表，或者使用一个更合适的数据类型。
+=======
+Mappings can be seen as `hash tables <https://en.wikipedia.org/wiki/Hash_table>`_ which are
+virtually initialized such that every possible key exists from the start and is mapped to a
+value whose byte-representation is all zeros. However, it is neither possible to obtain a list of all keys of
+a mapping, nor a list of all values. Record what you
+added to the mapping, or use it in a context where this is not needed. Or
+even better, keep a list, or use a more suitable data type.
+>>>>>>> english/develop
 
 而由 ``public`` 关键字创建的 :ref:`getter 函数 <getter-functions>` 则是更复杂一些的情况，
 它大致如下所示：
@@ -198,10 +210,20 @@ Solidity意义上的合约是代码（其 *函数*）和数据（其 *状态*）
 即当任意精度算术中的 ``balances[receiver] + amount`` 大于 ``uint`` 的最大值（ ``2**256 - 1``）时，
 交易将被恢复。对于函数 ``send`` 中的语句 ``balances[receiver] += amount;`` 也是如此。
 
+<<<<<<< HEAD
 :ref:`错误（Errors） <errors>` 允许您向调用者提供更多关于一个条件或操作失败原因的信息。
 错误与 :ref:`恢复状态 <revert-statement>` 一起使用。 ``revert`` 语句无条件地中止和恢复所有的变化，
 类似于 ``require`` 函数，但它也允许您提供错误的名称和额外的数据，
 这些数据将提供给调用者（并最终提供给前端应用程序或区块资源管理器），以便更容易调试失败或做出反应。
+=======
+:ref:`Errors <errors>` allow you to provide more information to the caller about
+why a condition or operation failed. Errors are used together with the
+:ref:`revert statement <revert-statement>`. The ``revert`` statement unconditionally
+aborts and reverts all changes, much like the :ref:`require function <assert-and-require-statements>`.
+Both approaches allow you to provide the name of an error and additional data which will be supplied to the caller
+(and eventually to the front-end application or block explorer) so that
+a failure can more easily be debugged or reacted upon.
+>>>>>>> english/develop
 
 任何人（已经拥有一些这样的代币）都可以使用 ``send`` 函数来发送代币给其他任何人。
 如果发送者没有足够的代币可以发送， 那么 ``if`` 条件就会为真。
@@ -265,11 +287,19 @@ Solidity意义上的合约是代码（其 *函数*）和数据（其 *状态*）
 区块以固定的时间间隔添加到链上，尽管这些间隔在未来可能会有所改变。
 为了获取最新的信息，建议监控网络，例如在 `Etherscan <https://etherscan.io/chart/blocktime>`_ 上进行监测。
 
+<<<<<<< HEAD
 作为 “顺序选择机制”（也就是所谓的“挖矿”）的一部分，
 可能有时会发生块（blocks）被回滚的情况，但仅在链的“末端”。
 末端增加的块越多，其发生回滚的概率越小。
 因此您的交易被回滚甚至从区块链中抹除，这是可能的，
 但等待的时间越长，这种情况发生的概率就越小。
+=======
+As part of the "order selection mechanism", which is called `attestation <https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/attestations/>`_, it may happen that
+blocks are reverted from time to time, but only at the "tip" of the chain. The more
+blocks are added on top of a particular block, the less likely this block will be reverted. So it might be that your transactions
+are reverted and even removed from the blockchain, but the longer you wait, the less
+likely it will be.
+>>>>>>> english/develop
 
 .. note::
     交易不保证被包括在下一个区块或任何特定的未来区块中，
@@ -300,6 +330,7 @@ Solidity意义上的合约是代码（其 *函数*）和数据（其 *状态*）
 账户
 ========
 
+<<<<<<< HEAD
 在以太坊有两种共享同一地址空间的账户：
 **外部账户**，由公钥-私钥对（也就是人）控制；
 **合约账户**，由与账户一起存储的代码控制。
@@ -307,6 +338,18 @@ Solidity意义上的合约是代码（其 *函数*）和数据（其 *状态*）
 外部账户的地址是由公钥确定的，
 而合约的地址是在合约创建时确定的
 （它是由创建者地址和从该地址发出的交易数量得出的，即所谓的 “nonce”）。
+=======
+There are two kinds of accounts in Ethereum which share the same
+address space: **Externally-owned accounts** that are controlled by
+public-private key pairs (i.e. humans) and **contract accounts** which are
+controlled by the code stored together with the account.
+
+The address of an externally-owned account is determined from
+the public key while the address of a contract is
+determined at the time the contract is created
+(it is derived from the creator address and the number
+of transactions sent from that address, the so-called "nonce").
+>>>>>>> english/develop
 
 无论账户是否存储代码，这两种类型都被EVM平等对待。
 
@@ -362,12 +405,22 @@ Solidity意义上的合约是代码（其 *函数*）和数据（其 *状态*）
 由于EVM执行器可以选择包含一笔交易，
 因此交易发送者无法通过设置低燃料价格滥用系统。
 
-.. index:: ! storage, ! memory, ! stack
+.. index:: ! storage, ! memory, ! stack, ! transient storage
 
+<<<<<<< HEAD
 存储，内存和栈
 =============================
 
 以太坊虚拟机有三个存储数据的区域：存储器，内存和堆栈。
+=======
+.. _locations:
+
+Storage, Transient Storage, Memory and the Stack
+================================================
+
+The Ethereum Virtual Machine has different areas where it can store data with the most
+prominent being storage, transient storage, memory and the stack.
+>>>>>>> english/develop
 
 每个账户都有一个称为 **存储** 的数据区，在函数调用和交易之间是持久的。
 存储是一个键值存储，将256位的字映射到256位的字。
@@ -375,11 +428,29 @@ Solidity意义上的合约是代码（其 *函数*）和数据（其 *状态*）
 由于这种成本，您应该把您存储在持久性存储中的内容减少到合约运行所需的程度。
 在合约之外存储像派生计算，缓存和聚合的数据。合约既不能读也不能写到除其自身以外的任何存储。
 
+<<<<<<< HEAD
 第二个数据区被称为 **内存**，合约在每次消息调用时都会获得一个新清除的实例。
 内存是线性的，可以在字节级寻址，但读的宽度限制在256位，
 而写的宽度可以是8位或256位。当访问（无论是读还是写）一个先前未触及的内存字（即一个字内的任何偏移）时，
 内存被扩展一个字（256位）。在扩展的时候，必须支付燃料成本。
 内存越大，成本就越高（它以平方级别扩展）。
+=======
+Similar to storage, there is another data area called **transient storage**,
+where the main difference is that it is reset at the end of each transaction.
+The values stored in this data location persist only across function calls originating
+from the first call of the transaction.
+When the transaction ends, the transient storage is reset and the values stored there
+become unavailable to calls in subsequent transactions.
+Despite this, the cost of reading and writing to transient storage is significantly lower than for storage.
+
+The third data area is called **memory**, of which a contract obtains
+a freshly cleared instance for each message call. Memory is linear and can be
+addressed at byte level, but reads are limited to a width of 256 bits, while writes
+can be either 8 bits or 256 bits wide. Memory is expanded by a word (256-bit), when
+accessing (either reading or writing) a previously untouched memory word (i.e. any offset
+within a word). At the time of expansion, the cost in gas must be paid. Memory is more
+costly the larger it grows (it scales quadratically).
+>>>>>>> english/develop
 
 EVM 不是基于寄存器的，而是基于栈的，因此所有的计算都在一个被称为 **栈（stack）** 的区域执行。
 栈最大有1024个元素，每个元素长度是一个字（256位）。对栈的访问只限于其顶端，限制方式为：
@@ -387,6 +458,31 @@ EVM 不是基于寄存器的，而是基于栈的，因此所有的计算都在�
 所有其他操作都只能取最顶的两个（或一个，或更多，取决于具体的操作）元素，
 运算后，把结果压入栈顶。当然可以把栈上的元素放到存储或内存中。
 但是无法只访问栈上指定深度的那个元素，除非先从栈顶移除其他元素。
+
+Calldata, Returndata and Code
+=============================
+
+There are also other data areas which are not as apparent as those discussed previously.
+However, they are routinely used during the execution of smart contract transactions.
+
+The calldata region is the data sent to a transaction as part of a smart contract transaction.
+For example, when creating a contract, calldata would be the constructor code of the new contract.
+The parameters of external functions are always initially stored in calldata in an ABI-encoded form
+and only then decoded into the location specified in their declaration.
+If declared as ``memory``, the compiler will eagerly decode them into memory at the beginning of the function,
+while marking them as ``calldata`` means that this will be done lazily, only when accessed.
+Value types and ``storage`` pointers are decoded directly onto the stack.
+
+The returndata is the way a smart contract can return a value after a call.
+In general, external Solidity functions use the ``return`` keyword to ABI-encode values into the returndata area.
+
+The code is the region where the EVM instructions of a smart contract are stored.
+Code is the bytes read, interpreted, and executed by the EVM during smart contract execution.
+Instruction data stored in the code is persistent as part of a contract account state field.
+Immutable and constant variables are stored in the code region.
+All references to immutables are replaced with the values assigned to them.
+A similar process is performed for constants which have their expressions inlined
+in the places where they are referenced in the smart contract code.
 
 .. index:: ! instruction
 
@@ -423,6 +519,7 @@ EVM的指令集应尽量保持最小，以避免不正确或不一致的实现�
 调用被 **限制** 在1024的深度，这意味着对于更复杂的操作，循环应优先于递归调用。
 此外，在一个消息调用中，只有63/64的燃料可以被转发，这导致在实践中，深度限制略低于1000。
 
+.. _delegatecall:
 .. index:: delegatecall, library
 
 委托调用和库
@@ -469,9 +566,29 @@ EVM的指令集应尽量保持最小，以避免不正确或不一致的实现�
 因为如果有人向被删除的合约发送以太币，以太币就会永远丢失。
 
 .. warning::
+<<<<<<< HEAD
     从0.8.18及更高版本开始，在 Solidity 和 Yul 中使用 ``selfdestruct`` 将触发弃用警告，
     因为 ``SELFDESTRUCT`` 操作码最终将经历 `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_ 
     中所述的行为的重大变化。
+=======
+    From ``EVM >= Cancun`` onwards, ``selfdestruct`` will **only** send all Ether in the account to the given recipient and not destroy the contract.
+    However, when ``selfdestruct`` is called in the same transaction that creates the contract calling it,
+    the behaviour of ``selfdestruct`` before Cancun hardfork (i.e., ``EVM <= Shanghai``) is preserved and will destroy the current contract,
+    deleting any data, including storage keys, code and the account itself.
+    See `EIP-6780 <https://eips.ethereum.org/EIPS/eip-6780>`_ for more details.
+
+    The new behaviour is the result of a network-wide change that affects all contracts present on
+    the Ethereum mainnet and testnets.
+    It is important to note that this change is dependent on the EVM version of the chain on which
+    the contract is deployed.
+    The ``--evm-version`` setting used when compiling the contract has no bearing on it.
+
+    Also, note that the ``selfdestruct`` opcode has been deprecated in Solidity version 0.8.18,
+    as recommended by `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
+    The deprecation is still in effect and the compiler will still emit warnings on its use.
+    Any use in newly deployed contracts is strongly discouraged even if the new behavior is taken into account.
+    Future changes to the EVM might further reduce the functionality of the opcode.
+>>>>>>> english/develop
 
 .. warning::
     即使一个合约通过 ``selfdestruct`` 删除，它仍然是区块链历史的一部分，
@@ -493,10 +610,19 @@ EVM的指令集应尽量保持最小，以避免不正确或不一致的实现�
 预编译合约
 =====================
 
+<<<<<<< HEAD
 有一小群合约地址是特殊的。 ``1`` 和（包括） ``8`` 之间的地址范围包含 “预编译合约“，
 可以像其他合约一样被调用，但它们的行为（和它们的燃料消耗）
 不是由存储在该地址的EVM代码定义的（它们不包含代码），
 而是由EVM执行环境本身实现。
+=======
+There is a small set of contract addresses that are special:
+The address range between ``1`` and (including) ``0x0a`` contains
+"precompiled contracts" that can be called as any other contract
+but their behavior (and their gas consumption) is not defined
+by EVM code stored at that address (they do not contain code)
+but instead is implemented in the EVM execution environment itself.
+>>>>>>> english/develop
 
 不同的EVM兼容链可能使用不同的预编译合约集。
 未来也有可能在以太坊主链上添加新的预编译合约，

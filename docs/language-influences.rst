@@ -2,8 +2,13 @@
 语言的影响因素
 ###################
 
+<<<<<<< HEAD
 Solidity是一种 `花括号语言 <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_，
 受到几种著名编程语言的影响和启发。
+=======
+Solidity is a `curly-bracket language <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly_bracket_languages>`_
+that has been influenced and inspired by several well-known programming languages.
+>>>>>>> english/develop
 
 Solidity受C++的影响最深，但也借用了Python，JavaScript等语言的概念。
 

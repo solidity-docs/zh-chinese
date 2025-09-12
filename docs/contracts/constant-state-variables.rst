@@ -13,7 +13,13 @@
 
 也可以在文件级别定义 ``constant`` 变量。
 
+<<<<<<< HEAD
 编译器并没有为这些变量预留存储，它们的每次出现都会被替换为相应的常量表达式。
+=======
+Every occurrence of such a variable in the source is replaced by its underlying value
+and the compiler does not reserve a storage slot for it.
+It cannot be assigned a slot in transient storage using the ``transient`` keyword either.
+>>>>>>> english/develop
 
 与普通的状态变量相比，常量变量（constant）和不可改变的变量（immutable）的燃料成本要低得多。
 对于常量变量，分配给它的表达式被复制到所有访问它的地方，并且每次都要重新评估，

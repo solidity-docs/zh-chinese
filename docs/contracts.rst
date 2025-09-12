@@ -19,7 +19,10 @@ Solidity中的合约类似于面向对象语言中的类。
 
 .. include:: contracts/function-modifiers.rst
 
+.. include:: contracts/transient-storage.rst
+
 .. include:: contracts/constant-state-variables.rst
+.. include:: contracts/custom-storage-layout.rst
 .. include:: contracts/functions.rst
 
 .. include:: contracts/events.rst
