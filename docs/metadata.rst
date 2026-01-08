@@ -166,10 +166,17 @@ Solidity编译器会自动生成一个JSON文件。该文件包含关于编译�
       },
       // 必选：编译源文件/源单元，键为文件路径
       "sources": {
+<<<<<<< HEAD
         "destructible": {
           // 必选（除非使用“url”）：源文件的字面内容
           "content": "contract destructible is owned { function destroy() { if (msg.sender == owner) selfdestruct(owner); } }",
           // 必选：源文件的keccak256哈希值
+=======
+        "settable": {
+          // Required (unless "url" is used): literal contents of the source file
+          "content": "contract settable is owned { uint256 private x = 0; function set(uint256 _x) public { if (msg.sender == owner) x = _x; } }",
+          // Required: keccak256 hash of the source file
+>>>>>>> v0.8.26
           "keccak256": "0x234..."
         },
         "myDirectory/myFile.sol": {

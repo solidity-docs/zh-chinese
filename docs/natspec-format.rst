@@ -106,6 +106,7 @@ NatSpec 也可以包括第三方工具使用的注释。
 =============== ====================================================================================== =============================
 标签                                                                                                    应用于
 =============== ====================================================================================== =============================
+<<<<<<< HEAD
 ``@title``      一个应该描述合约/接口的标题                                                                contract, library, interface
 ``@author``     作者的名字                                                                              contract, library, interface
 ``@notice``     向终端用户解释这个东西的作用                                                               contract, library, interface, function, public state variable, event
@@ -114,6 +115,16 @@ NatSpec 也可以包括第三方工具使用的注释。
 ``@return``     记录一个合约的函数的返回变量                                                                function, public state variable
 ``@inheritdoc`` 从基本函数中复制所有缺失的标签（必须在合约名称之后）                                            function, public state variable
 ``@custom:...`` 自定义标签，语义由应用程序定义                                                              everywhere
+=======
+``@title``      A title that should describe the contract/interface                                    contract, library, interface, struct, enum
+``@author``     The name of the author                                                                 contract, library, interface, struct, enum
+``@notice``     Explain to an end user what this does                                                  contract, library, interface, function, public state variable, event, struct, enum, error
+``@dev``        Explain to a developer any extra details                                               contract, library, interface, function, state variable, event, struct, enum, error
+``@param``      Documents a parameter just like in Doxygen (must be followed by parameter name)        function, event, error
+``@return``     Documents the return variables of a contract's function                                function, public state variable
+``@inheritdoc`` Copies all missing tags from the base function (must be followed by the contract name) function, public state variable
+``@custom:...`` Custom tag, semantics is application-defined                                           everywhere
+>>>>>>> v0.8.26
 =============== ====================================================================================== =============================
 
 如果您的函数返回多个值，如 ``(int quotient, int remainder)``

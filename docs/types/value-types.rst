@@ -402,6 +402,7 @@
 .. note::
     在 0.8.0 版本之前， ``byte`` 曾经是 ``bytes1`` 的别名。
 
+<<<<<<< HEAD
 变长字节数组
 ------------
 
@@ -410,6 +411,8 @@
 ``string``:
     变长 UTF-8 编码字符串类型，参见 :ref:`arrays`。并不是值类型！
 
+=======
+>>>>>>> v0.8.26
 .. index:: address, ! literal;address
 
 .. _address_literals:

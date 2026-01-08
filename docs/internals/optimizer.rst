@@ -41,9 +41,15 @@ Solidity编译器涉及三个不同级别的优化（按执行顺序）：
     只能通过 :ref:`标准 JSON 文件配置 <compiler-api>` 关闭。
 
 .. note::
+<<<<<<< HEAD
     为了完全禁用用户提供的Yul :ref:`优化器序列 <selecting-optimizations>` 部分，
     即使不使用 ``--optimize`` 也会接受空的优化器序列，因为默认情况下，
     即使优化器未开启，也会运行 :ref:`未使用过的处理器 <unused-pruner>` 步骤。
+=======
+    An empty optimizer sequence, i.e ``:``, is accepted even without ``--optimize`` in order to fully disable
+    the user-supplied portion of the Yul :ref:`optimizer sequence <selecting-optimizations>`, as by default,
+    even when the optimizer is not turned on, the :ref:`unused pruner <unused-pruner>` step will be run.
+>>>>>>> v0.8.26
 
 您可以在下面找到关于这两个优化器模块及其优化步骤的更多详细信息。
 
@@ -265,11 +271,19 @@ Solidity编译器涉及三个不同级别的优化（按执行顺序）：
 下面将解释基于Yul的优化器模块的所有组件。
 以下的转换步骤是主要的组成部分：
 
+<<<<<<< HEAD
 - SSA转换
 - 通用子表达式消除器
 - 表达式简化器
 - 冗余赋值消除器
 - 完全内联
+=======
+- SSATransform
+- CommonSubexpressionEliminator
+- ExpressionSimplifier
+- UnusedAssignEliminator
+- FullInliner
+>>>>>>> v0.8.26
 
 .. _optimizer-steps:
 
@@ -283,7 +297,7 @@ Solidity编译器涉及三个不同级别的优化（按执行顺序）：
 缩略语        全称  
 ============ ===============================
 ``f``        :ref:`block-flattener`
-``l``        :ref:`circular-reference-pruner`
+``l``        :ref:`circular-references-pruner`
 ``c``        :ref:`common-subexpression-eliminator`
 ``C``        :ref:`conditional-simplifier`
 ``U``        :ref:`conditional-unsimplifier`
@@ -305,11 +319,11 @@ Solidity编译器涉及三个不同级别的优化（按执行顺序）：
 ``T``        :ref:`literal-rematerialiser`
 ``L``        :ref:`load-resolver`
 ``M``        :ref:`loop-invariant-code-motion`
-``r``        :ref:`redundant-assign-eliminator`
 ``m``        :ref:`rematerialiser`
-``V``        :ref:`SSA-reverser`
-``a``        :ref:`SSA-transform`
+``V``        :ref:`ssa-reverser`
+``a``        :ref:`ssa-transform`
 ``t``        :ref:`structural-simplifier`
+``r``        :ref:`unused-assign-eliminator`
 ``p``        :ref:`unused-function-parameter-pruner`
 ``S``        :ref:`unused-store-eliminator`
 ``u``        :ref:`unused-pruner`
@@ -384,9 +398,15 @@ Solidity编译器涉及三个不同级别的优化（按执行顺序）：
 函数分组器
 ^^^^^^^^^^^^^^^
 
+<<<<<<< HEAD
 函数分组器必须在消歧义器和函数提升器之后应用。
 它的作用是将所有不是函数定义的最上面的元素移到一个单一的块中，
 这个块是根块的第一个语句。
+=======
+The function grouper has to be applied after the Disambiguator and the FunctionHoister.
+Its effect is that all topmost elements that are not function definitions are moved
+into a single block which is the first statement of the root block.
+>>>>>>> v0.8.26
 
 在这一步之后，一个程序具有以下正常形式：
 
@@ -397,15 +417,25 @@ Solidity编译器涉及三个不同级别的优化（按执行顺序）：
 其中 ``I`` 是一个（可能是空的）区块，不包含任何函数定义（甚至是递归的），
 ``F`` 是一个函数定义的列表，使得没有一个函数包含函数定义。
 
+<<<<<<< HEAD
 这个阶段的好处是，我们总是知道功能列表的开始位置。
+=======
+The benefit of this stage is that we always know where the list of functions begins.
+>>>>>>> v0.8.26
 
 .. _for-loop-condition-into-body:
 
 循环条件进入正文
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
+<<<<<<< HEAD
 这种转换将for循环的循环迭代条件移动到循环体中。
 我们需要这种转换，因为 :ref:`expression-splitter` 将不适用于迭代条件表达式（以下示例中的 ``C``）。
+=======
+This transformation moves the loop-iteration condition of a ``for`` loop into loop body.
+We need this transformation because :ref:`expression-splitter` will not
+apply to iteration condition expressions (the ``C`` in the following example).
+>>>>>>> v0.8.26
 
 .. code-block:: text
 
@@ -422,15 +452,25 @@ Solidity编译器涉及三个不同级别的优化（按执行顺序）：
         Body...
     }
 
+<<<<<<< HEAD
 当与 ``循环不变代码模式`` 搭配时，这种转换也是有用的，因为循环不变条件中的不变量可以在循环之外进行。
 
+=======
+This transformation can also be useful when paired with LoopInvariantCodeMotion, since
+invariants in the loop-invariant conditions can then be taken outside the loop.
+>>>>>>> v0.8.26
 
 .. _for-loop-init-rewriter:
 
 循环初始重写器
 ^^^^^^^^^^^^^^^^^^^
 
+<<<<<<< HEAD
 这种转换将for-loop的初始化部分移到循环之前：
+=======
+This transformation moves the initialization part of a ``for`` loop to before
+the loop:
+>>>>>>> v0.8.26
 
 .. code-block:: text
 
@@ -447,8 +487,13 @@ Solidity编译器涉及三个不同级别的优化（按执行顺序）：
         Body...
     }
 
+<<<<<<< HEAD
 这简化了其余的优化过程，
 因为我们可以忽略for循环初始化块的复杂范围规则。
+=======
+This eases the rest of the optimization process because we can ignore
+the complicated scoping rules of the ``for`` loop initialization block.
+>>>>>>> v0.8.26
 
 .. _var-decl-initializer:
 
@@ -560,7 +605,7 @@ Solidity编译器涉及三个不同级别的优化（按执行顺序）：
 也更简单地替换表达式的各个部分或重新组织“表达式树”。
 缺点是这样的代码对我们来说更难阅读。
 
-.. _SSA-transform:
+.. _ssa-transform:
 
 SSA转换
 ^^^^^^^^^^^^
@@ -598,6 +643,7 @@ SSA转换
 - 将 ``let a := v`` 替换为 ``let a_i := v   let a := a_i``
 - 将 ``a := v`` 替换为 ``let a_i := v   a := a_i``, 其中 ``i`` 是一个数字，使得 ``a_i`` 尚未使用。
 
+<<<<<<< HEAD
 此外，总是记录用于 ``a`` 的 ``i`` 的当前值，并用 ``a_i`` 替换对 ``a`` 的每次引用。
 变量 ``a`` 的当前值映射在每个分配给它的块结束时被清除，
 如果它被分配在for循环体或post块内，则在for循环初始块结束时被清除。
@@ -609,11 +655,35 @@ SSA转换
 如果在这个阶段之前运行表达式拆分器和通用子表达式消除器，
 那么这个阶段会提供最好的结果，因为这样就不会产生过多的变量。
 另一方面，如果在SSA转换之后运行通用子表达式消除器，则效率更高。
+=======
+Furthermore, always record the current value of ``i`` used for ``a`` and replace each
+reference to ``a`` by ``a_i``.
+The current value mapping is cleared for a variable ``a`` at the end of each block
+in which it was assigned to and at the end of the ``for`` loop init block if it is assigned
+inside the ``for`` loop body or post block.
+If a variable's value is cleared according to the rule above and the variable is declared outside
+the block, a new SSA variable will be created at the location where control flow joins,
+this includes the beginning of loop post/body block and the location right after
+``if``/``switch``/``for``/block statement.
 
-.. _redundant-assign-eliminator:
+After this stage, the UnusedAssignEliminator is recommended to remove the unnecessary
+intermediate assignments.
 
+This stage provides best results if the ExpressionSplitter and the CommonSubexpressionEliminator
+are run right before it, because then it does not generate excessive amounts of variables.
+On the other hand, the CommonSubexpressionEliminator could be more efficient if run after the
+SSA transform.
+>>>>>>> v0.8.26
+
+.. _unused-assign-eliminator:
+
+<<<<<<< HEAD
 冗余赋值消除器
 ^^^^^^^^^^^^^^^^^^^^^^^^^
+=======
+UnusedAssignEliminator
+^^^^^^^^^^^^^^^^^^^^^^
+>>>>>>> v0.8.26
 
 SSA转换总是生成 ``a := a_i`` 形式的赋值，
 尽管这些赋值在许多情况下可能是不必要的，比如下面的例子：
@@ -641,8 +711,14 @@ SSA转换将这个片段转换为以下内容:
         sstore(a_3, 1)
     }
 
+<<<<<<< HEAD
 冗余赋值消除器将删除对 ``a`` 的所有三个赋值，因为未使用 ``a`` 的值，
 因此将此代码段转换为严格的SSA形式为：
+=======
+The UnusedAssignEliminator removes all the three assignments to ``a``, because
+the value of ``a`` is not used and thus turn this
+snippet into strict SSA form:
+>>>>>>> v0.8.26
 
 .. code-block:: yul
 
@@ -653,7 +729,12 @@ SSA转换将这个片段转换为以下内容:
         sstore(a_3, 1)
     }
 
+<<<<<<< HEAD
 当然，确定分配是否多余的错综复杂的部分与加入控制流有关。
+=======
+Of course the intricate parts of determining whether an assignment is unused or not
+are connected to joining control flow.
+>>>>>>> v0.8.26
 
 该组件的详细工作情况如下：
 
@@ -661,9 +742,17 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 在信息收集过程中，我们维护了一个从赋值语句到 “未使用（unused）”，“未决定（undecided）” 和 “已使用（used）” 三种状态的映射，
 这标志着分配的值是否会在以后被变量的引用使用。
 
+<<<<<<< HEAD
 当一个赋值被访问时，它被添加到处于 “未决定” 状态的映射中
 （见下面关于for循环的注释），而其他每个仍处于 “未决定” 状态的对同一变量的赋值被改为 “未使用”。
 当一个变量被引用时，任何对该变量的赋值仍处于 “未决定” 状态，其状态被改变为 “已使用”。
+=======
+When an assignment is visited, it is added to the mapping in the "undecided" state
+(see remark about ``for`` loops below) and every other assignment to the same variable
+that is still in the "undecided" state is changed to "unused".
+When a variable is referenced, the state of any assignment to that variable still
+in the "undecided" state is changed to "used".
+>>>>>>> v0.8.26
 
 在控制流分叉的地方，映射的拷贝被移交给每个分支。
 在控制流汇合的地方，来自两个分支的两个映射以下列方式合并：
@@ -674,8 +763,15 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 - “未使用”， “已使用” -> “已使用”
 - “未决定”， “已使用” -> “已使用”
 
+<<<<<<< HEAD
 对于For循环，考虑到条件下的连接控制流，将对条件、主体和后部进行两次访问。
 换句话说，我们创建了三条控制流路径：循环的零次运行、一次运行和两次运行，然后在最后合并它们。
+=======
+For ``for`` loops, the condition, body and post-part are visited twice, taking
+the joining control-flow at the condition into account.
+In other words, we create three control flow paths: Zero runs of the loop,
+one run and two runs and then combine them at the end.
+>>>>>>> v0.8.26
 
 不需要模拟第三次甚至更多的运行，这可以如下所示：
 
@@ -697,11 +793,16 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 
 .. code-block:: none
 
-    max(s, f(s), f(f(s))) = max(s, f(s), f(f(s)), f(f(f(s))), ...).
+    max(s, f(s), f(f(s))) = max(s, f(s), f(f(s)), f(f(f(s))), ...)
 
 总之，最多运行两次循环就足够了，因为只有三种不同的状态。
 
+<<<<<<< HEAD
 对于有 “默认”情况的switch语句，没有跳过switch的控制流部分。
+=======
+For ``switch`` statements that have a default case, there is no control-flow
+part that skips the ``switch``.
+>>>>>>> v0.8.26
 
 当一个变量超出范围时，所有仍处于“未决定”状态的语句都被改为“未使用”，
 除非该变量是一个函数的返回参数--如何是这样，状态变为“已使用”。
@@ -728,6 +829,7 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 数据流分析器
 ^^^^^^^^^^^^^^^^
 
+<<<<<<< HEAD
 数据流分析器本身不是一个优化步骤，而是被其他组件作为工具使用。
 在遍历AST时，它跟踪每个变量的当前值，
 只要该值是一个可移动的表达式。
@@ -738,6 +840,21 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 
 在控制流连接处，如果变量在任何控制流路径中已经或将要被分配，
 那么关于这些变量的记忆就会被清除。例如，在进入for循环时，所有将在主体或后块中分配的变量都被清除。
+=======
+The DataflowAnalyzer is not an optimizer step itself but is used as a tool
+by other components. While traversing the AST, it tracks the current value of
+each variable, as long as that value is a movable expression.
+It records the variables that are part of the expression
+that is currently assigned to each other variable. Upon each assignment to
+a variable ``a``, the current stored value of ``a`` is updated and
+all stored values of all variables ``b`` are cleared whenever ``a`` is part
+of the currently stored expression for ``b``.
+
+At control-flow joins, knowledge about variables is cleared if they have or would be assigned
+in any of the control-flow paths. For instance, upon entering a
+``for`` loop, all variables are cleared that will be assigned during the
+body or the post block.
+>>>>>>> v0.8.26
 
 表达式的简化
 --------------------------------
@@ -749,11 +866,19 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 通用子表达式消除器
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+<<<<<<< HEAD
 这一步使用数据流分析器，用对某一变量的引用来替换语法上与该变量当前值相匹配的子表达式。
 这是一个等价转换，因为这种子表达式必须是可移动的。
+=======
+This step uses the DataflowAnalyzer and replaces subexpressions that
+syntactically match the current value of a variable by a reference to
+that variable. This is an equivalence transform because such subexpressions have
+to be movable.
+>>>>>>> v0.8.26
 
 如果值是一个标识符，所有本身是标识符的子表达式都被其当前值替换。
 
+<<<<<<< HEAD
 上述两条规则的结合允许计算出一个局部值的编号，
 这意味着如果两个变量有相同的值，其中一个将永远是未使用的。
 然后，未使用过的处理器或冗余赋值消除器将能够完全消除此类变量。
@@ -763,24 +888,53 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 
 如果通用子表达式消除器在它之前运行，
 表达式简化器将能够进行更好的替换。
+=======
+The combination of the two rules above allow to compute a local value
+numbering, which means that if two variables have the same
+value, one of them will always be unused. The UnusedPruner or the
+UnusedAssignEliminator will then be able to fully eliminate such
+variables.
+
+This step is especially efficient if the ExpressionSplitter is run
+before. If the code is in pseudo-SSA form,
+the values of variables are available for a longer time and thus we
+have a higher chance of expressions to be replaceable.
+
+The ExpressionSimplifier will be able to perform better replacements
+if the CommonSubexpressionEliminator was run right before it.
+>>>>>>> v0.8.26
 
 .. _expression-simplifier:
 
 表达式简化器
 ^^^^^^^^^^^^
 
+<<<<<<< HEAD
 表达式简化器使用数据流分析器，
 并利用表达式的等价变换列表，如 ``X + 0 -> X`` 来简化代码。
+=======
+The ExpressionSimplifier uses the DataflowAnalyzer and makes use
+of a list of equivalence transforms on expressions like ``X + 0 -> X``
+to simplify the code.
+>>>>>>> v0.8.26
 
 它试图在每个子表达式上匹配诸如 ``X + 0`` 的模式。
 在匹配过程中，它将变量解析为当前分配的表达式，
 以便能够匹配更深入的嵌套模式，
 即使代码是伪SSA形式。
 
+<<<<<<< HEAD
 一些模式如 ``X - X -> 0`` 只能在表达式 ``X`` 是可移动的情况下应用，
 否则会删除其潜在的副作用。
 由于变量引用总是可移动的，即使它们的当前值可能不是，
 表达式简化器在拆分或伪SSA形式下又更加强大。
+=======
+Some of the patterns like ``X - X -> 0`` can only be applied as long
+as the expression ``X`` is movable, because otherwise it would remove its potential side-effects.
+Since variable references are always movable, even if their current
+value might not be, the ExpressionSimplifier is again more powerful
+in split or pseudo-SSA form.
+>>>>>>> v0.8.26
 
 .. _literal-rematerialiser:
 
@@ -798,12 +952,16 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 
 如果代码是SSA形式的，效果最好。
 
+<<<<<<< HEAD
 先决条件：消歧器，循环初始重写器。
+=======
+Prerequisites: Disambiguator, ForLoopInitRewriter.
+>>>>>>> v0.8.26
 
 声明规模的简化
 -------------------------------
 
-.. _circular-reference-pruner:
+.. _circular-references-pruner:
 
 循环引用程序
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -815,7 +973,12 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 条件简化器
 ^^^^^^^^^^^^^^^^^^^^^
 
+<<<<<<< HEAD
 如果可以从控制流中确定数值，条件简化器就会插入对条件变量的赋值。
+=======
+The ConditionalSimplifier inserts assignments to condition variables if the value can be determined
+from the control-flow.
+>>>>>>> v0.8.26
 
 销毁SSA表格。
 
@@ -824,13 +987,23 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 
 当前的特性：
 
+<<<<<<< HEAD
 - 切换条件：插入 “<条件> := <条件标签>”
 - 在带有终止控制流的if语句后，插入“<条件> : =0”
+=======
+- ``switch`` cases: insert ``<condition> := <caseLabel>``
+- after ``if`` statement with terminating control-flow, insert ``<condition> := 0``
+>>>>>>> v0.8.26
 
 未来的特性：
 
+<<<<<<< HEAD
 - 允许用“1”替换
 - 考虑到用户定义的终止函数
+=======
+- allow replacements by ``1``
+- take termination of user-defined functions into account
+>>>>>>> v0.8.26
 
 如果之前已经运行过死代码的删除，那么使用SSA表单效果最好。
 
@@ -841,7 +1014,11 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 有条件的非对称性放大器
 ^^^^^^^^^^^^^^^^^^^^^^^
 
+<<<<<<< HEAD
 条件简化器的反面。
+=======
+Reverse of ConditionalSimplifier.
+>>>>>>> v0.8.26
 
 .. _control-flow-simplifier:
 
@@ -850,6 +1027,7 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 
 简化了几个控制流结构：
 
+<<<<<<< HEAD
 - 用pop（条件）代替if，用空的程序体代替if
 - 移除空的默认switch情况
 - 如果不存在默认情况，则删除空的switch情况
@@ -859,13 +1037,30 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 - 用匹配的条件程序体的常量表达式替换switch
 - 将 ``for`` 替换为终止控制流，在没有其他 break/continue 的情况下替换为 ``if``
 - 移除函数末尾的 ``leave``
+=======
+- replace ``if`` with empty body with ``pop(condition)``
+- remove empty default ``switch`` case
+- remove empty ``switch`` case if no default case exists
+- replace ``switch`` with no cases with ``pop(expression)``
+- turn ``switch`` with single case into ``if``
+- replace ``switch`` with only default case with ``pop(expression)`` and body
+- replace ``switch`` with const expr with matching case body
+- replace ``for`` with terminating control flow and without other ``break``/``continue`` by ``if``
+- remove ``leave`` at the end of a function.
+>>>>>>> v0.8.26
 
 这些操作都不依赖于数据流。然而结构简化器执行类似的任务，确实依赖于数据流。
 
 控制流简化器在其遍历过程中确实记录了是否存在 ``break`` 和 ``continue`` 语句。
 
+<<<<<<< HEAD
 先决条件：消歧器，函数提升器， 循环初始重写器。
 重要提示：引入了EVM操作代码，因此目前只能用于EVM代码。
+=======
+Prerequisite: Disambiguator, FunctionHoister, ForLoopInitRewriter.
+
+Important: Introduces EVM opcodes and thus can only be used on EVM code for now.
+>>>>>>> v0.8.26
 
 .. _dead-code-eliminator:
 
@@ -874,15 +1069,28 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 
 这个优化阶段删除了不可到达的代码。
 
+<<<<<<< HEAD
 无法访问的代码是指在一个区块内的任何代码，
 其前面有 leave，return，invalid，break，continue，selfdestruct，revert 或调用用户定义的函数，并无限地递归。
+=======
+Unreachable code is any code within a block which is preceded by a
+``leave``, ``return``, ``invalid``, ``break``, ``continue``, ``selfdestruct``, ``revert`` or by
+a call to a user-defined function that recurses infinitely.
+>>>>>>> v0.8.26
 
 函数定义被保留下来，因为它们可能被早期的代码调用，因此被认为是可访问的。
 
+<<<<<<< HEAD
 因为在for循环的init块中声明的变量，其范围会扩展到循环体，
 所以我们要求 循环初始重写器 在此步骤之前运行。
 
 先决条件： 循环初始重写器, 函数提升器, 函数分组器
+=======
+Because variables declared in a ``for`` loop's init block have their scope extended to the loop body,
+we require ForLoopInitRewriter to run before this step.
+
+Prerequisites: ForLoopInitRewriter, FunctionHoister, FunctionGrouper.
+>>>>>>> v0.8.26
 
 .. _equal-store-eliminator:
 
@@ -893,10 +1101,19 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 但中间没有其他存储，并且 ``k`` 和 ``v`` 的值没有变化，
 则该步骤将删除 ``mstore(k, v)`` 和 ``sstore(k, v)`` 的调用。
 
+<<<<<<< HEAD
 如果在SSA转换和通用子表达式消除器之后运行，这个简单的步骤是有效的，
 因为SSA将确保变量不会改变，而通用子表达式消除器在已知值相同的情况下会重新使用完全相同的变量。
 
 先决条件： 消歧器, 循环初始重写器
+=======
+This simple step is effective if run after the SSATransform and the
+CommonSubexpressionEliminator, because SSA will make sure that the variables
+will not change and the CommonSubexpressionEliminator re-uses exactly the same
+variable if the value is known to be the same.
+
+Prerequisites: Disambiguator, ForLoopInitRewriter.
+>>>>>>> v0.8.26
 
 .. _unused-pruner:
 
@@ -905,8 +1122,14 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 
 这一步删除了所有从未被引用的函数的定义。
 
+<<<<<<< HEAD
 它还删除了从未被引用的变量的声明。如果声明指定了一个不可移动的值，
 表达式将被保留，但其值将被丢弃。
+=======
+It also removes declarations of variables that are never referenced.
+If a declaration assigns a value that is not movable, the expression is retained,
+but its value is discarded.
+>>>>>>> v0.8.26
 
 所有可移动的表达式语句（未被赋值的表达式）都被删除。
 
@@ -917,6 +1140,7 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 
 这是一个一般的步骤，在结构层面上进行各种简化：
 
+<<<<<<< HEAD
 - 用 ``pop(条件)`` 代替 if 语句的空程序体。
 - 用其主体替换带有真实条件的if语句
 - 删除带有错误条件的if语句
@@ -926,14 +1150,32 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 - 用其初始化部分取代带有错误条件的for循环
 
 该组件使用数据流分析器。
+=======
+- replace ``if`` statement with empty body by ``pop(condition)``
+- replace ``if`` statement with true condition by its body
+- remove ``if`` statement with false condition
+- turn ``switch`` with single case into ``if``
+- replace ``switch`` with only default case by ``pop(expression)`` and body
+- replace ``switch`` with literal expression by matching case body
+- replace ``for`` loop with false condition by its initialization part
+
+This component uses the DataflowAnalyzer.
+>>>>>>> v0.8.26
 
 .. _block-flattener:
 
 块展平器
 ^^^^^^^^^^^^^^
 
+<<<<<<< HEAD
 这个阶段通过在外部块的适当位置插入内部块的语句来消除嵌套块。
 它依赖于函数分组器，并不对最外层的块进行展平，以保持函数分组器产生的形式。
+=======
+This stage eliminates nested blocks by inserting the statements in the
+inner block at the appropriate place in the outer block. It depends on the
+FunctionGrouper and does not flatten the outermost block to keep the form
+produced by the FunctionGrouper.
+>>>>>>> v0.8.26
 
 .. code-block:: yul
 
@@ -970,10 +1212,16 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 只有在循环体或后块中的最高级别的语句被考虑，
 即条件分支内的变量声明不会被移出循环。
 
+<<<<<<< HEAD
 要求：
 
 - 消歧器, 循环初始重写器和函数提升器必须提前运行。
 - 表达式拆分器和SSA转换应在前期运行以获得更好的结果。
+=======
+ExpressionSplitter and SSATransform should be run upfront to obtain better results.
+
+Prerequisites: Disambiguator, ForLoopInitRewriter, FunctionHoister.
+>>>>>>> v0.8.26
 
 
 函数级的优化
@@ -1000,7 +1248,11 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 其他优化步骤将能够对函数进行更多的简化。
 优化步骤主要对那些不会被内联的函数有用。
 
+<<<<<<< HEAD
 先决条件： 消歧器， 函数提升器
+=======
+Prerequisites: Disambiguator, FunctionHoister.
+>>>>>>> v0.8.26
 
 建议将字面意义上的再物质化器（LiteralRematerialiser）作为先决条件，尽管它不是正确性的必要条件。
 
@@ -1030,7 +1282,7 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 ``function f(x) -> y { revert(y, y} }`` 其中字面意思 ``y``  将被其值 ``0`` 取代，
 使我们能够重写该函数。
 
-.. index:: ! unused store eliminator
+.. index:: ! UnusedStoreEliminator
 .. _unused-store-eliminator:
 
 未使用的存储清除器
@@ -1056,7 +1308,11 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
         sstore(c, 3)
     }
 
+<<<<<<< HEAD
 在运行未使用的存储消除器步骤后，将被转化为以下代码
+=======
+will be transformed into the code below after the UnusedStoreEliminator step is run
+>>>>>>> v0.8.26
 
 .. code-block:: yul
 
@@ -1066,10 +1322,17 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
         sstore(c, 3)
     }
 
+<<<<<<< HEAD
 对于内存存储操作，事情一般比较简单，至少在最外层的yul块中是这样，
 因为如果在任何代码路径中从未被读取，所有这样的语句都将被删除。
 然而，在函数分析层面，其方法与 ``sstore`` 类似，因为我们不知道一旦离开函数的范围，内存位置是否会被读取，
 所以只有当所有的代码路径都导致内存被覆写时，语句才会被删除。
+=======
+For memory store operations, things are generally simpler, at least in the outermost Yul block as all such
+statements will be removed if they are never read from in any code path.
+At function analysis level, however, the approach is similar to ``sstore``, as we do not know whether the memory location will
+be read once we leave the function's scope, so the statement will be removed only if all code paths lead to a memory overwrite.
+>>>>>>> v0.8.26
 
 最好以SSA形式运行。
 
@@ -1084,8 +1347,12 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 同时允许变量重命名，但不允许任何重新排序，
 那么对其中一个函数的任何引用都会被另一个函数取代。
 
+<<<<<<< HEAD
 实际删除的功能是由未使用过的处理器执行的。
+=======
+>>>>>>> v0.8.26
 
+The actual removal of the function is performed by the UnusedPruner.
 
 函数内联
 -----------------
@@ -1103,9 +1370,15 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 
 此外，对于所有的参数，以下各项都需要为真：
 
+<<<<<<< HEAD
 - 参数是可移动的。
 - 该参数在函数体中被引用不到两次，或者该参数相当便宜
   （ “成本”最多为1，就像一个0xff以下的常数）。
+=======
+- The argument is movable.
+- The parameter is either referenced less than twice in the function body, or the argument is rather cheap
+  ("cost" of at most 1, like a constant up to ``0xff``).
+>>>>>>> v0.8.26
 
 例如：要被内联的函数的形式是： ``function f(...) -> r { r := E }``
 其中 ``E`` 是一个不引用 ``r`` 的表达式，函数调用中的所有参数都是可移动表达式。
@@ -1119,11 +1392,21 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 完全内联
 ^^^^^^^^^^^
 
+<<<<<<< HEAD
 完全内联用函数的主体取代了某些函数的调用。
 这在大多数情况下是没有什么帮助的，因为它只是增加了代码的大小，但并没有什么好处。
 此外，代码通常是非常昂贵的，我们往往宁愿要更短的代码而不是更有效的代码。
 不过，在相同的情况下，内联一个函数可以对后续的优化步骤产生积极的影响。
 例如，如果一个函数参数是一个常数，就会出现这种情况。
+=======
+The FullInliner replaces certain calls of certain functions
+by the function's body. This is not very helpful in most cases, because
+it just increases the code size but does not have a benefit. Furthermore,
+code is usually very expensive and we would often rather have shorter
+code than more efficient code. In some cases, though, inlining a function
+can have positive effects on subsequent optimizer steps. This is the case
+if one of the function arguments is a constant, for example.
+>>>>>>> v0.8.26
 
 在内联过程中，一个启发式方法被用来判断函数调用是否应该被内联。
 目前的启发式方法是不内联到“大”函数，除非被调用的函数很小。
@@ -1153,9 +1436,18 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 表达式连接器
 ^^^^^^^^^^^^^^^^
 
+<<<<<<< HEAD
 这是与表达式分割器相反的操作。它把正好有一个引用的变量声明序列变成一个复杂的表达式。
 这个阶段完全保留了函数调用和操作码执行的顺序。它不使用任何关于操作码的互换性的信息；
 如果将一个变量的值移到它的使用位置会改变任何函数调用或操作码执行的顺序，则不执行转换。
+=======
+This is the opposite operation of the ExpressionSplitter. It turns a sequence of
+variable declarations that have exactly one reference into a complex expression.
+This stage fully preserves the order of function calls and opcode executions.
+It does not make use of any information concerning the commutativity of the opcodes;
+if moving the value of a variable to its place of use would change the order
+of any function call or opcode execution, the transformation is not performed.
+>>>>>>> v0.8.26
 
 注意，组件不会移动变量赋值或被多次引用的变量的赋值。
 
@@ -1167,19 +1459,29 @@ AST被遍历了两次：分别在在信息收集步骤和实际删除步骤中�
 因此，片段 ``let x := add(0, 2) let y := mul(x, 3)`` 被转换为
 ``let y := mul(add(0, 2), 3)``，尽管 ``add`` 操作码将在计算字面意义 ``3`` 后执行。
 
-.. _SSA-reverser:
+.. _ssa-reverser:
 
 SSA反转器
 ^^^^^^^^^^^
 
+<<<<<<< HEAD
 这是一个微小的步骤，如果它与通用子表达式消除器和未使用过的处理器相结合，
 则有助于扭转SSA转换的影响。
+=======
+This is a tiny step that helps in reversing the effects of the SSATransform
+if it is combined with the CommonSubexpressionEliminator and the
+UnusedPruner.
+>>>>>>> v0.8.26
 
 我们生成的SSA形式对代码生成是不利的，
 因为它生成了许多局部变量。最好的办法是用赋值重新使用现有的变量，
 而不是用新的变量声明。
 
+<<<<<<< HEAD
 SSA转换改写
+=======
+The SSATransform rewrites
+>>>>>>> v0.8.26
 
 .. code-block:: yul
 
@@ -1196,9 +1498,16 @@ SSA转换改写
     let a_2 := calldataload(0x20)
     a := a_2
 
+<<<<<<< HEAD
 问题是在引用 ``a`` 时使用了变量 ``a_1``，而不是 ``a``。
 SSA转换改变了这种形式的语句，只需将声明和赋值互换。
 上面的片段被转化为
+=======
+The problem is that instead of ``a``, the variable ``a_1`` is used
+whenever ``a`` was referenced. The SSATransform changes statements
+of this form by just swapping out the declaration and the assignment. The above
+snippet is turned into
+>>>>>>> v0.8.26
 
 .. code-block:: yul
 
@@ -1208,9 +1517,17 @@ SSA转换改变了这种形式的语句，只需将声明和赋值互换。
     a := calldataload(0x20)
     let a_2 := a
 
+<<<<<<< HEAD
 这是一个非常简单的等价转换，但是当我们现在运行通用子表达式消除器时，
 它将用 ``a`` 替换所有出现的 ``a_1`` （直到 ``a`` 被重新赋值）。
 然后，未使用过的处理器将完全消除变量 ``a_1``，从而完全逆转SSA的转换。
+=======
+This is a very simple equivalence transform, but when we now run the
+CommonSubexpressionEliminator, it will replace all occurrences of ``a_1``
+by ``a`` (until ``a`` is re-assigned). The UnusedPruner will then
+eliminate the variable ``a_1`` altogether and thus fully reverse the
+SSATransform.
+>>>>>>> v0.8.26
 
 .. _stack-compressor:
 
@@ -1233,6 +1550,7 @@ SSA转换改变了这种形式的语句，只需将声明和赋值互换。
 再物质化
 ^^^^^^^^^^^^^^
 
+<<<<<<< HEAD
 再物质化阶段试图用最后分配给变量的表达式来替换变量引用。
 当然，这只有在这个表达式的评估费用相对较低的情况下才是有益的。
 此外，只有当表达式的值在赋值点和使用点之间没有变化时，
@@ -1244,6 +1562,20 @@ SSA转换改变了这种形式的语句，只需将声明和赋值互换。
 这些变量总是可移动的。
 如果数值非常便宜或者变量被明确要求消除，
 那么变量的引用就会被其当前值所取代。
+=======
+The rematerialisation stage tries to replace variable references by the expression that
+was last assigned to the variable. This is of course only beneficial if this expression
+is comparatively cheap to evaluate. Furthermore, it is only semantically equivalent if
+the value of the expression did not change between the point of assignment and the
+point of use. The main benefit of this stage is that it can save stack slots if it
+leads to a variable being eliminated completely (see below), but it can also
+save a ``DUP`` opcode on the EVM if the expression is very cheap.
+
+The Rematerialiser uses the DataflowAnalyzer to track the current values of variables,
+which are always movable.
+If the value is very cheap or the variable was explicitly requested to be eliminated,
+the variable reference is replaced by its current value.
+>>>>>>> v0.8.26
 
 .. _for-loop-condition-out-of-body:
 
