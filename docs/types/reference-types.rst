@@ -26,6 +26,7 @@
 Calldata是一个不可修改的、非持久性的区域，用于存储函数参数，其行为主要类似于memory。
 
 .. note::
+<<<<<<< HEAD
     如果可以的话，尽量使用 ``calldata`` 作为数据位置，因为这样可以避免复制，
     也可以确保数据不能被修改。使用 ``calldata`` 数据位置的数组和结构也可以从函数中返回，
     但不可能分配这种类型。
@@ -38,6 +39,37 @@ Calldata是一个不可修改的、非持久性的区域，用于存储函数参
 .. note::
     在0.5.0版本之前，数据位置可以省略，并且会根据变量的种类、函数类型等默认为不同的位置，
     但现在所有的复杂类型都必须给出一个明确的数据位置。
+=======
+    ``transient`` is not yet supported as a data location for reference types.
+
+.. note::
+    If you can, try to use ``calldata`` as data location because it will avoid copies and
+    also makes sure that the data cannot be modified. Arrays and structs with ``calldata``
+    data location can also be returned from functions, but it is not possible to
+    allocate such types.
+
+.. note::
+    Arrays and structs with ``calldata`` location declared in a function body
+    or as its return parameters must be assigned before being used or returned.
+    There are certain cases in which non-trivial control flow is used and the compiler
+    can't properly detect the initialization.
+    A common workaround in such cases is to assign the affected variable to itself before
+    the correct initialization takes place.
+
+.. note::
+    Prior to version 0.6.9 data location for reference-type arguments was limited to
+    ``calldata`` in external functions, ``memory`` in public functions and either
+    ``memory`` or ``storage`` in internal and private ones.
+    Now ``memory`` and ``calldata`` are allowed in all functions regardless of their visibility.
+
+.. note::
+    Constructor parameters cannot use ``calldata`` as their data location.
+
+.. note::
+    Prior to version 0.5.0 the data location could be omitted, and would default to different locations
+    depending on the kind of variable, function type, etc., but all complex types must now give an explicit
+    data location.
+>>>>>>> english/develop
 
 .. _data-location-assignment:
 
@@ -353,7 +385,11 @@ Solidity没有字符串操作函数，但有第三方的字符串库。
         // 所有状态变量的数据位置都是存储。
         bool[2][] pairsOfFlags;
 
+<<<<<<< HEAD
         // newPairs被存储在memory中--这是公开合约函数参数的唯一可能性。
+=======
+        // newPairs is stored in memory
+>>>>>>> english/develop
         function setAllFlagPairs(bool[2][] memory newPairs) public {
             // 赋值到一个存储数组会执行 ``newPairs`` 的拷贝，
             // 并替换完整的数组 ``pairsOfFlags``。

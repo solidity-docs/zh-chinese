@@ -117,6 +117,7 @@ Solidity编译器会自动生成一个JSON文件。该文件包含关于编译�
           "version": 1 // NatSpec版本
         }
       },
+<<<<<<< HEAD
       // 必选：编译器设置。反映了编译过程中JSON输入中的设置。
       // 请查阅标准JSON输入的文档中的“settings”字段
       "settings": {
@@ -127,9 +128,28 @@ Solidity编译器会自动生成一个JSON文件。该文件包含关于编译�
         // Solidity所需的内容。
         "evmVersion": "london",
         // Solidity所需的内容：所使用的库合约的地址。
-        "libraries": {
-          "MyLib": "0x123123..."
+=======
+      // Required: Compiler settings.
+      // Reflects the settings in the JSON input during compilation, except:
+      // - Different format: "libraries" field
+      // - Added field in metadata.settings: "compilationTarget"
+      // - Not in metadata.settings: "stopAfter", "debug.debugInfo", "outputSelection"
+      // See the standard JSON input's "settings" field docs for the rest.
+      "settings": {
+        // Required for Solidity: File path and the name of the contract or library this
+        // metadata is created for. This field is not present in the standard JSON input settings.
+        "compilationTarget": {
+          "myDirectory/myFile.sol": "MyContract"
         },
+        // Required for Solidity: Addresses for libraries used.
+        // Note that metadata has a different format for "libraries" field than the standard JSON input.
+        // metadata format = { "MyLib.sol:MyLib": "0x123123..." }
+        // standard JSON input format = { "MyLib.sol": { "MyLib": "0x123123..." } }
+>>>>>>> english/develop
+        "libraries": {
+          "MyLib.sol:MyLib": "0x123123..."
+        },
+<<<<<<< HEAD
         "metadata": {
           // 反映了输入JSON中使用的设置，默认为“true”
           "appendCBOR": true,
@@ -163,13 +183,26 @@ Solidity编译器会自动生成一个JSON文件。该文件包含关于编译�
         },
         // Solidity所需的内容：按顺序排列的导入重映射列表。
         "remappings": [ ":g=/dir" ]
+=======
+        // ...
+        // ...
+        // ...
+        // The rest of the fields and their defaults same as in std JSON input.
+>>>>>>> english/develop
       },
       // 必选：编译源文件/源单元，键为文件路径
       "sources": {
+<<<<<<< HEAD
         "destructible": {
           // 必选（除非使用“url”）：源文件的字面内容
           "content": "contract destructible is owned { function destroy() { if (msg.sender == owner) selfdestruct(owner); } }",
           // 必选：源文件的keccak256哈希值
+=======
+        "settable": {
+          // Required (unless "url" is used): literal contents of the source file
+          "content": "contract settable is owned { uint256 private x = 0; function set(uint256 _x) public { if (msg.sender == owner) x = _x; } }",
+          // Required: keccak256 hash of the source file
+>>>>>>> english/develop
           "keccak256": "0x234..."
         },
         "myDirectory/myFile.sol": {
