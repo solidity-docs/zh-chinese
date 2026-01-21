@@ -2,9 +2,17 @@
 Solidity v0.7.0 重大变化
 ********************************
 
+<<<<<<< HEAD
 本节强调了 Solidity 0.7.0 版本中引入的主要重大变化，
 以及这些变化背后的原因和如何更新受影响的代码。
 对于完整的列表，请查看 `版本更新日志 <https://github.com/ethereum/solidity/releases/tag/v0.7.0>`_。
+=======
+This section highlights the main breaking changes introduced in Solidity
+version 0.7.0, along with the reasoning behind the changes and how to update
+affected code.
+For the full list check
+`the release changelog <https://github.com/argotorg/solidity/releases/tag/v0.7.0>`_.
+>>>>>>> english/develop
 
 
 语义的微小变化
