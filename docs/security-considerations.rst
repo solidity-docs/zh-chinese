@@ -144,9 +144,15 @@
 发送和接收以太币
 ===========================
 
+<<<<<<< HEAD
 - 无论是合约还是“外部账户”，目前都无法阻止有人向他们发送以太币。
   合约可以对普通的转账做出反应并拒绝，但有一些方法可以在不创建消息调用的情况下转移以太币。
   一种方法是简单地向合约地址“挖矿”，第二种方法是使用 ``selfdestruct(x)``。
+=======
+- Neither contracts nor "externally-owned accounts" are currently able to prevent someone from sending them Ether.
+  Contracts can react on and reject a regular transfer, but there are ways to move Ether without creating a message call.
+  One way is to simply "mine to" the contract address and the second way is using ``selfdestruct(x)``.
+>>>>>>> english/develop
 
 - 如果一个合约收到了以太（没有函数被调用），要么是执行 :ref:`receive 方法 <receive-ether-function>`，
   要么执行 :ref:`fallback <fallback-function>` 函数。
@@ -361,7 +367,21 @@ Solidity的 ``mapping`` 类型（见 :ref:`mapping-types`）是一个仅有存�
 `可迭代的映射 <https://github.com/ethereum/dapp bin/blob/master/library/iterable_mapping.sol>`_ 的库，
 它允许您在适当的 ``mapping`` 中遍历键并删除其值。
 
+<<<<<<< HEAD
 细枝末节
+=======
+Internal Function Pointers in Upgradeable Contracts
+===================================================
+
+Updating the code of your contract may :ref:`invalidate the values of variables of internal function
+types<function-type-value-stability-across-contract-updates>`.
+Consider such values ephemeral and avoid storing them in state variables.
+If you do, you must ensure that they never persist across code updates and are never used by
+other contracts having access to the same storage space as a result of a delegatecall or account
+abstraction.
+
+Minor Details
+>>>>>>> english/develop
 =============
 
 - 没有占满32字节的类型可能包含“脏高位”。

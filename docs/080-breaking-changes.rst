@@ -132,8 +132,13 @@ Solidity v0.8.0 重大变化
 * ``--combined-json`` 的输出已经改变。JSON字段 ``abi``, ``devdoc``, ``userdoc`` 和
   ``storage-layout`` 现在是子对象。在0.8.0之前，它们曾被序列化为字符串。
 
+<<<<<<< HEAD
 * “传统AST“ 已被删除（ ``--ast-json`` 在命令行界面， ``legacyAST`` 用于标准JSON）。
   使用 “紧凑型AST”（ ``--ast-compact-json`` 参数. ``AST``）作为替代。
+=======
+* The "legacy AST" has been removed (``--ast-json`` on the commandline interface and ``legacyAST`` for standard JSON).
+  Use the "compact AST" (``--ast-compact-json`` resp. ``AST``) as replacement.
+>>>>>>> english/develop
 
 * 旧的错误报告器（ ``--old-reporter`` ）已经被删除。
 
