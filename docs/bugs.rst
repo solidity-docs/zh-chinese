@@ -6,6 +6,7 @@
 已知bug列表
 ##################
 
+<<<<<<< HEAD
 下面，您可以找到一个JSON格式的列表，其中包括Solidity编译器中一些已知的与安全有关的错误。
 该文件本身托管在 `Github 仓库 <https://github.com/ethereum/solidity/blob/develop/docs/bugs.json>`_。
 该列表最早可以追溯到0.3.0版本，只有在此之前的版本中已知的错误没有列出。
@@ -13,6 +14,17 @@
 还有一个文件叫
 `bugs_by_version.json <https://github.com/ethereum/solidity/blob/develop/docs bugs_by_version.json>`_，
 它可以用来检查哪些bug影响到特定版本的编译器。
+=======
+Below, you can find a JSON-formatted list of some of the known security-relevant bugs in the
+Solidity compiler. The file itself is hosted in the `GitHub repository
+<https://github.com/argotorg/solidity/blob/develop/docs/bugs.json>`_.
+The list stretches back as far as version 0.3.0, bugs known to be present only
+in versions preceding that are not listed.
+
+There is another file called `bugs_by_version.json
+<https://github.com/argotorg/solidity/blob/develop/docs/bugs_by_version.json>`_,
+which can be used to check which bugs affect a specific version of the compiler.
+>>>>>>> english/develop
 
 合约源码验证工具以及其他与合约交互的工具应根据以下标准查阅此列表：
 

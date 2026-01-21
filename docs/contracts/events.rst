@@ -9,12 +9,23 @@
 Solidity事件在EVM的日志功能之上给出了一个抽象。
 应用程序可以通过Ethereum客户端的RPC接口订阅和监听这些事件。
 
+<<<<<<< HEAD
 事件是合约的可继承成员。当您调用它们时，
 它们会导致参数被存储在交易的日志中--区块链中的一个特殊数据结构。
 这些日志与合约的地址相关联，被纳入区块链，
 只要有区块可以访问，就会留在那里（目前是永远，但
 将来可能会改变）。
 日志及其事件数据不能从合约内部访问（甚至不能从创建它们的合约访问）。
+=======
+Events can be defined at file level or as inheritable members of contracts (including interfaces and libraries).
+When you call them, they cause the
+arguments to be stored in the transaction's log - a special data structure
+in the blockchain. These logs are associated with the address of the contract that emitted them,
+are incorporated into the blockchain, and stay there as long as a block is
+accessible (forever as of now, but this might
+change in the future). The Log and its event data are not accessible from within
+contracts (not even from the contract that created them).
+>>>>>>> english/develop
 
 有可能要求为日志提供Merkle证明，
 所以如果外部实体向合约提供这样的证明，它可以检查日志是否真的存在于区块链中。
