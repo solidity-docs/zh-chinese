@@ -324,8 +324,28 @@ ABI编码和解码函数
 此外，当前合约的所有函数都可以直接调用，包括当前函数。
 
 .. warning::
+<<<<<<< HEAD
     从 0.8.18 及以上版本开始，在 Solidity 和 Yul 中使用 ``selfdestruct`` 将触发一个已废弃警告，
     因为 ``SELFDESTRUCT`` 操作码最终会发生如 `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_ 中所述的行为上的重大变化。
+=======
+    From ``EVM >= Cancun`` onwards, ``selfdestruct`` will **only** send all Ether in the account to the given recipient and not destroy the contract.
+    However, when ``selfdestruct`` is called in the same transaction that creates the contract calling it,
+    the behaviour of ``selfdestruct`` before Cancun hardfork (i.e., ``EVM <= Shanghai``) is preserved and will destroy the current contract,
+    deleting any data, including storage keys, code and the account itself.
+    See `EIP-6780 <https://eips.ethereum.org/EIPS/eip-6780>`_ for more details.
+
+    The new behaviour is the result of a network-wide change that affects all contracts present on
+    the Ethereum mainnet and testnets.
+    It is important to note that this change is dependent on the EVM version of the chain on which
+    the contract is deployed.
+    The ``--evm-version`` setting used when compiling the contract has no bearing on it.
+
+    Also, note that the ``selfdestruct`` opcode has been deprecated in Solidity version 0.8.18,
+    as recommended by `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
+    The deprecation is still in effect and the compiler will still emit warnings on its use.
+    Any use in newly deployed contracts is strongly discouraged even if the new behavior is taken into account.
+    Future changes to the EVM might further reduce the functionality of the opcode.
+>>>>>>> v0.8.25
 
 .. note::
     在 0.5.0 版本之前，有一个叫做 ``suicide`` 的函数，其语义与 ``selfdestruct`` 相同。

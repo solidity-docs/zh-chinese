@@ -141,11 +141,20 @@ Solidity意义上的合约是代码（其 *函数*）和数据（其 *状态*）
 但它是一个更复杂的数据类型。
 :ref:`映射 <mapping-types>` 类型将地址映射到 :ref:`无符号整数 <integers>`。
 
+<<<<<<< HEAD
 映射可以被看作是 `哈希表 <https://en.wikipedia.org/wiki/Hash_table>`_，
 它实际上是被初始化的，因此每一个可能的键从一开始就存在，并被映射到一个值，其字节表示为全零的值。
 然而，它既不可能获得一个映射的所有键的列表，也不可能获得所有值的列表。
 因此，要么记住您添加到映射中的内容，要么在不需要的情况下使用它。
 甚至更好的是，保留一个列表，或者使用一个更合适的数据类型。
+=======
+Mappings can be seen as `hash tables <https://en.wikipedia.org/wiki/Hash_table>`_ which are
+virtually initialized such that every possible key exists from the start and is mapped to a
+value whose byte-representation is all zeros. However, it is neither possible to obtain a list of all keys of
+a mapping, nor a list of all values. Record what you
+added to the mapping, or use it in a context where this is not needed. Or
+even better, keep a list, or use a more suitable data type.
+>>>>>>> v0.8.25
 
 而由 ``public`` 关键字创建的 :ref:`getter 函数 <getter-functions>` 则是更复杂一些的情况，
 它大致如下所示：
@@ -265,11 +274,19 @@ Solidity意义上的合约是代码（其 *函数*）和数据（其 *状态*）
 区块以固定的时间间隔添加到链上，尽管这些间隔在未来可能会有所改变。
 为了获取最新的信息，建议监控网络，例如在 `Etherscan <https://etherscan.io/chart/blocktime>`_ 上进行监测。
 
+<<<<<<< HEAD
 作为 “顺序选择机制”（也就是所谓的“挖矿”）的一部分，
 可能有时会发生块（blocks）被回滚的情况，但仅在链的“末端”。
 末端增加的块越多，其发生回滚的概率越小。
 因此您的交易被回滚甚至从区块链中抹除，这是可能的，
 但等待的时间越长，这种情况发生的概率就越小。
+=======
+As part of the "order selection mechanism", which is called `attestation <https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/attestations/>`_, it may happen that
+blocks are reverted from time to time, but only at the "tip" of the chain. The more
+blocks are added on top of a particular block, the less likely this block will be reverted. So it might be that your transactions
+are reverted and even removed from the blockchain, but the longer you wait, the less
+likely it will be.
+>>>>>>> v0.8.25
 
 .. note::
     交易不保证被包括在下一个区块或任何特定的未来区块中，
@@ -469,9 +486,29 @@ EVM的指令集应尽量保持最小，以避免不正确或不一致的实现�
 因为如果有人向被删除的合约发送以太币，以太币就会永远丢失。
 
 .. warning::
+<<<<<<< HEAD
     从0.8.18及更高版本开始，在 Solidity 和 Yul 中使用 ``selfdestruct`` 将触发弃用警告，
     因为 ``SELFDESTRUCT`` 操作码最终将经历 `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_ 
     中所述的行为的重大变化。
+=======
+    From ``EVM >= Cancun`` onwards, ``selfdestruct`` will **only** send all Ether in the account to the given recipient and not destroy the contract.
+    However, when ``selfdestruct`` is called in the same transaction that creates the contract calling it,
+    the behaviour of ``selfdestruct`` before Cancun hardfork (i.e., ``EVM <= Shanghai``) is preserved and will destroy the current contract,
+    deleting any data, including storage keys, code and the account itself.
+    See `EIP-6780 <https://eips.ethereum.org/EIPS/eip-6780>`_ for more details.
+
+    The new behaviour is the result of a network-wide change that affects all contracts present on
+    the Ethereum mainnet and testnets.
+    It is important to note that this change is dependent on the EVM version of the chain on which
+    the contract is deployed.
+    The ``--evm-version`` setting used when compiling the contract has no bearing on it.
+
+    Also, note that the ``selfdestruct`` opcode has been deprecated in Solidity version 0.8.18,
+    as recommended by `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
+    The deprecation is still in effect and the compiler will still emit warnings on its use.
+    Any use in newly deployed contracts is strongly discouraged even if the new behavior is taken into account.
+    Future changes to the EVM might further reduce the functionality of the opcode.
+>>>>>>> v0.8.25
 
 .. warning::
     即使一个合约通过 ``selfdestruct`` 删除，它仍然是区块链历史的一部分，

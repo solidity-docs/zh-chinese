@@ -49,7 +49,11 @@ Alice不需要与以太坊网络交互来签署交易，这个过程是完全离
 签署内容
 ------------
 
+<<<<<<< HEAD
 对于履行付款的合约，签署的信息必须包括：
+=======
+For a contract that fulfills payments, the signed message must include:
+>>>>>>> v0.8.25
 
     1. 收件人的钱包地址。
     2. 要转移的金额。
@@ -69,8 +73,17 @@ Alice可以通过在消息中包含合约的地址来防止这种攻击，
 并且只有包含合约地址本身的消息才会被接受。
 您可以在本节末尾的完整合约的 ``claimPayment()`` 函数的前两行找到这个例子。
 
+<<<<<<< HEAD
 组装参数
 ---------
+=======
+Furthermore, instead of destroying the contract by calling ``selfdestruct``,
+which is currently deprecated, we will disable the contract's functionalities by freezing it,
+resulting in the reversion of any call after it being frozen.
+
+Packing arguments
+-----------------
+>>>>>>> v0.8.25
 
 既然我们已经确定了要在签名信息中包含哪些信息，
 我们准备把信息放在一起，进行哈希运算，然后签名。
@@ -130,30 +143,65 @@ web3.js 产生的签名是 ``r``, ``s`` 和 ``v`` 的拼接的，
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
+<<<<<<< HEAD
     // 这将报告一个由于废弃的 selfdestruct 而产生的警告
     contract ReceiverPays {
         address owner = msg.sender;
+=======
+>>>>>>> v0.8.25
 
+    contract Owned {
+        address payable owner;
+        constructor() {
+            owner = payable(msg.sender);
+        }
+    }
+
+    contract Freezable is Owned {
+        bool private _frozen = false;
+
+        modifier notFrozen() {
+            require(!_frozen, "Inactive Contract.");
+            _;
+        }
+
+        function freeze() internal {
+            if (msg.sender == owner)
+                _frozen = true;
+        }
+    }
+
+    contract ReceiverPays is Freezable {
         mapping(uint256 => bool) usedNonces;
 
         constructor() payable {}
 
-        function claimPayment(uint256 amount, uint256 nonce, bytes memory signature) external {
+        function claimPayment(uint256 amount, uint256 nonce, bytes memory signature)
+            external
+            notFrozen
+        {
             require(!usedNonces[nonce]);
             usedNonces[nonce] = true;
 
             // 这将重新创建在客户端上签名的信息。
             bytes32 message = prefixed(keccak256(abi.encodePacked(msg.sender, amount, nonce, this)));
-
             require(recoverSigner(message, signature) == owner);
-
             payable(msg.sender).transfer(amount);
         }
 
+<<<<<<< HEAD
         /// 销毁合约并收回剩余的资金。
         function shutdown() external {
+=======
+        /// freeze the contract and reclaim the leftover funds.
+        function shutdown()
+            external
+            notFrozen
+        {
+>>>>>>> v0.8.25
             require(msg.sender == owner);
-            selfdestruct(payable(msg.sender));
+            freeze();
+            payable(msg.sender).transfer(address(this).balance);
         }
 
         /// 签名方法。
@@ -182,7 +230,6 @@ web3.js 产生的签名是 ``r``, ``s`` 和 ``v`` 的拼接的，
             returns (address)
         {
             (uint8 v, bytes32 r, bytes32 s) = splitSignature(sig);
-
             return ecrecover(message, v, r, s);
         }
 
@@ -282,11 +329,19 @@ Alice通过向Bob发送签名信息进行支付。
 关闭支付通道
 ------------
 
+<<<<<<< HEAD
 当Bob准备好接收他的资金时，
 是时候通过调用智能合约上的 ``close`` 函数关闭支付通道了。
 关闭通道会向接收者支付欠他们的以太币，并销毁合约，
 将任何剩余的以太币送回给Alice。
 为了关闭通道，Bob需要提供一个由Alice签名的信息。
+=======
+When Bob is ready to receive his funds, it is time to
+close the payment channel by calling a ``close`` function on the smart contract.
+Closing the channel pays the recipient the Ether they are owed and
+deactivates the contract by freezing it, sending any remaining Ether back to Alice. To
+close the channel, Bob needs to provide a message signed by Alice.
+>>>>>>> v0.8.25
 
 智能合约必须验证该消息是否包含发送者的有效签名。
 进行这种验证的过程与接收者使用签名的过程相同。
@@ -298,10 +353,17 @@ Solidity函数 ``isValidSignature`` 和 ``recoverSigner`` 的工作方式
 如果允许发送者调用这个函数，他们可以提供一个金额较低的签名消息，
 骗取接收者的欠款。
 
+<<<<<<< HEAD
 该函数会验证签名的信息与给定的参数是否相符。
 如果一切正常，接收者就会收到他们的那部分以太币，
 而剩下的以太币将通过 ``selfdestruct`` 发送给发送者。
 您可以在完整的合约中看到 ``close`` 函数。
+=======
+The function verifies the signed message matches the given parameters.
+If everything checks out, the recipient is sent their portion of the Ether,
+and the sender is sent the remaining funds via a ``transfer``.
+You can see the ``close`` function in the full contract.
+>>>>>>> v0.8.25
 
 通道到期
 --------
@@ -322,11 +384,32 @@ Alice需要一个方法来收回她的托管资金。在合约部署的时候，
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
+<<<<<<< HEAD
     // 这将报告一个由于废弃的 selfdestruct 而产生的警告
     contract SimplePaymentChannel {
         address payable public sender;      // 发送付款的账户。
         address payable public recipient;   // 接收付款的账户。
         uint256 public expiration;  // 超时时间，以防接收者永不关闭支付通道。
+=======
+
+    contract Frozeable {
+        bool private _frozen = false;
+
+        modifier notFrozen() {
+            require(!_frozen, "Inactive Contract.");
+            _;
+        }
+
+        function freeze() internal {
+            _frozen = true;
+        }
+    }
+
+    contract SimplePaymentChannel is Frozeable {
+        address payable public sender;    // The account sending payments.
+        address payable public recipient; // The account receiving the payments.
+        uint256 public expiration;        // Timeout in case the recipient never closes.
+>>>>>>> v0.8.25
 
         constructor (address payable recipientAddress, uint256 duration)
             payable
@@ -336,29 +419,58 @@ Alice需要一个方法来收回她的托管资金。在合约部署的时候，
             expiration = block.timestamp + duration;
         }
 
+<<<<<<< HEAD
         /// 接收者可以在任何时候通过提供发送者签名的金额来关闭通道，
         /// 接收者将获得该金额，其余部分将返回发送者。
         function close(uint256 amount, bytes memory signature) external {
+=======
+        /// the recipient can close the channel at any time by presenting a
+        /// signed amount from the sender. the recipient will be sent that amount,
+        /// and the remainder will go back to the sender
+        function close(uint256 amount, bytes memory signature)
+            external
+            notFrozen
+        {
+>>>>>>> v0.8.25
             require(msg.sender == recipient);
             require(isValidSignature(amount, signature));
 
             recipient.transfer(amount);
-            selfdestruct(sender);
+            freeze();
+            sender.transfer(address(this).balance);
         }
 
+<<<<<<< HEAD
         /// 发送者可以在任何时候延长到期时间。
         function extend(uint256 newExpiration) external {
+=======
+        /// the sender can extend the expiration at any time
+        function extend(uint256 newExpiration)
+            external
+            notFrozen
+        {
+>>>>>>> v0.8.25
             require(msg.sender == sender);
             require(newExpiration > expiration);
 
             expiration = newExpiration;
         }
 
+<<<<<<< HEAD
         /// 如果达到超时时间而接收者没有关闭通道，
         /// 那么以太就会被释放回给发送者。
         function claimTimeout() external {
+=======
+        /// if the timeout is reached without the recipient closing the channel,
+        /// then the Ether is released back to the sender.
+        function claimTimeout()
+            external
+            notFrozen
+        {
+>>>>>>> v0.8.25
             require(block.timestamp >= expiration);
-            selfdestruct(sender);
+            freeze();
+            sender.transfer(address(this).balance);
         }
 
         function isValidSignature(uint256 amount, bytes memory signature)
@@ -367,6 +479,7 @@ Alice需要一个方法来收回她的托管资金。在合约部署的时候，
             returns (bool)
         {
             bytes32 message = prefixed(keccak256(abi.encodePacked(this, amount)));
+<<<<<<< HEAD
 
             // 检查签名是否来自付款方。
             return recoverSigner(message, signature) == sender;
@@ -374,6 +487,14 @@ Alice需要一个方法来收回她的托管资金。在合约部署的时候，
 
         /// 下面的所有功能是取自 '创建和验证签名' 的章节。
 
+=======
+            // check that the signature is from the payment sender
+            return recoverSigner(message, signature) == sender;
+        }
+
+        /// All functions below this are just taken from the chapter
+        /// 'creating and verifying signatures' chapter.
+>>>>>>> v0.8.25
         function splitSignature(bytes memory sig)
             internal
             pure
@@ -389,7 +510,6 @@ Alice需要一个方法来收回她的托管资金。在合约部署的时候，
                 // 最后一个字节（下一个32字节的第一个字节）。
                 v := byte(0, mload(add(sig, 96)))
             }
-
             return (v, r, s);
         }
 
@@ -399,7 +519,6 @@ Alice需要一个方法来收回她的托管资金。在合约部署的时候，
             returns (address)
         {
             (uint8 v, bytes32 r, bytes32 s) = splitSignature(sig);
-
             return ecrecover(message, v, r, s);
         }
 

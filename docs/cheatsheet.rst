@@ -110,10 +110,17 @@ ABI 编码和解码函数
 合约相关方法
 ================
 
+<<<<<<< HEAD
 - ``this`` （当前合约的类型）： 当前合约，可明确转换为 ``address`` 或 ``address payable``。
 - ``super``： 继承层次中高一级的合约
 - ``selfdestruct(address payable recipient)``： 销毁当前合约，将其资金发送到给定的地址。
   
+=======
+- ``this`` (current contract's type): the current contract, explicitly convertible to ``address`` or ``address payable``
+- ``super``: a contract one level higher in the inheritance hierarchy
+- ``selfdestruct(address payable recipient)``: send all funds to the given address and (only on EVMs before Cancun or when invoked within the transaction creating the contract) destroy the contract.
+
+>>>>>>> v0.8.25
 .. index:: type;name, type;creationCode, type;runtimeCode, type;interfaceId, type;min, type;max
 
 类型相关信息
@@ -150,6 +157,7 @@ ABI 编码和解码函数
 修饰器
 =========
 
+<<<<<<< HEAD
 - ``pure`` 修饰函数时：不允许修改或访问状态变量。
 - ``view`` 修饰函数时：不允许修改状态变量。
 - ``payable`` 修饰函数时：允许从调用中接收以太币。
@@ -159,4 +167,17 @@ ABI 编码和解码函数
 - ``indexed`` 修饰事件参数时：将参数作为 topic 存储。
 - ``virtual`` 修饰函数和修改时：允许在派生合约中改变函数或修改器的行为。
 - ``override`` 表示该函数、修改器或公共状态变量改变了基类合约中的函数或修改器的行为。
+=======
+- ``pure`` for functions: Disallows modification or access of state.
+- ``view`` for functions: Disallows modification of state.
+- ``payable`` for functions: Allows them to receive Ether together with a call.
+- ``constant`` for state variables: Disallows assignment (except initialization), does not occupy storage slot.
+- ``immutable`` for state variables: Allows assignment at construction time and is constant when deployed. Is stored in code.
+- ``anonymous`` for events: Does not store event signature as topic.
+- ``indexed`` for event parameters: Stores the parameter as topic.
+- ``virtual`` for functions and modifiers: Allows the function's or modifier's
+  behavior to be changed in derived contracts.
+- ``override``: States that this function, modifier or public state variable changes
+  the behavior of a function or modifier in a base contract.
+>>>>>>> v0.8.25
 
