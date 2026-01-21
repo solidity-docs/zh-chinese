@@ -652,11 +652,16 @@ Import 语句应始终放在文件的顶部。
         return balanceOf[from];
     }
 
-    function shutdown() public onlyOwner {
-        selfdestruct(owner);
+    function increment(uint x) public pure onlyOwner returns (uint) {
+        return x + 1;
     }
 
+<<<<<<< HEAD
 错误写法:
+=======
+
+No:
+>>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -664,8 +669,8 @@ Import 语句应始终放在文件的顶部。
         return balanceOf[from];
     }
 
-    function shutdown() onlyOwner public {
-        selfdestruct(owner);
+    function increment(uint x) onlyOwner public pure returns (uint) {
+        return x + 1;
     }
 
 对于长的函数声明，建议将每个参数放在自己的行中，与函数主体的缩进程度相同。
