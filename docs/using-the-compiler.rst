@@ -69,12 +69,21 @@
 库链接
 ---------------
 
+<<<<<<< HEAD
 如果您的合约使用 :ref:`库合约 <libraries>`，
 您会注意到字节码中含有 ``__$53aea86b7d70b31448b230b20ae141a537$__`` 形式的字符串。
 这些是实际库的地址的占位符。此占位符是完全限定库名的keccak256散列的十六进制编码的34个字符前缀。
 字节码文件也将包含形式为 ``// <placeholder> -> <fq library name>`` 的代码行，以帮助识别占位符代表的库。
 注意，完全限定的库名是其源文件的路径和用 ``:`` 分隔的库名。
 您可以使用 ``solc`` 作为链接器，意味着您将在这些地方插入库的地址：
+=======
+If your contracts use :ref:`libraries <libraries>`, you will notice that the bytecode contains substrings of the form ``__$53aea86b7d70b31448b230b20ae141a537$__`` `(format was different <v0.5.0) <https://docs.soliditylang.org/en/v0.4.26/contracts.html#libraries>`_. These are placeholders for the actual library addresses.
+The placeholder is a 34 character prefix of the hex encoding of the keccak256 hash of the fully qualified library name.
+The bytecode file will also contain lines of the form ``// <placeholder> -> <fq library name>`` at the end to help
+identify which libraries the placeholders represent. Note that the fully qualified library name
+is the path of its source file and the library name separated by ``:``.
+You can use ``solc`` as a linker meaning that it will insert the library addresses for you at those points:
+>>>>>>> english/develop
 
 要么在您的命令中加入
 ``--libraries "file.sol:Math=0x1234567890123456789012345678901234567890 file.sol:Heap=0xabCD567890123456789012345678901234567890"``，
@@ -166,6 +175,7 @@ EVM版本选项
 - ``istanbul``
    - 在汇编中可使用操作码 ``chainid`` 和 ``selfbalance``。
 - ``berlin``
+<<<<<<< HEAD
    - ``SLOAD``， ``*CALL``， ``BALANCE``， ``EXT*`` 和 ``SELFDESTRUCT`` 的燃料成本增加。
      编译器假设这类操作的燃料成本是固定的。这与燃料估算和优化器有关。
 - ``london`` 
@@ -179,6 +189,25 @@ EVM版本选项
    - 引入了内联汇编中的 ``blobhash()`` 和一个相应的全局函数，用于检索与交易相关的blob的版本化哈希（参见 `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_）。
    - 汇编中提供了操作码 ``mcopy`` （参见 `EIP-5656 <https://eips.ethereum.org/EIPS/eip-5656>`_）。
    - 汇编中提供了操作码 ``tstore`` 和 ``tload`` （参见 `EIP-1153 <https://eips.ethereum.org/EIPS/eip-1153>`_）。
+=======
+   - Gas costs for ``SLOAD``, ``*CALL``, ``BALANCE``, ``EXT*`` and ``SELFDESTRUCT`` increased. The
+     compiler assumes cold gas costs for such operations. This is relevant for gas estimation and
+     the optimizer.
+- ``london``
+   - The block's base fee (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ and `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_) can be accessed via the global ``block.basefee`` or ``basefee()`` in inline assembly.
+- ``paris``
+   - Introduces ``prevrandao()`` and ``block.prevrandao``, and changes the semantics of the now deprecated ``block.difficulty``, disallowing ``difficulty()`` in inline assembly (see `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_).
+- ``shanghai``
+   - Smaller code size and gas savings due to the introduction of ``push0`` (see `EIP-3855 <https://eips.ethereum.org/EIPS/eip-3855>`_).
+- ``cancun``
+   - The block's blob base fee (`EIP-7516 <https://eips.ethereum.org/EIPS/eip-7516>`_ and `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_) can be accessed via the global ``block.blobbasefee`` or ``blobbasefee()`` in inline assembly.
+   - Introduces ``blobhash()`` in inline assembly and a corresponding global function to retrieve versioned hashes of blobs associated with the transaction (see `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_).
+   - Opcode ``mcopy`` is available in assembly (see `EIP-5656 <https://eips.ethereum.org/EIPS/eip-5656>`_).
+   - Opcodes ``tstore`` and ``tload`` are available in assembly (see `EIP-1153 <https://eips.ethereum.org/EIPS/eip-1153>`_).
+- ``prague`` (**default**)
+- ``osaka`` (**experimental**)
+   - Experimental compilation to EOF is available starting from this version. (`EIP-7692 <https://eips.ethereum.org/EIPS/eip-7692>`_)
+>>>>>>> english/develop
 
 .. index:: ! standard JSON, ! --standard-json
 .. _compiler-api:
@@ -228,12 +257,17 @@ EVM版本选项
             // 如果使用文件，其目录应通过 `--allow-paths <path>` 添加到命令行中。
           ]
         },
-        "destructible":
+        "settable":
         {
           // 可选：源文件的keccak256哈希值
           "keccak256": "0x234...",
+<<<<<<< HEAD
           // 必选：（除非使用 “urls“）：源文件的字面内容
           "content": "contract destructible is owned { function shutdown() { if (msg.sender == owner) selfdestruct(owner); } }"
+=======
+          // Required (unless "urls" is used): literal contents of the source file
+          "content": "contract settable is owned { uint256 private x = 0; function set(uint256 _x) public { if (msg.sender == owner) x = _x; } }"
+>>>>>>> english/develop
         },
         "myFile.sol_json.ast":
         {
@@ -266,10 +300,15 @@ EVM版本选项
       {
         // 可选： 在给定的阶段后停止编译。目前这里只有 “parsing” 有效。
         "stopAfter": "parsing",
+<<<<<<< HEAD
         // 可选： 经过排序的重映射列表
+=======
+        // Optional: List of remappings
+>>>>>>> english/develop
         "remappings": [ ":g=/dir" ],
         // 可选： 优化器设置
         "optimizer": {
+<<<<<<< HEAD
           // 默认情况下是禁用的。
           // 注意：enabled=false 仍然保留了一些优化功能。见下面的注解。
           // 警告：在0.8.6版本之前，省略 “enabled“ 键并不等同于将其设置为false，
@@ -321,10 +360,79 @@ EVM版本选项
               // 那么优化和清理序列都不会被运行。
               // 如果设置为空值，则只使用默认的清理序列，
               // 不应用任何优化步骤。
+=======
+          // Turn on the optimizer. Optional. Default: false.
+          // NOTE: The state of the optimizer is fully determined by the 'details' dict and this setting
+          // only affects its defaults - when enabled, all components default to being enabled.
+          // The opposite is not true - there are several components that always default to being
+          // enabled an can only be explicitly disabled via 'details'.
+          // WARNING: Before version 0.8.6 omitting this setting was not equivalent to setting
+          // it to false and would result in all components being disabled instead.
+          // WARNING: Enabling optimizations for EVMAssembly input is allowed but not necessary under normal
+          // circumstances. It forces the opcode-based optimizer to run again and can produce bytecode that
+          // is not reproducible from metadata.
+          "enabled": true,
+          // Optimize for how many times you intend to run the code. Optional. Default: 200.
+          // Lower values will optimize more for initial deployment cost, higher
+          // values will optimize more for high-frequency usage.
+          "runs": 200,
+          // State of all optimizer components. Optional.
+          // Default values are determined by whether the optimizer is enabled or not.
+          // Note that the 'enabled' setting only affects the defaults here and has no effect when
+          // all values are provided explicitly.
+          "details": {
+            // Peephole optimizer (opcode-based). Optional. Default: true.
+            // Default for EVMAssembly input: false when optimization is not enabled.
+            // NOTE: Always runs (even with optimization disabled) except for EVMAssembly input or when explicitly turned off here.
+            "peephole": true,
+            // Inliner (opcode-based). Optional. Default: true when optimization is enabled.
+            "inliner": false,
+            // Unused JUMPDEST remover (opcode-based). Optional. Default: true.
+            // Default for EVMAssembly input: false when optimization is not enabled.
+            // NOTE: Always runs (even with optimization disabled) except for EVMAssembly input or when explicitly turned off here.
+            "jumpdestRemover": true,
+            // Literal reordering (codegen-based). Optional. Default: true when optimization is enabled.
+            // Moves literals to the right of commutative binary operators during code generation, helping exploit associativity.
+            "orderLiterals": false,
+            // Block deduplicator (opcode-based). Optional. Default: true when optimization is enabled.
+            // Unifies assembly code blocks that share content.
+            "deduplicate": false,
+            // Common subexpression elimination (opcode-based). Optional. Default: true when optimization is enabled.
+            // This is the most complicated step but can also provide the largest gain.
+            "cse": false,
+            // Constant optimizer (opcode-based). Optional. Default: true when optimization is enabled.
+            // Tries to find better representations of literal numbers and strings, that satisfy the
+            // size/cost trade-off determined by the 'runs' setting.
+            "constantOptimizer": false,
+            // Unchecked loop increment (codegen-based). Optional. Default: true.
+            // Use unchecked arithmetic when incrementing the counter of 'for' loops under certain circumstances.
+            // NOTE: Always runs (even with optimization disabled) unless explicitly turned off here.
+            "simpleCounterForLoopUncheckedIncrement": true,
+            // Yul optimizer. Optional. Default: true when optimization is enabled.
+            // Used to optimize the IR produced by the Yul IR-based pipeline as well as inline assembly
+            // and utility Yul code generated by the compiler.
+            // NOTE: Before Solidity 0.6.0 the default was false.
+            "yul": false,
+            // Tuning options for the Yul optimizer. Optional.
+            "yulDetails": {
+              // Improve allocation of stack slots for variables, can free up stack slots early.
+              // Optional. Default: true if Yul optimizer is enabled.
+              "stackAllocation": true,
+              // Optimization step sequence.
+              // The general form of the value is "<main sequence>:<cleanup sequence>".
+              // The setting is optional and when omitted, default values are used for both sequences.
+              // If the value does not contain the ':' delimiter, it is interpreted as the main
+              // sequence and the default is used for the cleanup sequence.
+              // To make one of the sequences empty, the delimiter must be present at the first or last position.
+              // In particular if the whole value consists only of the delimiter, both sequences are empty.
+              // Note that there are several hard-coded steps that always run, even when both sequences are empty.
+              // For more information see "The Optimizer > Selecting Optimizations".
+>>>>>>> english/develop
               "optimizerSteps": "dhfoDgvulfnTUtnIf..."
             }
           }
         },
+<<<<<<< HEAD
         // 编译EVM的版本。
         // 影响到类型检查和代码生成。版本可以是 homestead,
         // tangerineWhistle, spuriousDragon, byzantium, constantinople,
@@ -332,6 +440,18 @@ EVM版本选项
         "evmVersion": "shanghai",
         // 可选：改变编译管道以通过Yul的中间表示法。
         // 这在默认情况下是假的。
+=======
+        // Version of the EVM to compile for (optional).
+        // Affects type checking and code generation. Can be homestead,
+        // tangerineWhistle, spuriousDragon, byzantium, constantinople,
+        // petersburg, istanbul, berlin, london, paris, shanghai, cancun, prague (default) or osaka (experimental).
+        "evmVersion": "prague",
+        // EVM Object Format version to compile for (optional, experimental).
+        // Currently the only valid value is 1. If not specified, legacy non-EOF bytecode will be generated.
+        "eofVersion": null,
+        // Optional: Change compilation pipeline to go through the Yul intermediate representation.
+        // This is false by default.
+>>>>>>> english/develop
         "viaIR": true,
         // 可选： 调试设置
         "debug": {
@@ -376,6 +496,7 @@ EVM版本选项
             "MyLib": "0x123123..."
           }
         },
+<<<<<<< HEAD
         // 以下可用于根据文件和合约名称选择所需的输出。
         // 如果这个字段被省略，那么编译器就会加载并进行类型检查，但除了错误之外不会产生任何输出。
         // 第一层键是文件名，第二层键是合约名。
@@ -385,6 +506,21 @@ EVM版本选项
         // 要选择编译器可能产生的所有输出，
         // 使用 "outputSelection"。{ "*": { "*": [ "*" ], "": [ "*" ] } }"，
         // 但要注意，这可能会不必要地减慢编译过程。
+=======
+        // The following can be used to select desired outputs based
+        // on file and contract names.
+        // If this field is omitted, then the compiler loads and does type checking,
+        // but will not generate any outputs apart from errors.
+        // The first level key is the file name and the second level key is the contract name.
+        // An empty contract name is used for outputs that are not tied to a contract
+        // but to the whole source file like the AST.
+        // A star as contract name refers to all contracts in the file.
+        // Similarly, a star as a file name matches all files.
+        // To select all outputs the compiler can possibly generate, with the exclusion of
+        // Yul intermediate representation outputs, use
+        // "outputSelection: { "*": { "*": [ "*" ], "": [ "*" ] } }"
+        // but note that this might slow down the compilation process needlessly.
+>>>>>>> english/develop
         //
         // 可用的输出类型如下：
         //
@@ -393,6 +529,7 @@ EVM版本选项
         //
         // 合约级别（需要合约名称或 "*"）：
         //   abi - ABI
+<<<<<<< HEAD
         //   devdoc - 开发者文档（Natspec格式）
         //   userdoc - 用户文档（Natspec格式）
         //   metadata - 元数据
@@ -411,6 +548,29 @@ EVM版本选项
         //   evm.deployedBytecode.immutableReferences - 从AST id到引用不可变的字节码范围的映射
         //   evm.methodIdentifiers - 函数哈希值的列表
         //   evm.gasEstimates - 函数以太燃料估计
+=======
+        //   devdoc - Developer documentation (natspec)
+        //   userdoc - User documentation (natspec)
+        //   metadata - Metadata
+        //   ir - Yul intermediate representation of the code before optimization
+        //   irAst - AST of Yul intermediate representation of the code before optimization
+        //   irOptimized - Intermediate representation after optimization
+        //   irOptimizedAst - AST of intermediate representation after optimization
+        //   storageLayout - Slots, offsets and types of the contract's state variables in storage.
+        //   transientStorageLayout - Slots, offsets and types of the contract's state variables in transient storage.
+        //   evm.assembly - New assembly format
+        //   evm.legacyAssembly - Old-style assembly format in JSON
+        //   evm.bytecode.functionDebugData - Debugging information at function level
+        //   evm.bytecode.object - Bytecode object
+        //   evm.bytecode.opcodes - Opcodes list
+        //   evm.bytecode.sourceMap - Source mapping (useful for debugging)
+        //   evm.bytecode.linkReferences - Link references (if unlinked object)
+        //   evm.bytecode.generatedSources - Sources generated by the compiler
+        //   evm.deployedBytecode* - Deployed bytecode (has all the options that evm.bytecode has)
+        //   evm.deployedBytecode.immutableReferences - Map from AST ids to bytecode ranges that reference immutables
+        //   evm.methodIdentifiers - The list of function hashes
+        //   evm.gasEstimates - Function gas estimates
+>>>>>>> english/develop
         //
         // 注意，使用 `evm`， `evm.bytecode` 等将选择该输出的每个目标部分。
         // 此外， `*` 可以作为通配符来请求所有东西。
@@ -453,18 +613,35 @@ EVM版本选项
           "extCalls": "trusted",
           // 选择哪些类型的不变性应该报告给用户：合约，重入。
           "invariants": ["contract", "reentrancy"],
+<<<<<<< HEAD
           // 选择是否输出所有验证过的目标。默认为 `false`。
           "showProved": true,
           // 选择是否输出所有未验证的目标。默认为 `false`。
+=======
+          // Choose whether to output all proved targets. The default is `false`.
+          "showProvedSafe": true,
+          // Choose whether to output all unproved targets. The default is `false`.
+>>>>>>> english/develop
           "showUnproved": true,
           // 选择是否输出所有不支持的语言功能。默认为 `false`。
           "showUnsupported": true,
+<<<<<<< HEAD
           // 如果有的话，选择应该使用哪些求解器。
           // 关于求解器的描述，见形式验证部分。
           "solvers": ["cvc4", "smtlib2", "z3"],
           // 选择哪些目标应该被检查：常数条件，下溢，溢出，除以零，余额，断言，弹出空数组，界外。
           // 如果没有给出该选项，所有目标都被默认检查，除了 Solidity >=0.8.7 的下溢/溢出。
           // 目标描述见形式化验证部分。
+=======
+          // Choose which solvers should be used, if available.
+          // See the Formal Verification section for the solvers description.
+          "solvers": ["cvc5", "smtlib2", "z3"],
+          // Choose which targets should be checked: constantCondition,
+          // underflow, overflow, divByZero, balance, assert, popEmptyArray, outOfBounds.
+          // If the option is not given all targets are checked by default,
+          // except underflow/overflow for Solidity >=0.8.7.
+          // See the Formal Verification section for the targets description.
+>>>>>>> english/develop
           "targets": ["underflow", "overflow", "assert"],
           // 每个SMT查询的超时时间，以毫秒为单位。
           // 如果没有给出这个选项，SMTChecker将默认使用确定性的资源限制。
@@ -549,7 +726,13 @@ EVM版本选项
             "irOptimizedAst": {/* ... */},
             // 请参阅存储布局文档。
             "storageLayout": {"storage": [/* ... */], "types": {/* ... */} },
+<<<<<<< HEAD
             // EVM相关输出
+=======
+            // See the Storage Layout documentation.
+            "transientStorageLayout": {"storage": [/* ... */], "types": {/* ... */} },
+            // EVM-related outputs
+>>>>>>> english/develop
             "evm": {
               // 汇编 (string)
               "assembly": "",
