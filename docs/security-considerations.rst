@@ -361,7 +361,21 @@ Solidity的 ``mapping`` 类型（见 :ref:`mapping-types`）是一个仅有存�
 `可迭代的映射 <https://github.com/ethereum/dapp bin/blob/master/library/iterable_mapping.sol>`_ 的库，
 它允许您在适当的 ``mapping`` 中遍历键并删除其值。
 
+<<<<<<< HEAD
 细枝末节
+=======
+Internal Function Pointers in Upgradeable Contracts
+===================================================
+
+Updating the code of your contract may :ref:`invalidate the values of variables of internal function
+types<function-type-value-stability-across-contract-updates>`.
+Consider such values ephemeral and avoid storing them in state variables.
+If you do, you must ensure that they never persist across code updates and are never used by
+other contracts having access to the same storage space as a result of a delegatecall or account
+abstraction.
+
+Minor Details
+>>>>>>> english/develop
 =============
 
 - 没有占满32字节的类型可能包含“脏高位”。

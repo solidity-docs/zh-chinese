@@ -161,6 +161,7 @@ View 函数
 
 以下声明被认为是修改状态：
 
+<<<<<<< HEAD
 #. 修改状态变量。
 #. :ref:`产生事件 <events>`。
 #. :ref:`创建其它合约 <creating-contracts>`。
@@ -169,6 +170,16 @@ View 函数
 #. 调用任何没有标记为 ``view`` 或者 ``pure`` 的函数。
 #. 使用低级调用。
 #. 使用包含特定操作码的内联汇编。
+=======
+#. Writing to state variables (storage and transient storage).
+#. :ref:`Emitting events <events>`.
+#. :ref:`Creating other contracts <creating-contracts>`.
+#. Using ``selfdestruct``.
+#. Sending Ether via calls.
+#. Calling any function not marked ``view`` or ``pure``.
+#. Using low-level calls.
+#. Using inline assembly that contains certain opcodes.
+>>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -209,11 +220,19 @@ Pure 函数
 
 除了上面解释的状态修改语句列表外，以下内容被认为是从状态中读取的：
 
+<<<<<<< HEAD
 #. 读取状态变量。
 #. 访问 ``address(this).balance`` 或者 ``<address>.balance``。
 #. 访问 ``block``， ``tx``， ``msg`` 中任意成员 （除 ``msg.sig`` 和 ``msg.data`` 之外）。
 #. 调用任何未标记为 ``pure`` 的函数。
 #. 使用包含某些操作码的内联汇编。
+=======
+#. Reading from state variables (storage and transient storage).
+#. Accessing ``address(this).balance`` or ``<address>.balance``.
+#. Accessing any of the members of ``block``, ``tx``, ``msg`` (with the exception of ``msg.sig`` and ``msg.data``).
+#. Calling any function not marked ``pure``.
+#. Using inline assembly that contains certain opcodes.
+>>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -245,10 +264,18 @@ Pure 函数能够使用 ``revert()`` 和 ``require()`` 函数来恢复潜在的�
   通过对 ``pure`` 函数使用 ``STATICCALL``，在EVM层面防止了对状态的修改。
 
 .. note::
+<<<<<<< HEAD
   在0.4.17版本之前，编译器并没有强制要求 ``pure`` 不读取状态。
   这是一个编译时的类型检查，可以规避在合约类型之间做无效的显式转换，
   因为编译器可以验证合约的类型不做改变状态的操作，
   但它不能检查将在运行时被调用的合约是否真的属于该类型。
+=======
+  Prior to version 0.4.17 the compiler did not enforce that ``pure`` is not reading the state.
+  It is a compile-time type check, which can be circumvented by doing invalid explicit conversions
+  between contract types, because the compiler can verify that the type of the contract does
+  not do state-changing operations, but it cannot check that the contract that will be called
+  at runtime is actually of that type.
+>>>>>>> english/develop
 
 .. _special-functions:
 
