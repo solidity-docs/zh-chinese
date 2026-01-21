@@ -101,6 +101,7 @@ Solidity也支持 ``try`` / ``catch`` 形式的语句的异常处理，
   ``value`` 和 ``gas`` 的设置也会丢失，
   只有 ``feed.info{value: 10, gas: 800}()`` 执行了函数调用。
 
+<<<<<<< HEAD
 由于EVM认为对一个不存在的合约的调用总是成功的，
 Solidity使用 ``extcodesize`` 操作码来检查即将被调用的合约是否真的存在（它包含代码），
 如果不存在就会引起异常。如果返回数据将在调用后被解码，
@@ -114,6 +115,39 @@ Solidity使用 ``extcodesize`` 操作码来检查即将被调用的合约是否�
     因为根据上述逻辑，编译器认为它们不存在，即使它们执行代码并可以返回数据。
 
 如果被调用的合约本身抛出异常或超出了燃料值，函数调用也会引起异常。
+=======
+.. warning::
+    Due to the fact that the EVM considers a call to a non-existing contract to
+    always succeed, Solidity uses the ``extcodesize`` opcode to check that
+    the contract that is about to be called actually exists (it contains code)
+    and causes an exception if it does not. This check is skipped if the return
+    data will be decoded after the call and thus the ABI decoder will catch the
+    case of a non-existing contract.
+
+    This check is not performed in case of :ref:`low-level calls <address_related>` which
+    operate on addresses rather than contract instances.
+
+.. warning::
+    Be careful when using high-level calls to
+    :ref:`precompiled contracts <precompiledContracts>`,
+    since the compiler considers them non-existing according to the
+    above logic even though they execute code and can return data.
+
+.. note::
+    Since the version 0.8.10, the compiler does not check ``extcodesize`` on
+    high-level external calls if return data is expected, because an empty code
+    will be unable to return data, and the ABI decoder will revert.
+    As a consequence, this allows high-level external calls to precompiled
+    contracts, since they can return data despite having no code
+    associated with their addresses.
+
+    Read about :ref:`precompiled contracts <precompiledContracts>` and
+    :ref:`low-level calls <address_related>`
+    for more information.
+
+Function calls also cause exceptions if the called contract itself
+throws an exception or goes out of gas.
+>>>>>>> english/develop
 
 .. warning::
     与另一个合约的任何互动都会带来潜在的危险，
@@ -218,7 +252,13 @@ Solidity使用 ``extcodesize`` 操作码来检查即将被调用的合约是否�
 可以发送以太，但不可能限制燃料的数量。
 如果创建失败（由于堆栈耗尽，没有足够的余额或其他问题），会抛出一个异常。
 
+<<<<<<< HEAD
 加盐合约创建 / create2
+=======
+.. _salted-contract-creations:
+
+Salted contract creations / create2
+>>>>>>> english/develop
 -----------------------------------
 
 当创建一个合约时，合约的地址是由创建合约的地址和一个计数器计算出来的，
@@ -539,8 +579,15 @@ Solidity 使用状态恢复异常来处理错误。
 内置的错误 ``Error(string)`` 和 ``Panic(uint256)`` 被特殊函数使用，
 解释如下。 ``Error`` 用于 "常规" 错误条件，而 ``Panic`` 用于在无错误代码中不应该出现的错误。
 
+<<<<<<< HEAD
 通过 ``assert`` 引起Panic异常和通过 ``require`` 引起Error异常
 -------------------------------------------------------------
+=======
+.. _assert-and-require-statements:
+
+Panic via ``assert`` and Error via ``require``
+----------------------------------------------
+>>>>>>> english/develop
 
 快捷函数 ``assert`` 和 ``require`` 可以用来检查条件，如果不符合条件就抛出一个异常。
 
@@ -566,6 +613,7 @@ Assert应该只用于测试内部错误，以及检查不变量。
 #. 0x41： 如果您分配了太多的内存空间或创建了一个太大的数组。
 #. 0x51： 如果您调用一个零初始化的内部函数类型的变量。
 
+<<<<<<< HEAD
 ``require`` 函数要么创造一个没有任何数据的错误，
 要么创造一个 ``Error(string)`` 类型的错误。
 它应该被用来确保在执行之前无法检测到的有效条件。
@@ -577,6 +625,22 @@ Assert应该只用于测试内部错误，以及检查不变量。
     请使用 ``if (!condition) revert CustomError();`` 代替。
 
 在下列情况下，编译器会产生一个 ``Error(string)`` 异常（或者没有数据的异常）。
+=======
+The ``require`` function provides three overloads:
+
+1. ``require(bool)`` which will revert without any data (not even an error selector).
+2. ``require(bool, string)`` which will revert with an ``Error(string)``.
+3. ``require(bool, error)`` which will revert with the custom, user supplied error provided as the second argument.
+
+.. note::
+    ``require`` arguments are evaluated unconditionally, so take special care to make sure that
+    they are not expressions with unexpected side-effects.
+    For example, in ``require(condition, CustomError(f()));`` and ``require(condition, f());``,
+    function ``f()`` will be called regardless of whether the supplied condition is ``true`` or ``false``.
+
+An ``Error(string)`` exception (or an exception without data) is generated
+by the compiler in the following situations:
+>>>>>>> english/develop
 
 #. 调用 ``require(x)``，其中 ``x`` 的值为 ``false``。
 #. 如果您使用 ``revert()`` 或 ``revert("错误描述")``。
@@ -595,11 +659,19 @@ Assert应该只用于测试内部错误，以及检查不变量。
 #. 如果您使用 ``new`` 关键字创建一个合约，
    但合约创建 :ref:`没有正常完成 <creating-contracts>`。
 
+<<<<<<< HEAD
 您可以选择为 ``require`` 提供一个信息字符串，但不能为 ``assert`` 提供。
 
 .. note::
     如果您没有给 ``require`` 提供一个字符串参数，它将以空的错误数据进行还原，
     甚至不包括错误选择器。
+=======
+You can optionally provide a message string or a custom error to ``require``, but not to ``assert``.
+
+.. note::
+    If you do not provide a string or custom error argument to ``require``, it will revert
+    with empty error data, not even including the error selector.
+>>>>>>> english/develop
 
 
 下面的例子显示了如何使用 ``require`` 来检查输入的条件
@@ -803,8 +875,19 @@ Solidity 根据错误的类型，支持不同种类的捕获块：
     要么try/catch语句的执行本身被还原（例如由于上面提到的解码失败或者由于没有提供低级别的catch子句）。
 
 .. note::
+<<<<<<< HEAD
     调用失败背后的原因可能是多方面的。不要认为错误信息是直接来自被调用的合约：
     错误可能发生在调用链的更深处，被调用的合约只是转发了它。
     另外，这可能是由于消耗完燃料值的情况，而不是故意的错误状况。
     调用方总是保留调用中至少1/64的燃料值，
     因此，即使被调用合约没有燃料了，调用方仍然有一些燃料。
+=======
+    The reason behind a failed call can be manifold. Do not assume that
+    the error message is coming directly from the called contract:
+    The error might have happened deeper down in the call chain and the
+    called contract just forwarded it. Also, it could be due to an
+    out-of-gas situation and not a deliberate error condition:
+    The caller always retains at least 1/64th of the gas in a call and thus
+    even if the called contract goes out of gas, the caller still
+    has some gas left.
+>>>>>>> english/develop
