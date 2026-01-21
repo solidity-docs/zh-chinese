@@ -29,7 +29,11 @@
 
 - 每周三下午3点，中欧标准时间/中欧夏令时间。
 
+<<<<<<< HEAD
 会议在 `Jitsi <https://meet.ethereum.org/solidity>`_ 上举行。
+=======
+The call takes place on `Jitsi <https://meet.solidity.org>`_.
+>>>>>>> english/develop
 
 如何报告问题
 ====================
@@ -82,9 +86,16 @@
 先决条件
 -------------
 
+<<<<<<< HEAD
 为了运行所有的编译器测试，您可能想选择性地安装一些依赖项
 ( `evmone <https://github.com/ethereum/evmone/releases>`_，
 `libz3 <https://github.com/Z3Prover/z3>`_)。
+=======
+For running all compiler tests you may want to optionally install a few
+dependencies (`evmone <https://github.com/ethereum/evmone/releases>`_,
+`z3 <https://github.com/Z3Prover/z3>`_, `Eldarica <https://github.com/uuverifiers/eldarica/>`_,
+`cvc5 <https://github.com/cvc5/cvc5>`).
+>>>>>>> english/develop
 
 在 macOS 系统上，一些测试脚本需要安装 GNU 核心工具。
 可以使用 Homebrew 很简单地完成安装： ``brew install coreutils``。
@@ -115,6 +126,7 @@ Solidity包括不同类型的测试，其中大部分捆绑在
 ``evmone`` 主要用于运行语义和燃料测试。
 如果您没有安装它，您可以通过向 ``scripts/soltest.sh`` 传递 ``--no-semantic-tests`` 标志来跳过这些测试。
 
+<<<<<<< HEAD
 ``evmone`` 库的文件名后缀应该
 是Linux上的 ``.so``，Windows系统上的 ``.dll``，MacOS上的 ``.dylib``。
 
@@ -123,6 +135,20 @@ Solidity包括不同类型的测试，其中大部分捆绑在
 如果您的系统没有安装 ``libz3`` 库，您应该在运行 ``./scripts/tests.sh`` 或 ``./scripts/soltest.sh --no-smt`` 之前，
 通过导出 ``SMT_FLAGS=--no-smt`` 来禁用SMT测试。
 这些测试是 ``libsolidity/smtCheckerTests`` 和 ``libsolidity/smtCheckerTestsJSON``。
+=======
+The ``evmone`` library should end with the file name
+extension ``.so`` on Linux, ``.dll`` on Windows systems and ``.dylib`` on macOS.
+
+For running SMT tests, the ``z3`` executable must be present in ``PATH``.
+A few SMT tests use ``Eldarica`` instead of ``z3``.
+These require its executable (``eld``) to be present in ``PATH`` for the tests to pass.
+However, if ``Eldarica`` is not found, these tests will be automatically skipped.
+
+If ``z3`` is not present on your system, you should disable the
+SMT tests by exporting ``SMT_FLAGS=--no-smt`` before running ``./scripts/tests.sh`` or
+running ``./scripts/soltest.sh --no-smt``.
+These tests are ``libsolidity/smtCheckerTests``.
+>>>>>>> english/develop
 
 .. note::
 
@@ -147,9 +173,15 @@ Solidity包括不同类型的测试，其中大部分捆绑在
 
 .. note::
 
+<<<<<<< HEAD
     那些在Windows环境下使用的人，想在没有libz3的情况下运行上述基本集，可以使用Git Bash，
     使用命令为： ``./build/test/Release/soltest.exe -- --no-smt``。
     如果您在普通的命令提示符下运行，使用 ``.\build\test\Release\soltest.exe -- --no-smt``。
+=======
+    Those working in a Windows environment wanting to run the above basic sets
+    without z3. Using Git Bash, you use: ``./build/test/Release/soltest.exe -- --no-smt``.
+    If you are running this in plain Command Prompt, use ``.\build\test\Release\soltest.exe -- --no-smt``.
+>>>>>>> english/develop
 
 如果您想使用GDB进行调试，确保您的构建方式与 “通常” 不同。
 例如，您可以在您的 ``build`` 文件夹中运行以下命令：
@@ -523,11 +555,17 @@ Solidity论坛作为提出和讨论新的语言功能及其在早期构思阶段
 
 我们也在论坛中分享反馈调查和其他与语言设计相关的内容。
 
+<<<<<<< HEAD
 如果您想知道团队在实施新功能方面的情况，
 您可以在 `Solidity Github项目 <https://github.com/ethereum/solidity/projects/43>`_ 中关注实施状况。
 设计积压中的问题需要进一步规范，将在语言设计电话会议或常规团队电话会议中讨论。
 您可以通过从默认分支（ `develop` ）到 `breaking 分支 <https://github.com/ethereum/solidity/tree/breaking>`_
 来查看下一个重大变化版本即将发生的变化。
+=======
+If you want to know where the team is standing in terms of implementing new features, you can follow the implementation status in the `Solidity GitHub project <https://github.com/orgs/ethereum/projects/17>`_.
+Issues in the design backlog need further specification and will either be discussed in a language design call or in a regular team call. You can
+see the upcoming changes for the next breaking release by changing from the default branch (`develop`) to the `breaking branch <https://github.com/ethereum/solidity/tree/breaking>`_.
+>>>>>>> english/develop
 
 对于特殊情况和问题，您可以通过 `Solidity-dev Gitter 频道 <https://gitter.im/ethereum/solidity-dev>`_ 与我们联系，
 - 这是一个专门用于围绕 Solidity 编译器和语言开发的聊天室。

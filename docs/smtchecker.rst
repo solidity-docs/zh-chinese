@@ -459,10 +459,17 @@ SMT检查器创建的验证目标的类型也可以通过命令行界面选项 `
 已验证的目标
 ==============
 
+<<<<<<< HEAD
 果有任何已证明的目标，SMT检查器会向每个引擎发出一个警告，
 说明有多少目标已证明。如果用户希望查看所有已证明的具体目标，
 可使用命令行选项 ``--model-checker-show-proved`` 和
 JSON选项 ``settings.modelChecker.showProved = true``。
+=======
+If there are any proved targets, the SMTChecker issues one warning per engine stating
+how many targets were proved. If the user wishes to see all the specific
+proved targets, the CLI option ``--model-checker-show-proved-safe`` and
+the JSON option ``settings.modelChecker.showProvedSafe = true`` can be used.
+>>>>>>> english/develop
 
 未验证的目标
 ================
@@ -778,6 +785,7 @@ BMC使用一个SMT求解器，而CHC使用一个Horn求解器。
 作为一个Horn求解器使用，而 `Eldarica <https://github.com/uuverifiers/eldarica>`_
 则同时做这两种工作。
 
+<<<<<<< HEAD
 如果求解器可用的话，用户可以通过命令行界面选项 ``--model-checker-solvers {all,cvc4,eld,smtlib2,z3}``
 或JSON选项 ``settings.modelChecker.solvers=[smtlib2,z3]`` 来选择应该使用哪个求解器，
 其中：
@@ -793,6 +801,19 @@ BMC使用一个SMT求解器，而CHC使用一个Horn求解器。
   - 如果 ``solc`` 与它一起被编译的话；
   - 如果Linux系统中安装了4.8.x及其以上版本的动态 ``z3`` 库（从Solidity 0.7.6开始）；
   - 在 ``soljson.js`` （从Solidity 0.6.9开始）中静态的，也就是编译器的JavaScript二进制。
+=======
+The user can choose which solvers should be used, if available, via the CLI
+option ``--model-checker-solvers {all,cvc5,eld,smtlib2,z3}`` or the JSON option
+``settings.modelChecker.solvers=[smtlib2,z3]``, where:
+
+- ``cvc5`` is used via its binary which must be installed in the system. Only BMC uses ``cvc5``.
+- ``eld`` is used via its binary which must be installed in the system. Only CHC uses ``eld``, and only if ``z3`` is not enabled.
+- ``smtlib2`` outputs SMT/Horn queries in the `smtlib2 <http://smtlib.cs.uiowa.edu/>`_ format.
+  These can be used together with the compiler's `callback mechanism <https://github.com/ethereum/solc-js>`_ so that
+  any solver binary from the system can be employed to synchronously return the results of the queries to the compiler.
+  This can be used by both BMC and CHC depending on which solvers are called.
+- ``z3`` is available statically in ``soljson.js`` (from Solidity 0.6.9), that is, the JavaScript binary of the compiler. Otherwise it is used via its binary which must be installed in the system.
+>>>>>>> english/develop
 
 .. note::
   z3 4.8.16 版本破坏了与以前版本的 ABI 兼容性，
@@ -803,7 +824,12 @@ BMC使用一个SMT求解器，而CHC使用一个Horn求解器。
 由于 BMC 和 CHC 都使用 ``z3``，而且 ``z3`` 可以在更多的环境中使用，包括在浏览器中，
 大多数用户几乎不需要关心这个选项。更高级的用户可能会应用这个选项，在更复杂的问题上尝试其他求解器。
 
+<<<<<<< HEAD
 请注意，所选择的引擎和求解器的某些组合将导致SMT检查器不做任何事情，例如选择CHC和 ``cvc4``。
+=======
+Please note that certain combinations of chosen engine and solver will lead to
+the SMTChecker doing nothing, for example choosing CHC and ``cvc5``.
+>>>>>>> english/develop
 
 *******************************
 抽象和假阳性结果
@@ -845,6 +871,7 @@ CHC引擎创建了非线性的Horn选项，使用被调用函数的摘要来支�
 
 复杂的纯函数是由参数上的未转译函数（UF）抽象出来的。
 
+<<<<<<< HEAD
 +------------------------------------+------------------------------------------+
 |                方法                |             BMC/CHC 运行方式             |
 +====================================+==========================================+
@@ -883,6 +910,53 @@ CHC引擎创建了非线性的Horn选项，使用被调用函数的摘要来支�
 +------------------------------------+------------------------------------------+
 | 其他调用                           | 目前不支持                               |
 +------------------------------------+------------------------------------------+
+=======
++-----------------------------------+--------------------------------------+
+|Functions                          |BMC/CHC behavior                      |
++===================================+======================================+
+|``assert``                         |Verification target.                  |
++-----------------------------------+--------------------------------------+
+|``require``                        |Assumption.                           |
++-----------------------------------+--------------------------------------+
+|internal call                      |BMC: Inline function call.            |
+|                                   |CHC: Function summaries.              |
++-----------------------------------+--------------------------------------+
+|external call to known code        |BMC: Inline function call or          |
+|                                   |erase knowledge about state variables |
+|                                   |and local storage references.         |
+|                                   |CHC: Assume called code is unknown.   |
+|                                   |Try to infer invariants that hold     |
+|                                   |after the call returns.               |
++-----------------------------------+--------------------------------------+
+|Storage array push/pop             |Supported precisely.                  |
+|                                   |Checks whether it is popping an       |
+|                                   |empty array.                          |
++-----------------------------------+--------------------------------------+
+|ABI functions                      |Abstracted with UF.                   |
++-----------------------------------+--------------------------------------+
+|``addmod``, ``mulmod``             |Supported precisely.                  |
++-----------------------------------+--------------------------------------+
+|``gasleft``, ``blobhash``,         |Abstracted with UF.                   |
+|``blockhash``, ``keccak256``,      |                                      |
+|``ecrecover``, ``ripemd160``       |                                      |
++-----------------------------------+--------------------------------------+
+|pure functions without             |Abstracted with UF                    |
+|implementation (external or        |                                      |
+|complex)                           |                                      |
++-----------------------------------+--------------------------------------+
+|external functions without         |BMC: Erase state knowledge and assume |
+|implementation                     |result is nondeterministic.           |
+|                                   |CHC: Nondeterministic summary.        |
+|                                   |Try to infer invariants that hold     |
+|                                   |after the call returns.               |
++-----------------------------------+--------------------------------------+
+|transfer                           |BMC: Checks whether the contract's    |
+|                                   |balance is sufficient.                |
+|                                   |CHC: does not yet perform the check.  |
++-----------------------------------+--------------------------------------+
+|others                             |Currently unsupported                 |
++-----------------------------------+--------------------------------------+
+>>>>>>> english/develop
 
 使用抽象意味着失去精确的知识，但在许多情况下，这并不意味着失去证明力。
 
