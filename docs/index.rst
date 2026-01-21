@@ -3,11 +3,17 @@ Solidity
 
 .. warning::
 
+<<<<<<< HEAD
   You are reading a community translation of the Solidity documentation. The Solidity team
   can give no guarantees on the quality and accuracy of the translations provided.
   The English reference version is and will remain the only officially supported version
   by the Solidity team and will always be the most accurate and most up-to-date one.
   When in doubt, please always refer to the `English (original) documentation <https://docs.soliditylang.org/en/latest/>`_.
+=======
+Solidity is a `curly-bracket language <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly_bracket_languages>`_ designed to target the Ethereum Virtual Machine (EVM).
+It is influenced by C++, Python, and JavaScript.
+You can find more details about which languages Solidity has been inspired by in the :doc:`language influences <language-influences>` section.
+>>>>>>> english/develop
 
 Solidity是一门为实现智能合约而创建的面向对象的高级编程语言。
 智能合约是管理以太坊中账户行为的程序。
@@ -16,6 +22,7 @@ Solidity 是一种面向以太坊虚拟机 (EVM) 的 `带花括号的语言 <htt
 它受 C++，Python 和 JavaScript 的影响。
 您可以在 :doc:`语言的影响因素 <language-influences>` 部分中找到更多有关 Solidity 受哪些语言启发的细节。
 
+<<<<<<< HEAD
 Solidity 是静态类型语言，支持继承，库和复杂的用户自定义的类型以及其他特性。
 
 使用 Solidity，您可以创建用于投票、众筹、秘密竞价（盲拍）以及多重签名钱包等用途的合约。
@@ -25,6 +32,13 @@ Solidity 是静态类型语言，支持继承，库和复杂的用户自定义�
 `安全修复 <https://github.com/ethereum/solidity/security/policy#supported-versions>`_。
 此外，重大的变化以及新功能会定期引入。
 目前，我们使用 0.y.z 版本号 `来表明这种快速的变化 <https://semver.org/#spec-item-4>`_。
+=======
+When deploying contracts, you should use the latest released version of Solidity.
+Apart from exceptional cases, only the latest version receives
+`security fixes <https://github.com/argotorg/solidity/security/policy#supported-versions>`_.
+Furthermore, breaking changes, as well as new features, are introduced regularly.
+We currently use a 0.y.z version number `to indicate this fast pace of change <https://semver.org/#spec-item-4>`_.
+>>>>>>> english/develop
 
 .. warning::
 
@@ -36,7 +50,12 @@ Solidity 是静态类型语言，支持继承，库和复杂的用户自定义�
 
 .. Hint::
 
+<<<<<<< HEAD
   您可以通过点击左下角的版本号弹出的菜单来选择首选的下载格式来下载该文档的 PDF，HTML 或 Epub 格式。
+=======
+  You can download this documentation as PDF, HTML or Epub
+  by clicking on the versions flyout menu in the bottom-right corner and selecting the preferred download format.
+>>>>>>> english/develop
 
 
 入门指南
@@ -92,6 +111,7 @@ Solidity 是静态类型语言，支持继承，库和复杂的用户自定义�
 请注意，这些翻译的完整度和及时性各不相同。
 因此英文版才是参考的标准。
 
+<<<<<<< HEAD
 您可以通过点击左下角的语言切换器来切换语言。
 在弹出的菜单中，选择您需要的语言即可切换。
 
@@ -104,6 +124,20 @@ Solidity 是静态类型语言，支持继承，库和复杂的用户自定义�
 * `俄语 <https://github.com/solidity-docs/ru-russian>`_
 * `西班牙语 <https://github.com/solidity-docs/es-spanish>`_
 * `土耳其语 <https://docs.soliditylang.org/tr/latest/>`_
+=======
+You can switch between languages by clicking on the flyout menu in the bottom-right corner
+and selecting the preferred language.
+
+* `Chinese <https://docs.soliditylang.org/zh-cn/latest/>`_
+* `French <https://docs.soliditylang.org/fr/latest/>`_
+* `Indonesian <https://github.com/solidity-docs/id-indonesian>`_
+* `Japanese <https://github.com/solidity-docs/ja-japanese>`_
+* `Korean <https://github.com/solidity-docs/ko-korean>`_
+* `Persian <https://github.com/solidity-docs/fa-persian>`_
+* `Russian <https://github.com/solidity-docs/ru-russian>`_
+* `Spanish <https://github.com/solidity-docs/es-spanish>`_
+* `Turkish <https://docs.soliditylang.org/tr/latest/>`_
+>>>>>>> english/develop
 
 .. note::
 
